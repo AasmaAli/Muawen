@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_Shoppinglist"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="قائمة التسوق" />
+
+    <item
+        android:id="@+id/nav_Orders"
+        android:icon="@drawable/ic_baseline_assignment_24"
+        android:title="الطلبات" />
+
+    <item
+        android:id="@+id/nav_Suggesteditem"
+        android:icon="@drawable/ic_baseline_wb_incandescent_24"
+        android:title=" منتجات مقترحة" />
+
+    <item
+        android:id="@+id/nav_AddItem"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24"
+        android:title="أضافة منتج" />
+
+    <item
+        android:id="@+id/nav_DeleteItem"
+        android:icon="@drawable/ic_baseline_delete_forever_24"
+        android:title="حذف منتج" />
+
+    <item
+        android:id="@+id/nav_Editprofile"
+        android:icon="@drawable/setup_24"
+        android:title="الإعدادات" />
+
+    <item
+        android:id="@+id/nav_loguot"
+        android:icon="@drawable/logout_24"
+        android:title="تسجيل خروج" />
+
+
+</menu>

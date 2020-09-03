@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "774727434126",
+    "firebase_url": "https://muawen-635c6.firebaseio.com",
+    "project_id": "muawen-635c6",
+    "storage_bucket": "muawen-635c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774727434126:android:a891ff09d98726d36c6edf",
+        "android_client_info": {
+          "package_name": "com.example.muawen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "774727434126-mik6h5ueh8bisrtojv7j5tvgg7kmvg48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.muawen",
+            "certificate_hash": "49ade72eddb14e7715949a558e8885331ce2ebbb"
+          }
+        },
+        {
+          "client_id": "774727434126-0pp939kvmnrn0460k9o56704e7pon8q8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABPsOcWlQ2t61lmJ9G38HBIQoaKB-CNps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "774727434126-0pp939kvmnrn0460k9o56704e7pon8q8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
