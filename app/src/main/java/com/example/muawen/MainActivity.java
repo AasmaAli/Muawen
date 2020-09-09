@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 //import android.widget.Toolbar;
 
@@ -27,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private RecyclerView itemRecyclerView;
     private NavigationView navigationView;
     private TextView NavProfileUserName;
     private DrawerLayout drawerLayout;
@@ -47,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+
+        //RecyclerView
+        itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
+        itemRecyclerView.setHasFixedSize(true);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
