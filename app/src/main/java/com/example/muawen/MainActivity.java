@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 //import android.widget.Toolbar;
 
@@ -27,6 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+    private RecyclerView RecyclerViewitem;
     private NavigationView navigationView;
     private TextView NavProfileUserName;
     private DrawerLayout drawerLayout;
@@ -46,8 +51,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        //ViewList
+        RecyclerViewitem=(RecyclerView)findViewById(R.id.itmeRecyclerView);
+        RecyclerViewitem.setHasFixedSize(true);
+        RecyclerViewitem.setLayoutManager(new LinearLayoutManager(this));
 
+        mAuth = FirebaseAuth.getInstance();
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("الصفحة الرئيسة");
@@ -96,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                return false;
            }
        });
+
+     //RecyclerViewitem
+
      }//not currentUser null
      else {
        Intent loginIntent = new Intent(MainActivity.this, login.class);

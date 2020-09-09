@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/itmeRecyclerView">
+    </androidx.recyclerview.widget.RecyclerView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -49,6 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
-        app:menu="@menu/navigtion_menu"></com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/navigtion_menu">
+
+    </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
