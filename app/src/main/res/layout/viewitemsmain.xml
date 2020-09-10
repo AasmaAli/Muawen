@@ -1,65 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    app:cardConerRadius="12dp"
+    android:layout_margin="7dp"
     android:elevation="90dp"
-    android:layout_margin="7dp">
+    android:orientation="horizontal">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="199dp"
-        android:background="#46121111"
-        android:orientation="vertical">
+        android:layout_height="121dp"
+        android:background="#03F4F3F3"
+        android:orientation="horizontal">
 
+
+        <LinearLayout
+            android:layout_width="273dp"
+            android:layout_height="121dp"
+            android:background="#14121111"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="أسم العنصر"
+                android:textColor="#121111">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/Item_RemainingDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الأيام المتبقية"
+                android:textColor="#121111">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/Item_currentweight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الوزن الحالي"
+                android:textColor="#121111">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الكمية المتبقية"
+                android:textColor="#121111">
+
+            </TextView>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imageitem"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:layout_gravity="right"
             android:scaleType="fitStart"
             app:srcCompat="@drawable/logo"></ImageView>
 
-        <TextView
-            android:id="@+id/Item_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="item Name"
-            android:textColor="#121111">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/Item_RemainingDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remaining Day"
-            android:textColor="#121111">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/Item_currentweight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="current weight"
-            android:textColor="#121111">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="quantity"
-            android:textColor="#121111">
-
-        </TextView>
-
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

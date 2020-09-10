@@ -9,9 +9,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/itemRecyclerView">
+        android:layout_marginTop="57dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -25,6 +28,7 @@
             >
 
         </include>
+
 
 
         <FrameLayout
@@ -48,6 +52,7 @@
                 android:layout_height="720dp" />
 
         </FrameLayout>
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -57,5 +62,9 @@
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
         app:menu="@menu/navigtion_menu"></com.google.android.material.navigation.NavigationView>
+
+
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

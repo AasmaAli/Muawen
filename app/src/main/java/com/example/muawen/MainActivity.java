@@ -1,23 +1,25 @@
 package com.example.muawen;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import android.widget.Toolbar;
 
-
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+//import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +45,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference UsersRef;
+    private DatabaseReference ItemRef;
+
+
     String currentUserID;
+    FirebaseRecyclerAdapter<items, itemsView> firebaseUsersAdapter = null;
+
 
 
 
@@ -54,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         //RecyclerView
         itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
-        itemRecyclerView.setHasFixedSize(true);
+        itemRecyclerView.setHasFixedSize(false);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
 
      if(currentUser != null) {
+
        currentUserID = mAuth.getCurrentUser().getUid();
        UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
@@ -105,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                return false;
            }
        });
+
+
      }//not currentUser null
      else {
        Intent loginIntent = new Intent(MainActivity.this, login.class);
@@ -115,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }//on Create
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -219,9 +233,67 @@ public class MainActivity extends AppCompatActivity {
 
 
             });
+            viewitem();
 
         }//else end
 
 
     }//On Start
+
+
+    private void viewitem() {
+
+        ItemRef =UsersRef.child(currentUserID).child("items");
+
+        FirebaseRecyclerOptions<items> options = new FirebaseRecyclerOptions.Builder<items>()
+                .setQuery(ItemRef, items.class)
+                .build();
+
+        firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
+                options) {
+            @Override
+            protected void onBindViewHolder(itemsView holder, int position, items model) {
+                holder.setTite(model.getAdd_day());
+                holder.setRemainingDay(model.getExp_date());
+                holder.setcurrentweight(model.getCurrent_wieght());
+                holder.setquantity(model.getQuantity());
+            }
+            @Override
+            public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewitemsmain, parent, false);
+                return new itemsView(view);
+            }
+        };
+
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        itemRecyclerView.setAdapter(firebaseUsersAdapter);
+        firebaseUsersAdapter.startListening();
+    }// viwe item
+
+    public static class itemsView extends RecyclerView.ViewHolder{
+        View mView;
+         public itemsView(View itemView){
+           super(itemView);
+           mView =itemView;
+
+         }
+        public void setTite(String title){
+           TextView item_name = (TextView)mView.findViewById(R.id.Item_name);
+           item_name.setText(title);
+         }
+        public void setRemainingDay(String RemainingDay){
+            TextView item_RemainingDay = (TextView)mView.findViewById(R.id.Item_RemainingDay);
+            item_RemainingDay.setText(RemainingDay);
+        }
+        public void setcurrentweight(long currentweight){
+            TextView item_currentweight = (TextView) mView.findViewById(R.id.Item_currentweight);
+            item_currentweight.setText(String.valueOf(currentweight));
+        }
+        public void setquantity(long quantity){
+            TextView item_quantity = (TextView) mView.findViewById(R.id.quantity);
+            item_quantity.setText(String.valueOf(quantity));
+        }
+    }// class itemsView
+
+
 }
