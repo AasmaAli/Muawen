@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference UsersRef;
     private DatabaseReference ItemRef;
-    
+
+
 
 
     String currentUserID;
