@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     String currentUserID;
     FirebaseRecyclerAdapter<items, itemsView> firebaseUsersAdapter = null;
 
