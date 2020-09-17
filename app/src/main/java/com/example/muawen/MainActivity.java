@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
 
-    
+
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference UsersRef;
