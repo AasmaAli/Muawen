@@ -4,71 +4,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login">
+    android:background="#16121111">
 
+    <ImageView
+        android:id="@+id/login_icon"
+        android:layout_width="173dp"
+        android:layout_height="176dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:contentDescription="@string/logo_of_application"
+        app:srcCompat="@drawable/logo24" />
 
     <EditText
         android:id="@+id/Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Password"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_below="@+id/login_icon"
+        android:layout_marginTop="64dp"
         android:autofillHints=""
+        android:background="@drawable/inputs"
         android:ems="10"
-        android:hint="email"
+        android:hint="@string/الإيميل"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.281" />
+        android:padding="10dp"
+        android:drawableEnd="@drawable/email"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/Password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="103dp"
-        android:autofillHints=""
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/Email"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="305dp"
+        android:background="@drawable/inputs"
+        android:drawableEnd="@drawable/password"
         android:ems="10"
-        android:hint="password"
+        android:gravity="end"
+        android:hint="@string/كلمة"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Email"
-        app:layout_constraintVertical_bias="0.148" />
+        android:padding="10dp"
+        tools:ignore="RtlCompat" />
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="170dp"
-        android:layout_marginBottom="185dp"
-        android:text="login"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="383dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="451dp"
+        android:background="@drawable/buttons"
+        android:padding="15dp"
+        android:text="@string/login"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/Newaccont"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="163dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginBottom="96dp"
-        android:hint="New accont"
-        android:text="New accont" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="106dp"
+        android:gravity="center"
+        android:text="@string/new_account"
+        android:textColor="#8F0C0C0C"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

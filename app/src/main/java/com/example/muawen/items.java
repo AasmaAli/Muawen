@@ -1,19 +1,29 @@
 package com.example.muawen;
 
+
+
+
 public class items  {
-    private String Add_day , Exp_date;
+    private String Add_day;
+    private String Exp_date;
+    private String Product_ID;
     private long Current_wieght;
     private long Original_weight;
     private long quantity;
+    private long  Current_quantity;
+
+
 
     public items(){}
 
-    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity) {
+    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID) {
         Add_day = add_day;
         Exp_date = exp_date;
         Current_wieght = current_wieght;
         Original_weight = original_weight;
         this.quantity = quantity;
+        Current_quantity =  current_quantity;
+        Product_ID = product_ID;
     }
 
     public String getAdd_day() {
@@ -56,8 +66,12 @@ public class items  {
         this.quantity = quantity;
     }
 
+    public long getCurrent_quantity() { return Current_quantity; }
 
+    public void setCurrent_quantity(long current_quantity) { Current_quantity = current_quantity; }
 
+    public String getProduct_ID() { return Product_ID; }
 
+    public void setProduct_ID(String product_ID) { Product_ID = product_ID; }
 
 }

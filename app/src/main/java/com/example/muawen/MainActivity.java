@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                        String username = dataSnapshot.child("Username").getValue().toString();
                        NavProfileUserName.setText(username);
                    }
-
+                   else
                    {
                        Toast.makeText(MainActivity.this, "Profile name do not exists...", Toast.LENGTH_SHORT).show();
                    }
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_loguot:
                 mAuth.signOut();
-                Intent loginIntent = new Intent(MainActivity.this,Register.class);
+                Intent loginIntent = new Intent(MainActivity.this,login.class);
 
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);
@@ -257,11 +257,33 @@ public class MainActivity extends AppCompatActivity {
         firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
             @Override
-            protected void onBindViewHolder(itemsView holder, int position, items model) {
-                holder.setTite(model.getAdd_day());
+            protected void onBindViewHolder(final itemsView holder, int position, items model) {
+                //GetNameProduct
+                String Product_ID = model.getProduct_ID();
+                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference Product = rootRef.child("Product");
+
+                Product.child(Product_ID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            if (dataSnapshot.hasChild("Name")) {
+                                String Name= dataSnapshot.child("Name").getValue().toString();
+                                holder.setTite(Name);
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                ///GetNameProduct
                 holder.setRemainingDay(model.getExp_date());
                 holder.setcurrentweight(model.getCurrent_wieght());
-                holder.setquantity(model.getQuantity());
+                holder.setquantity(model.getCurrent_quantity());
             }
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -294,11 +316,12 @@ public class MainActivity extends AppCompatActivity {
             TextView item_currentweight = (TextView) mView.findViewById(R.id.Item_currentweight);
             item_currentweight.setText(String.valueOf(currentweight));
         }
-        public void setquantity(long quantity){
-            TextView item_quantity = (TextView) mView.findViewById(R.id.quantity);
-            item_quantity.setText(String.valueOf(quantity));
+        public void setquantity(long getCurrent_quantity){
+            TextView item_getCurrent_quantity = (TextView) mView.findViewById(R.id.quantity);
+            item_getCurrent_quantity.setText(String.valueOf(getCurrent_quantity));
         }
     }// class itemsView
+
 
 
 }

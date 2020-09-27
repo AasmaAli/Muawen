@@ -56,43 +56,23 @@ public class login extends AppCompatActivity {
             }
         });
     }//on Create
-/*
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if(currentUser != null)
-        {
-
-            Intent mainIntent = new Intent(login.this, MainActivity.class);
-            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(mainIntent);
-            finish();
-        }
-
-
-    }//on Start
-
- */
     private void AllowingUserToLogin() {
         String email = UserEmail.getText().toString();
         String password = UserPassword.getText().toString();
 
         if(email.isEmpty())
         {
-            Toast.makeText(this, "Please write your email...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "فضلًا ادخل البريد الالكتروني ...", Toast.LENGTH_SHORT).show();
         }
         else if(password.isEmpty())
         {
-            Toast.makeText(this, "Please write your password...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "فضلًا ادخل كلمة المرور ...", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            loadingBar.setTitle("Login");
-            loadingBar.setMessage("Please wait, while we are allowing you to login into your Account...");
+            loadingBar.setTitle("تسجيل الدخول");
+            loadingBar.setMessage("جاري تسجيل الدخول , فضلاً أنتظر ..");
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
 
@@ -111,7 +91,7 @@ public class login extends AppCompatActivity {
 
 
 
-                                Toast.makeText(login.this, "you are Logged In successfully.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(login.this, "تم تسجيل الدخول بنجاح", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
 
@@ -120,7 +100,7 @@ public class login extends AppCompatActivity {
                             else
                             {
                                 String message = task.getException().getMessage();
-                                Toast.makeText(login.this, "Error occured: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(login.this, "حدثت مشكلة أثناء تسجيل الدخول " + message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
                         }
