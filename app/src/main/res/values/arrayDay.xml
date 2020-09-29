@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="Days">
+        <item>الأحد</item>
+        <item>الأثنين</item>
+        <item>الثلاثاء</item>
+        <item>الإربعاء</item>
+        <item>الخميس</item>
+        <item>الجمعة</item>
+        <item>السبت</item>
+    </string-array>
+
+</resources>

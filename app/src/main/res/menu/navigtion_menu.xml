@@ -9,7 +9,7 @@
     <item
         android:id="@+id/nav_Orders"
         android:icon="@drawable/ic_baseline_assignment_24"
-        android:title="الطلبات" />
+        android:title="طلباتي" />
 
     <item
         android:id="@+id/nav_Suggesteditem"
@@ -24,7 +24,8 @@
     <item
         android:id="@+id/nav_DeleteItem"
         android:icon="@drawable/ic_baseline_delete_forever_24"
-        android:title="حذف منتج" />
+        android:title="حذف منتج"
+        />
 
     <item
         android:id="@+id/nav_Editprofile"

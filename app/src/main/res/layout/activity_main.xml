@@ -5,7 +5,9 @@
     android:id="@+id/drawable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_alignParentTop="true"
+    tools:context=".MainActivity"
+    tools:openDrawer="end">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,17 +36,9 @@
         <FrameLayout
             android:id="@+id/Main_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!--
-                        <ImageButton
-                            android:id="@+id/Buttonloguot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@android:drawable/ic_menu_set_as"
-                            tools:ignore="MissingConstraints"
-                            tools:layout_editor_absoluteX="16dp"
-                            tools:layout_editor_absoluteY="16dp" />
-            -->
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/item_list"
@@ -59,10 +53,12 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
-        app:menu="@menu/navigtion_menu"></com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/navigtion_menu">
+
+    </com.google.android.material.navigation.NavigationView>
 
 
 

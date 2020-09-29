@@ -210,10 +210,12 @@ public class MainActivity extends AppCompatActivity {
 
         else {
 
+
             //Check User Existence
             final String current_user_id = mAuth.getCurrentUser().getUid();
 
             UsersRef.addValueEventListener(new ValueEventListener() {
+
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -238,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             });
-            viewitem();
+           viewitem();
 
         }//else end
 
@@ -247,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void viewitem() {
+
 
         ItemRef =UsersRef.child(currentUserID).child("items");
 
@@ -258,7 +261,8 @@ public class MainActivity extends AppCompatActivity {
                 options) {
             @Override
             protected void onBindViewHolder(final itemsView holder, int position, items model) {
-                //GetNameProduct
+
+               //GetNameProduct
                 String Product_ID = model.getProduct_ID();
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference Product = rootRef.child("Product");
