@@ -370,8 +370,8 @@ public class MainActivity extends AppCompatActivity {
             else if(current_wieght <= original_weight/ 4)
                 item_icon.setImageResource(R.drawable.alerticon);
             //AddtoShoppingList
-            
         }//setimageitem
+        
     }// class itemsView
 
     public long RemainingDaymathed(String Exp_date) throws ParseException {
