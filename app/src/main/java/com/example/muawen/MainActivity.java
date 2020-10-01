@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 //import android.widget.Toolbar;
 
@@ -262,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(final itemsView holder, int position, items model) {
 
-               //GetNameProduct
+               //display the Name of Product
                 String Product_ID = model.getProduct_ID();
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference Product = rootRef.child("Product");
@@ -284,10 +293,36 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-                ///GetNameProduct
-                holder.setRemainingDay(model.getExp_date());
-                holder.setcurrentweight(model.getCurrent_wieght());
-                holder.setquantity(model.getCurrent_quantity());
+
+                //display the remaining day
+                long days =0;
+                try {
+                    days = RemainingDaymathed(model.getExp_date());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String RemainingDay;
+                if(days>= 0) {
+                    RemainingDay = ("المتبقي: " + days + " أيام ");
+                }
+                else {
+                    RemainingDay = ("لقد أنتهى تاريخ المنتج");
+                    //AddtoShoppingList
+                }
+                holder.setRemainingDay(RemainingDay);
+
+
+                //display the remaining wieght
+                String Current_wieght = "الوزن المتبقي : "+ model.getCurrent_wieght()+ " غرام";
+
+                holder.setcurrentweight(Current_wieght);
+
+                //display the remaining quantity
+                String Current_quantity = "الكمية المتبقية: "+ model.getCurrent_quantity();
+                holder.setquantity(Current_quantity);
+
+                //display icon
+                holder.setimageitem(model.getCurrent_wieght() , model.getOriginal_weight());
             }
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -308,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
            mView =itemView;
 
          }
+
         public void setTite(String title){
            TextView item_name = (TextView)mView.findViewById(R.id.Item_name);
            item_name.setText(title);
@@ -316,16 +352,48 @@ public class MainActivity extends AppCompatActivity {
             TextView item_RemainingDay = (TextView)mView.findViewById(R.id.Item_RemainingDay);
             item_RemainingDay.setText(RemainingDay);
         }
-        public void setcurrentweight(long currentweight){
+        public void setcurrentweight(String currentweight){
             TextView item_currentweight = (TextView) mView.findViewById(R.id.Item_currentweight);
             item_currentweight.setText(String.valueOf(currentweight));
         }
-        public void setquantity(long getCurrent_quantity){
+        public void setquantity(String getCurrent_quantity){
             TextView item_getCurrent_quantity = (TextView) mView.findViewById(R.id.quantity);
             item_getCurrent_quantity.setText(String.valueOf(getCurrent_quantity));
         }
+        public void setimageitem(long current_wieght, long original_weight){
+             //display icon
+            ImageView item_icon = (ImageView) mView.findViewById(R.id.imageitem);
+            if(current_wieght > original_weight/2)
+                item_icon.setImageResource(R.drawable.fullicon);
+            else if (current_wieght <= original_weight/ 2 && current_wieght > original_weight/ 4)
+                item_icon.setImageResource(R.drawable.halficon);
+            else if(current_wieght <= original_weight/ 4)
+                item_icon.setImageResource(R.drawable.alerticon);
+            //AddtoShoppingList
+            
+        }//setimageitem
     }// class itemsView
 
+    public long RemainingDaymathed(String Exp_date) throws ParseException {
+        //this method to calculation the remaining day then returned it
+        SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        String now = mDateFormatter.format(new Date());
+
+        Calendar Calendartoday = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendartoday.setTime(mDateFormatter.parse(now));
+
+        Calendar CalendarExe_date = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        CalendarExe_date.setTime(mDateFormatter.parse(Exp_date));
 
 
-}
+        long diff = CalendarExe_date.getTimeInMillis() - Calendartoday.getTimeInMillis(); //result in millis
+
+        long days = diff / (24 * 60 * 60 * 1000);
+
+        return days;
+
+    }
+
+
+
+}//big class

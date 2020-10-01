@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="121dp"
+        android:layout_height="110dp"
         android:background="#03F4F3F3"
         android:orientation="horizontal">
 
@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="أسم العنصر"
+                android:textAlignment="center"
                 android:textColor="#121111">
 
             </TextView>
@@ -36,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="الأيام المتبقية"
+                android:textAlignment="center"
                 android:textColor="#121111">
 
             </TextView>
@@ -45,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="الوزن الحالي"
+                android:textAlignment="center"
                 android:textColor="#121111">
 
             </TextView>
@@ -54,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="الكمية المتبقية"
+                android:textAlignment="center"
                 android:textColor="#121111">
 
             </TextView>
@@ -65,7 +69,7 @@
             android:layout_height="120dp"
             android:layout_gravity="right"
             android:scaleType="fitStart"
-            app:srcCompat="@drawable/logo"></ImageView>
+            ></ImageView>
 
     </LinearLayout>
 
