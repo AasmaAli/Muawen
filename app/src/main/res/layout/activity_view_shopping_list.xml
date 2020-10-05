@@ -5,12 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewShoppingList">
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ViewShoppingList"
-        tools:layout_editor_absoluteX="83dp"
-        tools:layout_editor_absoluteY="234dp" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="392dp"
+        android:layout_height="287dp"
+        android:layout_marginTop="56dp"
+        android:headerDividersEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="189dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginBottom="92dp"
+        android:backgroundTint="#2E7D32"
+        android:text="اطلب الآن"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
+        app:layout_constraintVertical_bias="0.569"
+        tools:ignore="UnknownId" />
+
+    <ListView
+        android:id="@+id/price"
+        android:layout_width="378dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

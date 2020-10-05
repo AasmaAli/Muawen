@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,11 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +33,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,6 +43,12 @@ import java.util.TimeZone;
 //import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    //local database for shopping list
+    DB mDatabaseSL= new DB(this);
+    SQLiteDatabase db ;
+
+    String Product_Name, Product_brand, Product_price, Product_size,quantity;
+
 
 
     private RecyclerView itemRecyclerView;
@@ -77,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
         //RecyclerView
+
         itemRecyclerView = (RecyclerView) findViewById(R.id.itemRecyclerView);
         itemRecyclerView.setHasFixedSize(false);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -241,15 +245,21 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled( DatabaseError databaseError) {
-                    Intent setupIntent = new Intent(MainActivity.this, AddItem.class);
-                    setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(setupIntent);
+                    Toast.makeText(MainActivity.this, "أسوم أنا هنا ساعديني", Toast.LENGTH_SHORT).show();
+
+                    //Intent setupIntent = new Intent(MainActivity.this, AddItem.class);
+                    //setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //startActivity(setupIntent);
                 }
 
 
 
             });
-           viewitem();
+
+            db = mDatabaseSL.getWritableDatabase();
+            mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+
+            viewitem();
 
         }//else end
 
@@ -303,14 +313,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String RemainingDay;
                 if(days>= 0) {
-                    RemainingDay = ("المتبقي: " + days + " أيام ");
+                            RemainingDay = ("المتبقي: " + days + " أيام ");
                 }
                 else {
                     RemainingDay = ("لقد أنتهى تاريخ المنتج");
-                    //AddtoShoppingList
+
+                    try {
+                        AddtoShoppingList(model , 1 , getRef(position), model.getAdd_day());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 holder.setRemainingDay(RemainingDay);
-
+               // getItem(position).setSuggestion_flag("123456");
+               // toastMessage("S"+getItem(position));
+                //getRef(position)
 
                 //display the remaining wieght
                 String Current_wieght = "الوزن المتبقي : "+ model.getCurrent_wieght()+ " غرام";
@@ -322,7 +339,18 @@ public class MainActivity extends AppCompatActivity {
                 holder.setquantity(Current_quantity);
 
                 //display icon
-                holder.setimageitem(model.getCurrent_wieght() , model.getOriginal_weight());
+                if(model.getCurrent_wieght() <= model.getOriginal_weight()/ 4) {
+                    try {
+                        AddtoShoppingList(model, 2, getRef(position), model.getAdd_day());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }else if(model.getCurrent_wieght() >= model.getOriginal_weight()){
+                    getRef(position).child("Current_wieght").setValue(model.getCurrent_wieght()-10);
+                    getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
+                }
+
+                holder.setimageitem(model);
             }
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -360,21 +388,22 @@ public class MainActivity extends AppCompatActivity {
             TextView item_getCurrent_quantity = (TextView) mView.findViewById(R.id.quantity);
             item_getCurrent_quantity.setText(String.valueOf(getCurrent_quantity));
         }
-        public void setimageitem(long current_wieght, long original_weight){
+        public void setimageitem(items item){
              //display icon
             ImageView item_icon = (ImageView) mView.findViewById(R.id.imageitem);
-            if(current_wieght > original_weight/2)
+            if(item.getCurrent_wieght()  > item.getOriginal_weight()/2)
                 item_icon.setImageResource(R.drawable.fullicon);
-            else if (current_wieght <= original_weight/ 2 && current_wieght > original_weight/ 4)
+            else if (item.getCurrent_wieght() <= item.getOriginal_weight()/ 2 && item.getCurrent_wieght() > item.getOriginal_weight()/ 4)
                 item_icon.setImageResource(R.drawable.halficon);
-            else if(current_wieght <= original_weight/ 4)
+            else if(item.getCurrent_wieght() <= item.getOriginal_weight()/ 4) {
                 item_icon.setImageResource(R.drawable.alerticon);
-            //AddtoShoppingList
+            }
         }//setimageitem
-        
+
+
     }// class itemsView
 
-    public long RemainingDaymathed(String Exp_date) throws ParseException {
+    public long RemainingDaymathed(String time) throws ParseException {
         //this method to calculation the remaining day then returned it
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
@@ -383,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
         Calendartoday.setTime(mDateFormatter.parse(now));
 
         Calendar CalendarExe_date = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        CalendarExe_date.setTime(mDateFormatter.parse(Exp_date));
+        CalendarExe_date.setTime(mDateFormatter.parse(time));
 
 
         long diff = CalendarExe_date.getTimeInMillis() - Calendartoday.getTimeInMillis(); //result in millis
@@ -394,6 +423,109 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private  String AddtoShoppingList(items item, int flag, DatabaseReference refItem, String add_day) throws ParseException {
+        //the flag will be 1 if expired || flag 2 if consume
+
+        if(item.getCurrent_quantity() != 1 &&flag !=1 ){
+            return null;
+        }
+
+        ///get item information
+        boolean HastisBrand= mDatabaseSL.HasthisBrand(db,"1222");
+        if(HastisBrand) {
+
+            return null;
+
+        }
+
+        //flag in databaes
+        if(flag ==1){
+            //expired replac
+            refItem.child("Suggestion_flag").setValue("1");
+        }
+        else if(flag ==2){
+            long days=0;
+            try {
+                days = RemainingDaymathed(add_day);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(days>=-3){
+                //upgrade
+                refItem.child("Suggestion_flag").setValue("2");
+            }else{
+                //replenishment
+                refItem.child("Suggestion_flag").setValue("3");
+            }
+        }
+
+        String Product_ID = item.getProduct_ID();
+        quantity = String.valueOf(item.getQuantity());
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference Product = rootRef.child("Product");
+
+        Product.child(Product_ID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    if (dataSnapshot.hasChild("Brand")) {
+                        Product_brand = dataSnapshot.child("Brand").getValue().toString();
+
+                    }
+                    if (dataSnapshot.hasChild("Name")) {
+                        Product_Name = dataSnapshot.child("Name").getValue().toString();
+
+                    }
+                    if (dataSnapshot.hasChild("Price")) {
+                        Product_price = dataSnapshot.child("Price").getValue().toString();
+
+
+                    }
+                    if (dataSnapshot.hasChild("Size")) {
+                        Product_size = dataSnapshot.child("Size").getValue().toString();
+
+
+                    }
+
+                }
+
+                if(Product_brand != null) {
+                    insertData(db,dataSnapshot.toString(), Product_brand, Product_Name, Product_size, Product_price, quantity);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+return null;
+    }
+
+    private void insertData(SQLiteDatabase db, String id, String product_brand, String product_name, String product_size, String product_price, String q) {
+        boolean insertData = false;
+
+        if(product_brand != null) {
+            insertData = mDatabaseSL.addData(db, id, product_brand, product_name, product_size, product_price, q);
+
+        }
+
+        if (insertData) {
+            toastMessage("Data Successfully Inserted!");
+        } else {
+            toastMessage("Something went wrong");
+        }
+
+    }
+
+    //to dispay any message
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
 
 
 }//big class

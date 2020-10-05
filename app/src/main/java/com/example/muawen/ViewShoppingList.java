@@ -49,14 +49,15 @@ public class ViewShoppingList extends AppCompatActivity {
                 while(res.isAfterLast()==false)
 
                 {
-                    String s1 = res.getString(2);
-                    String s2 = res.getString(3);
-                    String s3 = res.getString(4);
-                    String s4 = res.getString(5);
+                    String Brand = res.getString(2);
+                    String Name = res.getString(3);
+                    String size = res.getString(4);
+                    String Price = res.getString(5);
+                    String quantity =res.getString(6);
 
-
-                    arrayList.add(s2+" "+s1+"                  "+s4 +"  ريال          "+"          "+ s3);
-                    total = total + (Integer.parseInt(s4));
+                    arrayList.add(Name+" "+Brand+"            "+ size+" غرام         "+quantity+"           "+Price +"  ريال          ");
+                  if(Price != null)
+                    total = total + (Integer.parseInt(Price));
                     res.moveToNext();
 
                 }
@@ -72,7 +73,7 @@ public class ViewShoppingList extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent (viewSoppingList.this, viewSeggestion.class);
+                        Intent intent = new Intent (ViewShoppingList.this, Suggestionitem.class);
                         startActivity(intent);
 
                     }
@@ -82,5 +83,4 @@ public class ViewShoppingList extends AppCompatActivity {
 
 
         }
-    }
-}
+

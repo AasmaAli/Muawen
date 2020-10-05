@@ -11,12 +11,16 @@ public class items  {
     private long Original_weight;
     private long quantity;
     private long  Current_quantity;
+    private String Suggested_item;
+    private String Suggestion_flag;
+    private long Sensor;
 
 
 
-    public items(){}
+    public items() {}
 
-    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID) {
+
+    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID, String suggested_item,String suggestion_flag, long sensor) {
         Add_day = add_day;
         Exp_date = exp_date;
         Current_wieght = current_wieght;
@@ -24,6 +28,11 @@ public class items  {
         this.quantity = quantity;
         Current_quantity =  current_quantity;
         Product_ID = product_ID;
+        Suggested_item= suggested_item;
+        Suggestion_flag =suggestion_flag ;
+        Sensor =sensor;
+
+
     }
 
     public String getAdd_day() {
@@ -74,4 +83,27 @@ public class items  {
 
     public void setProduct_ID(String product_ID) { Product_ID = product_ID; }
 
+    public String getSuggested_item() {
+        return Suggested_item;
+    }
+
+    public void setSuggested_item(String suggested_item) {
+        Suggested_item = suggested_item;
+    }
+
+    public String getSuggestion_flag() {
+        return Suggestion_flag;
+    }
+
+    public void setSuggestion_flag(String suggestion_flag) {
+        Suggestion_flag = suggestion_flag;
+    }
+
+    public long getSensor() {
+        return Sensor;
+    }
+
+    public void setSensor(long sensor) {
+        Sensor = sensor;
+    }
 }
