@@ -162,5 +162,5 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-    
+
 }
