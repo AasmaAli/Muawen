@@ -346,8 +346,8 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }else if(model.getCurrent_wieght() >= model.getOriginal_weight()){
-                    getRef(position).child("Current_wieght").setValue(model.getCurrent_wieght()-10);
-                    getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
+                  getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-10);
+                  getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
                 }
 
                 holder.setimageitem(model);
