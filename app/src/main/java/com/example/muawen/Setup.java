@@ -153,7 +153,6 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
           if(parent.getId() == R.id.Spinner_order_day){
               Theday =parent.getItemAtPosition(position).toString();
-              Toast.makeText(Setup.this, "أسوم أخترت اليوم ا", Toast.LENGTH_SHORT).show();
 
           }
     }

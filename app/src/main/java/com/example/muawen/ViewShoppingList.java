@@ -13,7 +13,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.ArrayList;
 
@@ -29,7 +33,8 @@ public class ViewShoppingList extends AppCompatActivity {
     private Button button;
     private TextView textView;
     private ListView list;
-
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +78,44 @@ public class ViewShoppingList extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent (ViewShoppingList.this, Suggestionitem.class);
-                        startActivity(intent);
+                        plaseOrder();
+
 
                     }
                 });
 
             }
 
+    public void plaseOrder() {
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //DatabaseReference ref = database.getReference("server/saving-data/fireblog");
+
+        DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+
+        Cursor res = db.getShoppingList();
+        res.moveToFirst();
+        final ArrayList<Product> result = new ArrayList<>();
+        int total_price = 0;
+        while (res.isAfterLast() == false) {
+            //int Id = Integer.parseInt(res.getString(Integer.parseInt("id")));
+            String Barcode = res.getString((res.getColumnIndex("Barcode")));
+            String Name = res.getString(res.getColumnIndex("Name"));
+            String size = res.getString(res.getColumnIndex("size"));
+            int Price = Integer.parseInt(res.getString(res.getColumnIndex("Price")));
+            result.add(new Product( Barcode, Name, size, Price));
+            total_price = total_price + Price;
+            res.moveToNext();
 
         }
+
+        //DatabaseReference ordersRef = OrderRef.child("Orders");
+        Order order  = new Order(mAuth.getCurrentUser().getUid(),"تجهيز" ,  total_price,result );
+
+        OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order) ;
+
+    }
+
+
+}//class
 

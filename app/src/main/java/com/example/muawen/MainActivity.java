@@ -5,6 +5,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +36,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -186,9 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Goto);
                 break;
 
-            case R.id.nav_DeleteItem:
-                Toast.makeText(this, "Delete Item", Toast.LENGTH_SHORT).show();
-                break;
+
 
             case R.id.nav_Editprofile:
                 Goto = new Intent(MainActivity.this,EditProfile.class);
@@ -236,9 +240,9 @@ public class MainActivity extends AppCompatActivity {
                     if (!dataSnapshot.hasChild(current_user_id)) {
                         // Send User To Setup Activity
 
-                        Intent setupIntent = new Intent(MainActivity.this, Setup.class);
-                        setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(setupIntent);
+                       // Intent setupIntent = new Intent(MainActivity.this, Setup.class);
+                        //setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        //startActivity(setupIntent);
                         //finish();
                     }//end if
 
@@ -258,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             db = mDatabaseSL.getWritableDatabase();
-            mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+           // mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
             viewitem();
 
@@ -280,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
             @Override
-            protected void onBindViewHolder(final itemsView holder, int position, items model) {
+            protected void onBindViewHolder(final itemsView holder, final int position, items model) {
 
                //display the Name of Product
                 String Product_ID = model.getProduct_ID();
@@ -326,9 +330,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 holder.setRemainingDay(RemainingDay);
-               // getItem(position).setSuggestion_flag("123456");
-               // toastMessage("S"+getItem(position));
-                //getRef(position)
+                //holder.deleteitem();
 
                 //display the remaining wieght
                 String Current_wieght = "الوزن المتبقي : "+ model.getCurrent_wieght()+ " غرام";
@@ -347,11 +349,24 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }else if(model.getCurrent_wieght() >= model.getOriginal_weight()){
-                  getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-10);
+                  getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-1);
                   getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
                 }
 
                 holder.setimageitem(model);
+                holder.deleteitem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+
+                        delete_item(getRef(position));
+                    }
+
+                    @NotNull
+                    private View.OnClickListener getOnClickListener() {
+                        return this;
+                    }
+                });
             }
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -367,11 +382,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static class itemsView extends RecyclerView.ViewHolder{
         View mView;
+        ImageButton deleteitem;
          public itemsView(View itemView){
            super(itemView);
            mView =itemView;
+           deleteitem = (ImageButton) mView.findViewById(R.id.Buttons_DeleteItem);
+
 
          }
+
 
         public void setTite(String title){
            TextView item_name = (TextView)mView.findViewById(R.id.Item_name);
@@ -392,6 +411,7 @@ public class MainActivity extends AppCompatActivity {
         public void setimageitem(items item){
              //display icon
             ImageView item_icon = (ImageView) mView.findViewById(R.id.imageitem);
+
             if(item.getCurrent_wieght()  > item.getOriginal_weight()/2)
                 item_icon.setImageResource(R.drawable.fullicon);
             else if (item.getCurrent_wieght() <= item.getOriginal_weight()/ 2 && item.getCurrent_wieght() > item.getOriginal_weight()/ 4)
@@ -399,7 +419,9 @@ public class MainActivity extends AppCompatActivity {
             else if(item.getCurrent_wieght() <= item.getOriginal_weight()/ 4) {
                 item_icon.setImageResource(R.drawable.alerticon);
             }
+
         }//setimageitem
+
 
 
     }// class itemsView
@@ -433,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ///get item information
-        boolean HastisBrand= mDatabaseSL.HasthisBrand(db,"1222");
+        boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
         if(HastisBrand) {
 
             return null;
@@ -528,5 +550,47 @@ return null;
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
+    public void delete_item(final DatabaseReference RefItem) {
+
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("هل أنت متاكد من حذف  المنتج؟")
+                .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //make sensor available
+                        RefItem.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    if (dataSnapshot.hasChild("Sensor")) {
+                                        String Sensor= dataSnapshot.child("Sensor").getValue().toString();
+                                        //toastMessage(RefItem.getParent().getParent().child("Sensors").child(Sensor)+" ");
+
+                                        RefItem.getParent().getParent().child("Sensors").child(Sensor).child("Availability").setValue(1);
+                                        //RefItem.child("Sensors").child(Sensor).setValue(1);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        //delete item
+                        RefItem.removeValue();
+                    }//if click yes end
+                })
+                .setNegativeButton("لا", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        return;
+                    }
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog deletemass= builder.create();
+        deletemass.show();
+
+    }//delete_item end
 
 }//big class
