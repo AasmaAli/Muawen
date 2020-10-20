@@ -68,7 +68,7 @@
                 android:layout_height="37dp"
                 android:layout_gravity="left"
                 android:scaleType="fitStart"
-                app:srcCompat="@drawable/ic_baseline_delete_forever_24"
+                app:srcCompat="@drawable/ic_baseline_delete_24"
                 tools:ignore="VectorDrawableCompat"></ImageButton>
 
         </LinearLayout>

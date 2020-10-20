@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     String Product_Name, Product_brand, Product_price, Product_size,quantity;
 
 
-
     private RecyclerView itemRecyclerView;
     private NavigationView navigationView;
     private TextView NavProfileUserName;
@@ -142,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                return false;
            }
        });
-
 
      }//not currentUser null
      else {
@@ -262,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             db = mDatabaseSL.getWritableDatabase();
-           // mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+          //  mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
             viewitem();
 
@@ -322,12 +320,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     RemainingDay = ("لقد أنتهى تاريخ المنتج");
-
+/*
                     try {
                         AddtoShoppingList(model , 1 , getRef(position), model.getAdd_day());
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    */
+
                 }
                 holder.setRemainingDay(RemainingDay);
                 //holder.deleteitem();
@@ -342,13 +342,13 @@ public class MainActivity extends AppCompatActivity {
                 holder.setquantity(Current_quantity);
 
                 //display icon
-                if(model.getCurrent_wieght() <= model.getOriginal_weight()/ 4) {
+               /* if(model.getCurrent_wieght() <= model.getOriginal_weight()/ 4) {
                     try {
                         AddtoShoppingList(model, 2, getRef(position), model.getAdd_day());
                     } catch (ParseException e) {
                         e.printStackTrace();
-                    }
-                }else if(model.getCurrent_wieght() >= model.getOriginal_weight()){
+                    }*/
+                 if(model.getCurrent_wieght() >= model.getOriginal_weight() && model.getCurrent_quantity()>1 ){
                   getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-1);
                   getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
                 }
@@ -367,17 +367,41 @@ public class MainActivity extends AppCompatActivity {
                         return this;
                     }
                 });
+
+                //call Add to shoping list if neeed
+                int Suggestion_flag_Check= Integer.parseInt(model.getSuggestion_flag());
+                if( Suggestion_flag_Check == 0 ) {
+                    if (days < 0) {
+                        try {
+                            AddtoShoppingList(model, 1, getRef(position), model.getAdd_day());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else if (model.getCurrent_wieght() <= model.getOriginal_weight() / 4 && model.getCurrent_quantity() == 1) {
+                        try {
+                            AddtoShoppingList(model, 2, getRef(position), model.getAdd_day());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }//big if
             }
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewitemsmain, parent, false);
                 return new itemsView(view);
             }
+
+
+
         };
 
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         itemRecyclerView.setAdapter(firebaseUsersAdapter);
         firebaseUsersAdapter.startListening();
+
+
     }// viwe item
 
     public static class itemsView extends RecyclerView.ViewHolder{
@@ -448,11 +472,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private  String AddtoShoppingList(items item, int flag, DatabaseReference refItem, String add_day) throws ParseException {
-        //the flag will be 1 if expired || flag 2 if consume
 
-        if(item.getCurrent_quantity() != 1 &&flag !=1 ){
-            return null;
-        }
+
 
         ///get item information
         boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
@@ -525,7 +546,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
 return null;
     }
 

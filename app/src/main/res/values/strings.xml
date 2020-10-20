@@ -19,5 +19,12 @@
     <string name="mobile">رقم الجوال</string>
     <string name="Auto_order">هل تريد أن يتم الطلب بشكل تلقائي؟</string>
     <string name="order_day">يوم الطلب التلقائي</string>
+    <string name="quantity">الكمية</string>
+    <string name="barcode">مسح الشريط</string>
+    <string name="itemname">أسم المنتج</string>
+    <string name="item_size">الحجم</string>
+    <string name="item_brand">الشركة</string>
+    <string name="Date">تاريخ الأنتهاء</string>
+    <string name="numsensor">رقم المستشعر</string>
 
 </resources>

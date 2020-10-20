@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddItem">
+
+
+
+    <EditText
+        android:id="@+id/add_barcode"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/inputs"
+        android:ems="10"
+        android:hint="@string/barcode"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints,RtlCompat"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/LinearLayout2"
+        android:layout_below="@+id/add_barcode"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="72dp"
+        android:background="@color/cardview_light_background"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/add_barcode"
+        app:layout_constraintVertical_bias="0.093"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp">
+
+        <TextView
+            android:id="@+id/item_size"
+            android:layout_width="135dp"
+            android:layout_height="43dp"
+            android:layout_centerHorizontal="true"
+
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/item_size"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:radius="30dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/holo_green_dark"
+            android:textColorHint="@color/holo_green_light"
+            tools:ignore="DuplicateIds,MissingConstraints,RtlCompat" />
+
+        <TextView
+            android:id="@+id/item_brand"
+            android:layout_width="135dp"
+            android:layout_height="43dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:ems="10"
+            android:hint="@string/item_brand"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:radius="30dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/holo_green_dark"
+            android:textColorHint="@color/holo_green_light"
+            tools:ignore="DuplicateIds,MissingConstraints,RtlCompat" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="135dp"
+            android:layout_height="43dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/itemname"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:radius="30dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/holo_green_dark"
+            android:textColorHint="@color/holo_green_light"
+            tools:ignore="DuplicateIds,MissingConstraints,RtlCompat" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_above="@+id/Date"
+        android:layout_marginBottom="25dp"
+        android:background="@color/cardview_light_background"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/add_barcode"
+        app:layout_constraintVertical_bias="0.093"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp">
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="decrement"
+            android:scrollbarStyle="outsideInset"
+            android:text="-"
+            android:textSize="20dp"
+            android:textStyle="bold"></Button>
+
+        <TextView
+            android:id="@+id/add_quantity"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="الكمية"
+            android:textAlignment="center"
+            android:textSize="18dp"></TextView>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="increment"
+            android:text="+"
+            android:textSize="20dp"
+            android:textStyle="bold"></Button>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/Date"
+        style="@android:style/Widget.TextView.PopupMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_above="@+id/Add_buttonSave"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="132dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed-light"
+        android:hint="@string/Date"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        android:lineSpacingExtra="8sp"
+        android:scrollbarStyle="insideOverlay"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        android:textSize="16sp"
+        app:layout_constraintVertical_bias="0.886"
+        tools:ignore="DuplicateIds,MissingConstraints,RtlCompat"></TextView>
+
+
+
+    <Button
+        android:id="@+id/Add_buttonSave"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="84dp"
+        android:background="@drawable/buttons"
+        android:padding="15dp"
+        android:text="@string/save"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+
+        android:layout_marginBottom="409dp"
+        android:background="@color/cardview_light_background"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        app:layout_constraintVertical_bias="0.093"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="3dp">
+
+
+        <Spinner
+            android:id="@+id/Spinner_sensor"
+            style="@android:style/Widget.Material.Spinner.Underlined"
+            android:layout_width="208dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp" />
+
+        <TextView
+            android:id="@+id/sensor"
+            android:layout_width="194dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="100dp"
+            android:ems="10"
+            android:text="@string/numsensor"
+            android:textAlignment="center"
+            android:textSize="18dp"></TextView>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
