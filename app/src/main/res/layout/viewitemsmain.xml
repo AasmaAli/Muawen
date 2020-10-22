@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="273dp"
-            android:layout_height="121dp"
+            android:layout_height="110dp"
             android:background="#14121111"
             android:orientation="vertical">
 
@@ -62,24 +62,42 @@
 
             </TextView>
 
-            <ImageButton
-                android:id="@+id/Buttons_DeleteItem"
-                android:layout_width="43dp"
-                android:layout_height="37dp"
-                android:layout_gravity="left"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/ic_baseline_delete_24"
-                tools:ignore="VectorDrawableCompat"></ImageButton>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:background="#03F4F3F3"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/Buttons_DeleteItem"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="37dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:scaleType="fitStart"
+                    app:srcCompat="@drawable/ic_baseline_delete_24"
+                    tools:ignore="VectorDrawableCompat"></ImageButton>
+
+                <ImageButton
+                    android:id="@+id/Buttons_Update"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="38dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:scaleType="fitStart"
+                    app:srcCompat="@drawable/ic_baseline_autorenew_24"
+                    tools:ignore="VectorDrawableCompat"></ImageButton>
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/imageitem"
             android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_height="121dp"
             android:layout_gravity="right"
-            android:scaleType="fitStart"
-            ></ImageView>
+            android:scaleType="fitStart"></ImageView>
 
 
 

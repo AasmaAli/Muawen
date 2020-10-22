@@ -7,6 +7,7 @@ import android.database.Cursor;
 import  android.database.sqlite.SQLiteDatabase ;
 import android.database.sqlite.SQLiteOpenHelper ;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class DB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db ) {
-        db.execSQL("create table mytable(id INTEGER PRIMARY KEY AUTOINCREMENT,Barcode Text ,Brand Text,Name Text,size Text,Price Text,Quantity Text) ");
+        db.execSQL("create table mytable(id INTEGER PRIMARY KEY AUTOINCREMENT,UesID Text,Barcode Text ,Brand Text,Name Text,size Text,Price Text,Quantity Text) ");
 
     }
 
@@ -36,12 +37,12 @@ public class DB extends SQLiteOpenHelper {
 
 
 
-    public Cursor getShoppingList()
+    public Cursor getShoppingList(String userId)
     {
 
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from mytable ", null );
+        Cursor res = db.rawQuery("select * from mytable where UesID = '"+userId+"';", null );
         return res;
     }
 
@@ -55,10 +56,11 @@ public class DB extends SQLiteOpenHelper {
 
 
 
-    public boolean addData(SQLiteDatabase db,String barcode , String brand , String Name, String size, String Price, String quantity) {
+    public boolean addData(SQLiteDatabase db,String uesid ,String barcode , String brand , String Name, String size, String Price, String quantity) {
 
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put("UesID", uesid);
         contentValues.put("Barcode", barcode);
         contentValues.put("Brand", brand);
         contentValues.put("Name", Name);

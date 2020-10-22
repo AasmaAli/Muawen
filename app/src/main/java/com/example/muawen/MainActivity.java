@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,6 +53,10 @@ import java.util.TimeZone;
 //import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+
+    //update item
+    DatePickerDialog.OnDateSetListener setListener;
+
     //local database for shopping list
     DB mDatabaseSL= new DB(this);
     SQLiteDatabase db ;
@@ -113,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
        currentUserID = mAuth.getCurrentUser().getUid();
        UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
+
        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(DataSnapshot dataSnapshot) {
@@ -260,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             db = mDatabaseSL.getWritableDatabase();
-          //  mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+           // mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
             viewitem();
 
@@ -288,6 +297,10 @@ public class MainActivity extends AppCompatActivity {
                 String Product_ID = model.getProduct_ID();
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference Product = rootRef.child("Product");
+
+
+
+
 
                 Product.child(Product_ID).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -354,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 holder.setimageitem(model);
+
                 holder.deleteitem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view)
@@ -368,11 +382,29 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                holder.Updateitem.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view)
+                    {
+
+                        Update_item(getRef(position));
+                        toastMessage("Data Successfully Inserted!"+ getRef(position));
+
+                    }
+
+                    @NotNull
+                    private View.OnClickListener getOnClickListener() {
+                        return this;
+                    }
+                });
+
                 //call Add to shoping list if neeed
                 int Suggestion_flag_Check= Integer.parseInt(model.getSuggestion_flag());
                 if( Suggestion_flag_Check == 0 ) {
                     if (days < 0) {
                         try {
+
                             AddtoShoppingList(model, 1, getRef(position), model.getAdd_day());
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -404,14 +436,16 @@ public class MainActivity extends AppCompatActivity {
 
     }// viwe item
 
+
+
     public static class itemsView extends RecyclerView.ViewHolder{
         View mView;
-        ImageButton deleteitem;
+        ImageButton deleteitem , Updateitem;
          public itemsView(View itemView){
            super(itemView);
            mView =itemView;
            deleteitem = (ImageButton) mView.findViewById(R.id.Buttons_DeleteItem);
-
+           Updateitem = (ImageButton) mView.findViewById(R.id.Buttons_Update);
 
          }
 
@@ -476,16 +510,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         ///get item information
-        boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
+       /* boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
         if(HastisBrand) {
+            toastMessage("داخله 1");
 
             return null;
 
-        }
+        }*/
 
         //flag in databaes
         if(flag ==1){
             //expired replac
+
             refItem.child("Suggestion_flag").setValue("1");
         }
         else if(flag ==2){
@@ -536,6 +572,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(Product_brand != null) {
+
                     insertData(db,dataSnapshot.toString(), Product_brand, Product_Name, Product_size, Product_price, quantity);
 
                 }
@@ -552,8 +589,13 @@ return null;
     private void insertData(SQLiteDatabase db, String id, String product_brand, String product_name, String product_size, String product_price, String q) {
         boolean insertData = false;
 
+        String userId = UsersRef.child(currentUserID).getKey();
+
         if(product_brand != null) {
-            insertData = mDatabaseSL.addData(db, id, product_brand, product_name, product_size, product_price, q);
+            toastMessage("هذا الايدي للي اخدخله"+ userId );
+
+            insertData = mDatabaseSL.addData(db,userId, id, product_brand, product_name, product_size, product_price, q);
+
 
         }
 
@@ -612,5 +654,109 @@ return null;
         deletemass.show();
 
     }//delete_item end
+
+    private void Update_item(final DatabaseReference ref) {
+
+        //toastMessage("On "+ ref);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("هل وصل طلبك وتريد التجديد المنتج؟ ")
+                .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {//___________________________________________________________
+                        Calendar calendar = Calendar.getInstance();
+                        final int year = calendar.get(Calendar.YEAR);
+                        final int month = calendar.get(Calendar.MONTH);
+                        final int day = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+
+
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                                MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
+                                ,setListener,year,day,month);
+                        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        datePickerDialog.show();
+
+                        setListener= new DatePickerDialog.OnDateSetListener() {
+                            String Exp_Date = null;
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                month = month+1;
+                                if(month<10 && dayOfMonth<10){
+                                    Exp_Date= year+"/0"+month+"/0"+dayOfMonth;
+
+                                }
+                                else if (month<10 ){
+                                    Exp_Date= year+"/0"+month+"/"+dayOfMonth;
+                                }else if (dayOfMonth<10){
+                                    Exp_Date= year+"/"+month+"/0"+dayOfMonth;
+
+                                }else {
+                                    Exp_Date= year+"/"+month+"/"+dayOfMonth;
+
+                                }
+                                long days=-1;
+                                try {
+                                    days = RemainingDaymathed(Exp_Date);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if(days>0){
+                                    //call Update_in_Database
+                                    Update_in_Database(ref, Exp_Date);
+
+                                }else{
+                                    toastMessage("التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح");
+                                }
+
+                            }
+                        };
+
+
+                    }//if click yes end_______________________________________________________________________________________________-
+                })
+                .setNegativeButton("لا", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        return;
+                    }//if click no end
+                });
+        // Create the AlertDialog object and return it
+        AlertDialog deletemass= builder.create();
+        deletemass.show();
+
+
+    }//Update_item
+
+    private void Update_in_Database(final DatabaseReference refItem, String Exp_Date) {
+        SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        String now = mDateFormatter.format(new Date());
+        //toastMessage("in mathed");
+        refItem.child("Exp_date").setValue(Exp_Date);
+        refItem.child("Add_day").setValue(now);
+        refItem.child("Suggestion_flag").setValue("0");
+        refItem.child("Suggested_item").setValue("-1");
+
+        refItem.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild("quantity")) {
+                        long quantity=  Long.parseLong(dataSnapshot.child("quantity").getValue().toString());
+                        refItem.child("Current_quantity").setValue(quantity);
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+    }
 
 }//big class
