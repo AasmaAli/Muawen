@@ -9,6 +9,7 @@ public class Product {
         String size ;
         int Price ;
 
+
         public Product( String Brand, String Name, String size, int Price) {
 
             this.Brand = Brand;

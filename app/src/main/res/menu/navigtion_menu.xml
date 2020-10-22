@@ -21,11 +21,6 @@
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
         android:title="أضافة منتج" />
 
-    <item
-        android:id="@+id/nav_DeleteItem"
-        android:icon="@drawable/ic_baseline_delete_forever_24"
-        android:title="حذف منتج"
-        />
 
     <item
         android:id="@+id/nav_Editprofile"

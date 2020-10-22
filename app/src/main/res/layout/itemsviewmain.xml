@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,6 +21,7 @@
             android:scaleType="fitStart"
             app:srcCompat="@drawable/alerticon" />
 
+
         <TextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
@@ -27,6 +29,7 @@
             android:text="Item name"
             android:textColor="#F3121111">
         </TextView>
+
         <TextView
             android:id="@+id/item_CurrentWieght"
             android:layout_width="match_parent"
@@ -34,6 +37,7 @@
             android:text="Current Wieght"
             android:textColor="#F3121111">
         </TextView>
+
         <TextView
             android:id="@+id/item_RemainingDay"
             android:layout_width="match_parent"
@@ -43,8 +47,8 @@
         </TextView>
 
 
-
     </LinearLayout>
+
 
 
 </RelativeLayout>
