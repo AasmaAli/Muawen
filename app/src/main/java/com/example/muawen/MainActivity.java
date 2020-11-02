@@ -652,6 +652,7 @@ return null;
         deletemass.show();
 
     }//delete_item end
+    
 
     private void Update_item(final DatabaseReference ref) {
 
