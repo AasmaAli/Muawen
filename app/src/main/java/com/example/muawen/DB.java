@@ -26,7 +26,6 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("create table mytable(id INTEGER PRIMARY KEY AUTOINCREMENT,UesID Text,Barcode Text ,Brand Text,Name Text,size Text,Price Text,Quantity Text) ");
 
     }
-    
 
 
     @Override

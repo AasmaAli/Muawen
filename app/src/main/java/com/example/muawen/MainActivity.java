@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
             db = mDatabaseSL.getWritableDatabase();
-           // mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+            //mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
             viewitem();
 
@@ -389,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
                     {
 
                         Update_item(getRef(position));
-                        toastMessage("Data Successfully Inserted!"+ getRef(position));
 
                     }
 
@@ -592,7 +591,6 @@ return null;
         String userId = UsersRef.child(currentUserID).getKey();
 
         if(product_brand != null) {
-            toastMessage("هذا الايدي للي اخدخله"+ userId );
 
             insertData = mDatabaseSL.addData(db,userId, id, product_brand, product_name, product_size, product_price, q);
 
@@ -659,7 +657,7 @@ return null;
 
         //toastMessage("On "+ ref);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("هل وصل طلبك وتريد التجديد المنتج؟ ")
+        builder.setMessage("هل وصل طلبك وتريد تجديد المنتج؟ ")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {//___________________________________________________________
                         Calendar calendar = Calendar.getInstance();
@@ -728,7 +726,6 @@ return null;
     private void Update_in_Database(final DatabaseReference refItem, String Exp_Date) {
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
-        //toastMessage("in mathed");
         refItem.child("Exp_date").setValue(Exp_Date);
         refItem.child("Add_day").setValue(now);
         refItem.child("Suggestion_flag").setValue("0");

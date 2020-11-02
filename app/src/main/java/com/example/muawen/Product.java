@@ -7,10 +7,10 @@ public class Product {
         String Brand ;
         String Name ;
         String size ;
-        int Price ;
+        double Price ;
 
 
-        public Product( String Brand, String Name, String size, int Price) {
+        public Product( String Brand, String Name, String size, double Price) {
 
             this.Brand = Brand;
             this.Name = Name;
@@ -18,9 +18,14 @@ public class Product {
             this.Price = Price;
         }
 
+    public Product() {
+    }
 
 
-        public String getBrand() {
+
+
+
+    public String getBrand() {
             return Brand;
         }
 
@@ -44,11 +49,11 @@ public class Product {
             this.size = size;
         }
 
-        public int getPrice() {
+        public double getPrice() {
             return Price;
         }
 
-        public void setPrice(int price) {
+        public void setPrice(double price) {
             Price = price;
         }
     

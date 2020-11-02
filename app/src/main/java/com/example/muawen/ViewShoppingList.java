@@ -28,7 +28,7 @@ public class ViewShoppingList extends AppCompatActivity {
     DB db = new DB(this);
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayList<String> totalprice = new ArrayList<>();
-    int total = 0;
+    double total = 0;
 
     private ListView price;
     private Button button;
@@ -71,7 +71,7 @@ public class ViewShoppingList extends AppCompatActivity {
 
                         arrayList.add(Name + " " + Brand + "            " + size + " غرام         " + quantity + "           " + Price + "  ريال          ");
                         if (Price != null)
-                            total = total + (Integer.parseInt(Price));
+                            total = total + (Double.parseDouble(Price));
 
                     res.moveToNext();
                 }
@@ -107,13 +107,13 @@ public class ViewShoppingList extends AppCompatActivity {
         Cursor res = db.getShoppingList(userId);
         res.moveToFirst();
         final ArrayList<Product> result = new ArrayList<>();
-        int total_price = 0;
+        double total_price = 0;
         while (res.isAfterLast() == false) {
             //int Id = Integer.parseInt(res.getString(Integer.parseInt("id")));
             String Barcode = res.getString((res.getColumnIndex("Barcode")));
             String Name = res.getString(res.getColumnIndex("Name"));
             String size = res.getString(res.getColumnIndex("size"));
-            int Price = Integer.parseInt(res.getString(res.getColumnIndex("Price")));
+            double Price = Double.parseDouble(res.getString(res.getColumnIndex("Price")));
             result.add(new Product( Barcode, Name, size, Price));
             total_price = total_price + Price;
             res.moveToNext();

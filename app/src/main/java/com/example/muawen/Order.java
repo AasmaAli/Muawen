@@ -6,11 +6,11 @@ public class Order {
 
     private String Customer_id ;
     private String status ;
-    private int totalPrice  ;
+    private double totalPrice  ;
     private ArrayList <Product> products ;
 
 
-    public Order(String customer_id, String status, int totalPrice, ArrayList<Product> products) {
+    public Order(String customer_id, String status, double totalPrice, ArrayList<Product> products) {
         Customer_id = customer_id;
         this.status = status;
         this.totalPrice = totalPrice;
@@ -33,7 +33,7 @@ public class Order {
         this.status = status;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
