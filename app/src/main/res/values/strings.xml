@@ -3,7 +3,7 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
     <string name="login">تسجيل الدخول</string>
-    <string name="new_account" >هل تريد فتح حساب جديد؟</string>
+    <string name="new_account">هل تريد فتح حساب جديد؟</string>
     <string name="الإيميل">إيميل</string>
     <string name="كلمة">كلمة السر</string>
     <string name="تحقق">أعد كتابة كلمة السر</string>

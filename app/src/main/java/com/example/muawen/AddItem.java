@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,14 +38,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class AddItem extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private EditText barcode ;
+public class AddItem extends AppCompatActivity  {
+    public static  EditText barcode ;
+    public static String ScanQRCode;
+    public boolean CheckSensor;
+    private ImageButton scan_barcode_item;
+    private ImageView scan_QR_item;
     private Button SaveInformationbuttion;
     private TextView item_name , item_size ,item_brand , Date , quantity ;
     private String Product_brand , Product_Name ,Product_size , Exp_Date ;
     int count_quantity =0;
     int ExpDateCheck=0;
-    private Spinner sensor;
     public String sensorNum = null;
 
 
@@ -70,20 +75,39 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
         SaveInformationbuttion = findViewById(R.id.Add_buttonSave);
         Date = findViewById(R.id.Date);
 
+        //barcode
+      //scan_barcode_item
+        scan_barcode_item= findViewById(R.id.Buttons_add_barcode);
+        scan_barcode_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(getApplicationContext(),ScanCodeActivity.class));
+
+                String ScanCode=barcode.getText().toString();
+
+                    Productinfo(barcode.getText().toString());
+
+            }
+        });
+//
+
+
+
+        //______________________-
         //sensor
-        ArrayAdapter adapterday;
-        sensor=findViewById(R.id.Spinner_sensor);
-        sensor.setOnItemSelectedListener(this);
-        // SpinnerDay
-        String[] Available_sensors = getAvailable_sensors();
-        if(Available_sensors[0]==null)
-         adapterday = new ArrayAdapter(this,android.R.layout.simple_spinner_item, Collections.singletonList("لا يوحد مستشعر متاح"));
-        else
-        adapterday = new ArrayAdapter(this,android.R.layout.simple_spinner_item,Available_sensors);
+        scan_QR_item= findViewById(R.id.QR);
+        scan_QR_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        adapterday.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sensor.setAdapter(adapterday);
+                startActivity(new Intent(getApplicationContext(),ScanQR.class));
 
+                if (ScanQRCode== null) {
+                }
+
+            }
+        });
 
         //______________________-
 
@@ -149,22 +173,45 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
 
     }//onCreate
 
-    private String[] getAvailable_sensors() {
-        DatabaseReference Sensors =UsersRef.child("Sensors");
-        String[] strArray = new String[3];
+    private boolean CheckSensor() {
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID);
+if(ScanQRCode==null){
+    return false;
+}
+        //make sensor available
+        UsersRef.child("Sensors").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild(ScanQRCode)) {
+                        CheckSensor= false;
+                        Toast.makeText(AddItem.this,  "no false", Toast.LENGTH_SHORT).show();
 
-        //strArray[0] = "one";
-       // strArray[1] = "two";
-        //strArray[2] = "three";
+                    }else{
+                        CheckSensor = true;
+                        Toast.makeText(AddItem.this,  "no true", Toast.LENGTH_SHORT).show();
 
+                    }
+                }
+                else {
 
-        return strArray;
-    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return CheckSensor;
+    }//CheckSensor
 
 
     protected void onStart() {
         super.onStart();
+        CheckSensor();
 
         barcode = findViewById(R.id.add_barcode);
         item_name = (TextView) findViewById(R.id.item_name);
@@ -252,6 +299,7 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
         long Quantity = count_quantity;
         long days=0;
 
+
         //Add day
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
@@ -282,6 +330,11 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
         }else if(days<=0){
             Toast.makeText(this,  "التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح", Toast.LENGTH_SHORT).show();
 
+        }else if(ScanQRCode ==null ){
+            Toast.makeText(this,  "رجاءً قم بمسح الشريط الذي على المستشعر ", Toast.LENGTH_SHORT).show();
+
+        }else if(!CheckSensor()){
+            Toast.makeText(this,  "هذا المستشعر مستخدم انت بالفعل ", Toast.LENGTH_SHORT).show();
         }
         else{
             //add item
@@ -298,10 +351,11 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
             userMap.put("Product_ID", BarCode);
             userMap.put("Current_wieght", 499);
             userMap.put("Original_weight", 500);
-            userMap.put("Sensor", 5);
+            userMap.put("Sensor", ScanQRCode);
             userMap.put("Exp_date", Exp_Date);
 
 
+            ItemRef.getParent().child("Sensors").child(ScanQRCode).setValue(true);
 
 
             ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
@@ -337,16 +391,5 @@ public class AddItem extends AppCompatActivity implements AdapterView.OnItemSele
         quantity.setText(""+count_quantity);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.Spinner_order_day) {
-            sensorNum = parent.getItemAtPosition(position).toString();
-        }
 
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

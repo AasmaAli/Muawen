@@ -7,6 +7,21 @@
     tools:context=".AddItem">
 
 
+    <ImageButton
+        android:id="@+id/Buttons_add_barcode"
+        style="@android:style/Widget.ImageButton"
+        android:layout_width="102dp"
+        android:layout_height="61dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="left"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="117dp"
+        android:layout_marginEnd="309dp"
+        android:scaleType="fitStart"
+        app:srcCompat="@drawable/camera"
+        tools:ignore="VectorDrawableCompat"></ImageButton>
 
     <EditText
         android:id="@+id/add_barcode"
@@ -16,14 +31,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="119dp"
+        android:layout_marginEnd="-112dp"
         android:background="@drawable/inputs"
         android:ems="10"
         android:hint="@string/barcode"
         android:importantForAutofill="no"
-        android:inputType="number"
+        android:inputType="textPersonName"
         android:textAlignment="center"
         android:textAllCaps="true"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,11 +48,11 @@
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:layout_above="@+id/LinearLayout2"
         android:layout_below="@+id/add_barcode"
         android:layout_marginTop="11dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="135dp"
         android:background="@color/cardview_light_background"
         android:clipToPadding="false"
         android:orientation="horizontal"
@@ -45,24 +60,6 @@
         app:layout_constraintVertical_bias="0.093"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="3dp">
-
-        <TextView
-            android:id="@+id/item_size"
-            android:layout_width="135dp"
-            android:layout_height="43dp"
-            android:layout_centerHorizontal="true"
-
-            android:layout_centerVertical="true"
-            android:ems="10"
-            android:hint="@string/item_size"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:radius="30dp"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/holo_green_dark"
-            android:textColorHint="@color/holo_green_light"
-            tools:ignore="DuplicateIds,MissingConstraints,RtlCompat" />
 
         <TextView
             android:id="@+id/item_brand"
@@ -91,6 +88,24 @@
             android:layout_centerVertical="true"
             android:ems="10"
             android:hint="@string/itemname"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:radius="30dp"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/holo_green_dark"
+            android:textColorHint="@color/holo_green_light"
+            tools:ignore="DuplicateIds,MissingConstraints,RtlCompat" />
+
+        <TextView
+            android:id="@+id/item_size"
+            android:layout_width="135dp"
+            android:layout_height="43dp"
+            android:layout_centerHorizontal="true"
+
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="@string/item_size"
             android:importantForAutofill="no"
             android:inputType="number"
             android:radius="30dp"
@@ -195,39 +210,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <LinearLayout
-        android:id="@+id/LinearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
+    <ImageView
+        android:id="@+id/QR"
+        android:layout_width="103dp"
+        android:layout_height="85dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-
-        android:layout_marginBottom="409dp"
-        android:background="@color/cardview_light_background"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        app:layout_constraintVertical_bias="0.093"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="3dp">
-
-
-        <Spinner
-            android:id="@+id/Spinner_sensor"
-            style="@android:style/Widget.Material.Spinner.Underlined"
-            android:layout_width="208dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="0dp" />
-
-        <TextView
-            android:id="@+id/sensor"
-            android:layout_width="194dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="100dp"
-            android:ems="10"
-            android:text="@string/numsensor"
-            android:textAlignment="center"
-            android:textSize="18dp"></TextView>
-
-    </LinearLayout>
+        android:layout_marginEnd="227dp"
+        android:layout_marginBottom="161dp"
+        app:srcCompat="@drawable/qrcode" />
 
 
 </RelativeLayout>

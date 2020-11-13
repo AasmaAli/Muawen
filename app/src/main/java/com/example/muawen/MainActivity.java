@@ -624,10 +624,8 @@ return null;
                                 if (dataSnapshot.exists()) {
                                     if (dataSnapshot.hasChild("Sensor")) {
                                         String Sensor= dataSnapshot.child("Sensor").getValue().toString();
-                                        //toastMessage(RefItem.getParent().getParent().child("Sensors").child(Sensor)+" ");
 
-                                        RefItem.getParent().getParent().child("Sensors").child(Sensor).child("Availability").setValue(1);
-                                        //RefItem.child("Sensors").child(Sensor).setValue(1);
+                                        RefItem.getParent().getParent().child("Sensors").child(Sensor).removeValue();
                                     }
                                 }
                             }

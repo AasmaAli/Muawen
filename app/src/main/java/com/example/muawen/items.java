@@ -13,14 +13,14 @@ public class items  {
     private long  Current_quantity;
     private String Suggested_item;
     private String Suggestion_flag;
-    private long Sensor;
+    private String Sensor;
 
 
 
     public items() {}
 
 
-    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID, String suggested_item,String suggestion_flag, long sensor) {
+    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID, String suggested_item,String suggestion_flag, String sensor) {
         Add_day = add_day;
         Exp_date = exp_date;
         Current_wieght = current_wieght;
@@ -99,11 +99,11 @@ public class items  {
         Suggestion_flag = suggestion_flag;
     }
 
-    public long getSensor() {
+    public String getSensor() {
         return Sensor;
     }
 
-    public void setSensor(long sensor) {
+    public void setSensor(String sensor) {
         Sensor = sensor;
     }
 }
