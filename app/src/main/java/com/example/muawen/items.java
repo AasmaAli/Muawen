@@ -7,8 +7,8 @@ public class items  {
     private String Add_day;
     private String Exp_date;
     private String Product_ID;
-    private long Current_wieght;
-    private long Original_weight;
+    private double Current_wieght;
+    private double Original_weight;
     private long quantity;
     private long  Current_quantity;
     private String Suggested_item;
@@ -20,7 +20,7 @@ public class items  {
     public items() {}
 
 
-    public items(String add_day, String exp_date, long current_wieght, long original_weight, long quantity, long current_quantity, String product_ID, String suggested_item,String suggestion_flag, String sensor) {
+    public items(String add_day, String exp_date, double current_wieght, double original_weight, long quantity, long current_quantity, String product_ID, String suggested_item,String suggestion_flag, String sensor) {
         Add_day = add_day;
         Exp_date = exp_date;
         Current_wieght = current_wieght;
@@ -51,19 +51,19 @@ public class items  {
         Exp_date = exp_date;
     }
 
-    public long getCurrent_wieght() {
+    public double getCurrent_wieght() {
         return Current_wieght;
     }
 
-    public void setCurrent_wieght(long current_wieght) {
+    public void setCurrent_wieght(double current_wieght) {
         Current_wieght = current_wieght;
     }
 
-    public long getOriginal_weight() {
+    public double getOriginal_weight() {
         return Original_weight;
     }
 
-    public void setOriginal_weight(long original_weight) {
+    public void setOriginal_weight(double original_weight) {
         Original_weight = original_weight;
     }
 

@@ -13,11 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="#03F4F3F3"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
+
+        <ImageView
+            android:id="@+id/imageitem"
+            android:layout_width="120dp"
+            android:layout_height="121dp"
+            android:layout_gravity="right"
+            android:scaleType="fitStart"></ImageView>
 
         <LinearLayout
-            android:layout_width="273dp"
+            android:layout_width="246dp"
             android:layout_height="110dp"
             android:background="#14121111"
             android:orientation="vertical">
@@ -65,8 +73,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
+                android:layout_marginRight="150dp"
                 android:background="#03F4F3F3"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:textAlignment="center"
+                android:textDirection="firstStrongRtl">
 
                 <ImageButton
                     android:id="@+id/Buttons_DeleteItem"
@@ -75,8 +86,9 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="left"
                     android:scaleType="fitStart"
+                    android:textAlignment="textEnd"
                     app:srcCompat="@drawable/ic_baseline_delete_24"
-                    tools:ignore="VectorDrawableCompat"></ImageButton>
+                    tools:ignore="RtlCompat,VectorDrawableCompat"></ImageButton>
 
                 <ImageButton
                     android:id="@+id/Buttons_Update"
@@ -91,14 +103,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageitem"
-            android:layout_width="120dp"
-            android:layout_height="121dp"
-            android:layout_gravity="right"
-            android:scaleType="fitStart"></ImageView>
-
 
 
     </LinearLayout>

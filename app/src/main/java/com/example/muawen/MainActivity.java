@@ -7,7 +7,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,7 +47,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 //import android.widget.Toolbar;
@@ -61,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     DB mDatabaseSL= new DB(this);
     SQLiteDatabase db ;
 
-    String Product_Name, Product_brand, Product_price, Product_size,quantity;
+    String Product_Name, Product_brand, Product_price, Product_size,quantity , Exp_Date;
+    double Original_weight_rnew;
 
 
     private RecyclerView itemRecyclerView;
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference UsersRef;
     private DatabaseReference ItemRef;
+    DatabaseReference ref;
 
 
 
@@ -291,11 +295,125 @@ public class MainActivity extends AppCompatActivity {
         firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
             @Override
-            protected void onBindViewHolder(final itemsView holder, final int position, items model) {
+            protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
+                toastMessage("THIS IS XXX "+getRef(position));
 
-               //display the Name of Product
-                String Product_ID = model.getProduct_ID();
+
+                if(Integer.parseInt(model.getSuggestion_flag()) ==-1){
+                    getRef(position).child("Suggestion_flag").setValue("0");
+                    //toastMessage("On Original_weight_rnew in Suggestion_flag "+ Original_weight_rnew);
+
+
+                }
+               // if(model.getExp_date().equals("-1")){
+                 //   getRef(position).child("Exp_date").setValue(Exp_Date);
+
+                //}
+
+                if(model.getCurrent_quantity() == 0){
+                    getRef(position).child("Current_quantity").setValue(model.getQuantity());
+
+
+               // if(model.getOriginal_weight() ==-100){
+                 //   String Sensornum =  model.getSensor();
+                   // takeWeight(Sensornum) ;
+                    /*
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference SensorRef = rootRef.child("Sensors");
+                    SensorRef.child(Sensornum).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                if (dataSnapshot.hasChild("Weight")) {
+                                    double Original_weight_rnew2 = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                                    if(Original_weight_rnew2>= 2 && model.getOriginal_weight() == -100 ){
+
+                                        getRef(position).child("Original_weight").setValue(Original_weight_rnew2);
+                                        getRef(position).child("Current_wieght").setValue(Original_weight_rnew2-5);
+                                    }
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                     */
+
+               // }// if weight
+                     }
+
+
+
+                holder.Updateitem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        //holder.thelayout.setVisibility(View.GONE);
+                        Update_item(getRef(position) , model.getQuantity() , model.getProduct_ID() , model.getSensor());
+                       // Update_item1(getRef(position));
+                    }
+
+                    //=@NotNull
+                    //private View.OnClickListener getOnClickListener() {
+                      //  return this;
+                    //}
+                });
+
+
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+
+                //Current_wieght:It takes the value from the sensor
+                DatabaseReference SensorRef = rootRef.child("Sensors");
+
+
+                SensorRef.child(model.getSensor()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            if (dataSnapshot.hasChild("Weight")) {
+                                double SensorWeight= Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                                toastMessage(model.getSensor()+" بشكل صحيح");
+
+                                if (SensorWeight >= model.getOriginal_weight()) {
+                                    if( !(model.getOriginal_weight()- model.getCurrent_wieght()<6) ) {
+                                        if( model.getCurrent_quantity()>1 ){
+                                            try {
+                                            getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-5);
+                                            getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
+                                            } catch (Exception e) {
+                                            }
+                                        }
+                                    }
+                                }else if (!(SensorWeight <= 2)){
+                                    try {
+                                        getRef(position).child("Current_wieght").setValue(SensorWeight);
+                                    } catch (Exception e) {
+                                    }
+
+                                }
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                //_________________
+
+
+                //display the Name of Product
+                String Product_ID = model.getProduct_ID();
                 DatabaseReference Product = rootRef.child("Product");
 
 
@@ -361,10 +479,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }*/
-                 if(model.getCurrent_wieght() >= model.getOriginal_weight() && model.getCurrent_quantity()>1 ){
-                  getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-1);
-                  getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
-                }
+
 
                 holder.setimageitem(model);
 
@@ -376,27 +491,13 @@ public class MainActivity extends AppCompatActivity {
                         delete_item(getRef(position));
                     }
 
-                    @NotNull
-                    private View.OnClickListener getOnClickListener() {
-                        return this;
-                    }
+                    //@NotNull
+                    //private View.OnClickListener getOnClickListener() {
+                      //  return this;
+                    //}
                 });
 
-                holder.Updateitem.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View view)
-                    {
-
-                        Update_item(getRef(position));
-
-                    }
-
-                    @NotNull
-                    private View.OnClickListener getOnClickListener() {
-                        return this;
-                    }
-                });
 
                 //call Add to shoping list if neeed
                 int Suggestion_flag_Check= Integer.parseInt(model.getSuggestion_flag());
@@ -417,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }//big if
-            }
+            }//onBindViewHolder
             @Override
             public itemsView onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewitemsmain, parent, false);
@@ -508,15 +609,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ///get item information
-       /* boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
-        if(HastisBrand) {
-            toastMessage("داخله 1");
-
-            return null;
-
-        }*/
-
         //flag in databaes
         if(flag ==1){
             //expired replac
@@ -539,7 +631,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        String Product_ID = item.getProduct_ID();
+        final String Product_ID = item.getProduct_ID();
         quantity = String.valueOf(item.getQuantity());
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference Product = rootRef.child("Product");
@@ -652,9 +744,11 @@ return null;
     }//delete_item end
     
 
-    private void Update_item(final DatabaseReference ref) {
+    private void Update_item(final DatabaseReference ref2, final long quantity, final String product_id, final String sensor) {
+        ref = ref2;
 
-        //toastMessage("On "+ ref);
+
+        toastMessage("On "+ ref);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("هل وصل طلبك وتريد تجديد المنتج؟ ")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
@@ -665,18 +759,25 @@ return null;
                         final int day = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
 
 
+
                         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
+
+                        MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
                                 ,setListener,year,day,month);
                         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         datePickerDialog.show();
 
                         setListener= new DatePickerDialog.OnDateSetListener() {
-                            String Exp_Date = null;
+
+
+
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+
                                 month = month+1;
                                 if(month<10 && dayOfMonth<10){
+
                                     Exp_Date= year+"/0"+month+"/0"+dayOfMonth;
 
                                 }
@@ -692,12 +793,15 @@ return null;
                                 long days=-1;
                                 try {
                                     days = RemainingDaymathed(Exp_Date);
+
                                 } catch (ParseException e) {
                                     e.printStackTrace();
+
                                 }
                                 if(days>0){
                                     //call Update_in_Database
-                                    Update_in_Database(ref, Exp_Date);
+
+                                    PutItem(ref, Exp_Date , quantity  , product_id,sensor);
 
                                 }else{
                                     toastMessage("التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح");
@@ -722,23 +826,135 @@ return null;
 
     }//Update_item
 
-    private void Update_in_Database(final DatabaseReference refItem, String Exp_Date) {
+    private void PutItem(final DatabaseReference ref2, final String exp_Date, final long quantity,final String product_id, final String sensor) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.put_on_the_sensor, null);
+        Button but_OK= (Button)mView.findViewById(R.id.pou_on_the_sensor);
+        toastMessage("On 2 "+ ref);
+        takeWeight(sensor);
+        toastMessage("On 666 "+ Original_weight_rnew);
+
+        alert.setView(mView);
+        final AlertDialog alertDialog =alert.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        but_OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Update_in_Database(ref, exp_Date, quantity,product_id ,sensor );
+
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void Update_in_Database(DatabaseReference refItem, String exp_Date, long quantity, String product_id, String sensor) {
+        //delete_item(ref);
+        refItem = ref;
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID);
+        ItemRef = UsersRef.child("items");
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
-        refItem.child("Exp_date").setValue(Exp_Date);
-        refItem.child("Add_day").setValue(now);
-        refItem.child("Suggestion_flag").setValue("0");
-        refItem.child("Suggested_item").setValue("-1");
+        takeWeight(sensor);
+        toastMessage("333"+sensor + Original_weight_rnew  );
+      //  Original_weight_rnew=0;
+
+        if(Original_weight_rnew >2){
+            toastMessage("لقد in if to change  ");
+
+
+            Map userMap = new HashMap();
+    userMap.put("Add_day", now);
+    userMap.put("quantity", quantity);
+    userMap.put("Current_quantity", quantity);
+    userMap.put("Suggested_item", "-1");
+    userMap.put("Suggestion_flag", "0");
+    userMap.put("Product_ID", product_id);
+    userMap.put("Current_wieght", Original_weight_rnew - 5);
+    userMap.put("Original_weight", Original_weight_rnew);
+    userMap.put("Sensor", sensor);
+    userMap.put("Exp_date", Exp_Date);
+    ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
+
+
+    refItem.removeValue();
+            Original_weight_rnew=0;
+            }
+else
+    toastMessage("ضع المنتج الجديد على المستشعر واعد خطوات التجديد ");
+
+
+        /*
 
         refItem.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.hasChild("quantity")) {
-                        long quantity=  Long.parseLong(dataSnapshot.child("quantity").getValue().toString());
-                        refItem.child("Current_quantity").setValue(quantity);
+
+                        toastMessage("On 8");
+
+                        if (dataSnapshot.hasChild("Sensor")) {
+                            String Sensornum = dataSnapshot.child("Sensor").getValue().toString();
+                            for (int i = 0; i < 1; i++) {
+
+                               // takeWeight(Sensornum);
+                            }
+                        }
+                    }
+                }
 
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+*/
+
+       // if(Original_weight_rnew>= 2){
+        /*toastMessage("On Original_weight_rnew "+ Original_weight_rnew);
+
+
+
+
+        SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        String now = mDateFormatter.format(new Date());
+
+        refItem.child("Exp_date").setValue(Exp_Date);
+        refItem.child("Add_day").setValue(now);
+        refItem.child("Suggestion_flag").setValue("-1");
+        refItem.child("Suggested_item").setValue("-1");
+        refItem.child("Current_quantity").setValue(0);
+        refItem.child("Original_weight").setValue(400);
+        refItem.child("Current_wieght").setValue(200);
+
+*/
+
+
+      //  }//end  if(Original_weight_rnew>= 2)
+       // else {
+          //  toastMessage("لقد حدث خطاء قم بوضع المنتج على الميزان وأعد التجديد");
+
+        //}
+
+    }
+
+    private void takeWeight(String Sensornum) {
+          toastMessage("لقد حدث ");
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference SensorRef = rootRef.child("Sensors");
+
+        SensorRef.child(Sensornum).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChild("Weight")) {
+                        Original_weight_rnew = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                       // toastMessage("this is"+ Original_weight_rnew);
+                        //ref.child("Original_weight").setValue(Original_weight_rnew);
+                        //ref.child("Current_wieght").setValue(Original_weight_rnew-5);
                     }
                 }
             }
@@ -748,10 +964,6 @@ return null;
 
             }
         });
-
-
-
-
 
     }
 

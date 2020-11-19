@@ -26,5 +26,7 @@
     <string name="item_brand">الشركة</string>
     <string name="Date">تاريخ الأنتهاء</string>
     <string name="numsensor">رقم المستشعر</string>
+    <string name="potonthesensor">ضع المنتج على المستشعر</string>
+    <string name="ok">حسناً</string>
 
 </resources>

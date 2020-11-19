@@ -2,6 +2,7 @@ package com.example.muawen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ import java.util.TimeZone;
 public class AddItem extends AppCompatActivity  {
     public static  EditText barcode ;
     public static String ScanQRCode;
+    public double Original_weight =0;
     public boolean CheckSensor;
     private ImageButton scan_barcode_item;
     private ImageView scan_QR_item;
@@ -86,7 +88,8 @@ public class AddItem extends AppCompatActivity  {
 
                 String ScanCode=barcode.getText().toString();
 
-                    Productinfo(barcode.getText().toString());
+                  Productinfo(barcode.getText().toString());
+                //PutItem();
 
             }
         });
@@ -103,8 +106,7 @@ public class AddItem extends AppCompatActivity  {
 
                 startActivity(new Intent(getApplicationContext(),ScanQR.class));
 
-                if (ScanQRCode== null) {
-                }
+                PutItem();
 
             }
         });
@@ -173,6 +175,26 @@ public class AddItem extends AppCompatActivity  {
 
     }//onCreate
 
+    public void PutItem() {
+         final AlertDialog.Builder alert = new AlertDialog.Builder(AddItem.this);
+         View mView = getLayoutInflater().inflate(R.layout.put_on_the_sensor, null);
+         Button but_OK= (Button)mView.findViewById(R.id.pou_on_the_sensor);
+
+        alert.setView(mView);
+        final AlertDialog alertDialog =alert.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        but_OK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeWeight();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+
+    }//PutItem
+
     private boolean CheckSensor() {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID);
 if(ScanQRCode==null){
@@ -191,10 +213,10 @@ if(ScanQRCode==null){
                     }else{
                         CheckSensor = true;
                         Toast.makeText(AddItem.this,  "no true", Toast.LENGTH_SHORT).show();
-
                     }
                 }
                 else {
+                    CheckSensor = true;
 
                 }
             }
@@ -207,6 +229,30 @@ if(ScanQRCode==null){
 
         return CheckSensor;
     }//CheckSensor
+
+    private void takeWeight() {
+        Original_weight =0;
+       // while (Original_weight==0 && ScanQRCode != null) {
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference SensorRef = rootRef.child("Sensors");
+            SensorRef.child(ScanQRCode).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.hasChild("Weight")) {
+                            Original_weight = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+       // }
+    }
 
 
     protected void onStart() {
@@ -298,6 +344,8 @@ if(ScanQRCode==null){
         String BarCode = barcode.getText().toString();
         long Quantity = count_quantity;
         long days=0;
+        //takeWeight();
+
 
 
         //Add day
@@ -335,6 +383,9 @@ if(ScanQRCode==null){
 
         }else if(!CheckSensor()){
             Toast.makeText(this,  "هذا المستشعر مستخدم انت بالفعل ", Toast.LENGTH_SHORT).show();
+        }else if (Original_weight <= 2){
+            Toast.makeText(this,  "ضع النتج على المستشعر ", Toast.LENGTH_SHORT).show();
+
         }
         else{
             //add item
@@ -349,8 +400,8 @@ if(ScanQRCode==null){
             userMap.put("Suggested_item", "-1");
             userMap.put("Suggestion_flag", "0");
             userMap.put("Product_ID", BarCode);
-            userMap.put("Current_wieght", 499);
-            userMap.put("Original_weight", 500);
+            userMap.put("Current_wieght", Original_weight-5);
+            userMap.put("Original_weight", Original_weight);
             userMap.put("Sensor", ScanQRCode);
             userMap.put("Exp_date", Exp_Date);
 
