@@ -97,7 +97,7 @@ public class ViewShoppingList extends AppCompatActivity {
 
     }//onCreate
 
-    public void plaseOrder(String userId) {
+    public  void plaseOrder(String userId) {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         //DatabaseReference ref = database.getReference("server/saving-data/fireblog");

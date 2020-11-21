@@ -44,7 +44,7 @@ public class AddItem extends AppCompatActivity  {
     public static String ScanQRCode;
     public double Original_weight =0;
     public boolean CheckSensor;
-    private ImageButton scan_barcode_item;
+    private ImageView scan_barcode_item;
     private ImageView scan_QR_item;
     private Button SaveInformationbuttion;
     private TextView item_name , item_size ,item_brand , Date , quantity ;
@@ -208,11 +208,9 @@ if(ScanQRCode==null){
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.hasChild(ScanQRCode)) {
                         CheckSensor= false;
-                        Toast.makeText(AddItem.this,  "no false", Toast.LENGTH_SHORT).show();
 
                     }else{
                         CheckSensor = true;
-                        Toast.makeText(AddItem.this,  "no true", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else {
@@ -235,22 +233,25 @@ if(ScanQRCode==null){
        // while (Original_weight==0 && ScanQRCode != null) {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
             DatabaseReference SensorRef = rootRef.child("Sensors");
-            SensorRef.child(ScanQRCode).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        if (dataSnapshot.hasChild("Weight")) {
-                            Original_weight = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+            try {
+                SensorRef.child(ScanQRCode).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            if (dataSnapshot.hasChild("Weight")) {
+                                Original_weight = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
 
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            } catch (Exception e) {
+        }
        // }
     }
 
@@ -382,9 +383,9 @@ if(ScanQRCode==null){
             Toast.makeText(this,  "رجاءً قم بمسح الشريط الذي على المستشعر ", Toast.LENGTH_SHORT).show();
 
         }else if(!CheckSensor()){
-            Toast.makeText(this,  "هذا المستشعر مستخدم انت بالفعل ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  "هذا الميزان مستخدم لمنتج أخر", Toast.LENGTH_SHORT).show();
         }else if (Original_weight <= 2){
-            Toast.makeText(this,  "ضع النتج على المستشعر ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  "لم يتم وضع المنتج على الميزان الرجاء المحاولة مره أخرى", Toast.LENGTH_SHORT).show();
 
         }
         else{

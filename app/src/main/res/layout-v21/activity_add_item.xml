@@ -7,33 +7,32 @@
     tools:context=".AddItem">
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/Buttons_add_barcode"
-        style="@android:style/Widget.ImageButton"
-        android:layout_width="102dp"
-        android:layout_height="61dp"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="left"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="117dp"
-        android:layout_marginEnd="309dp"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="121dp"
+        android:layout_marginEnd="9dp"
         android:scaleType="fitStart"
         app:srcCompat="@drawable/camera"
-        tools:ignore="VectorDrawableCompat"></ImageButton>
+        tools:ignore="VectorDrawableCompat"></ImageView>
 
     <EditText
         android:id="@+id/add_barcode"
-        android:layout_width="match_parent"
+        android:layout_width="344dp"
         android:layout_height="43dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="112dp"
+        android:layout_marginStart="1dp"
         android:layout_marginTop="119dp"
-        android:layout_marginEnd="-112dp"
+        android:layout_marginEnd="66dp"
         android:background="@drawable/inputs"
         android:ems="10"
         android:hint="@string/barcode"
@@ -63,7 +62,7 @@
 
         <TextView
             android:id="@+id/item_brand"
-            android:layout_width="135dp"
+            android:layout_width="120dp"
             android:layout_height="43dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -82,7 +81,7 @@
 
         <TextView
             android:id="@+id/item_name"
-            android:layout_width="135dp"
+            android:layout_width="120dp"
             android:layout_height="43dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
@@ -99,7 +98,7 @@
 
         <TextView
             android:id="@+id/item_size"
-            android:layout_width="135dp"
+            android:layout_width="120dp"
             android:layout_height="43dp"
             android:layout_centerHorizontal="true"
 
@@ -121,8 +120,8 @@
         android:id="@+id/LinearLayout2"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_above="@+id/Date"
-        android:layout_marginBottom="25dp"
+        android:layout_above="@+id/Add_buttonSave"
+        android:layout_marginBottom="202dp"
         android:background="@color/cardview_light_background"
         android:clipToPadding="false"
         android:orientation="horizontal"
@@ -145,7 +144,7 @@
 
         <TextView
             android:id="@+id/add_quantity"
-            android:layout_width="230dp"
+            android:layout_width="179dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="الكمية"
@@ -164,17 +163,20 @@
             android:textStyle="bold"></Button>
     </LinearLayout>
 
+
     <TextView
         android:id="@+id/Date"
-        style="@android:style/Widget.TextView.PopupMenu"
+        style="@android:style/Widget.Material.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:layout_above="@+id/Add_buttonSave"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="132dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="257dp"
+        android:layout_marginEnd="-2dp"
+        android:layout_marginBottom="288dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-light"
@@ -190,16 +192,16 @@
         app:layout_constraintVertical_bias="0.886"
         tools:ignore="DuplicateIds,MissingConstraints,RtlCompat"></TextView>
 
-
-
     <Button
         android:id="@+id/Add_buttonSave"
-        android:layout_width="200dp"
+        android:layout_width="398dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="104dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="85dp"
         android:background="@drawable/buttons"
         android:padding="15dp"
         android:text="@string/save"
@@ -212,13 +214,29 @@
 
     <ImageView
         android:id="@+id/QR"
-        android:layout_width="103dp"
-        android:layout_height="85dp"
+        android:layout_width="280dp"
+        android:layout_height="157dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="227dp"
-        android:layout_marginBottom="161dp"
+        android:layout_marginStart="126dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginBottom="139dp"
         app:srcCompat="@drawable/qrcode" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-1dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="275dp"
+        android:text="@string/QR"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

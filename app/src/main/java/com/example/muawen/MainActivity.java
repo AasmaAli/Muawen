@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.auth.UserRecoverableNotifiedException;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db ;
 
     String Product_Name, Product_brand, Product_price, Product_size,quantity , Exp_Date;
-    double Original_weight_rnew;
-
+    double Original_weight_rnew ;
+boolean delete_item;
 
     private RecyclerView itemRecyclerView;
     private NavigationView navigationView;
@@ -121,47 +124,49 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-     if(currentUser != null) {
+        if(currentUser != null) {
 
-       currentUserID = mAuth.getCurrentUser().getUid();
-       UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
+            currentUserID = mAuth.getCurrentUser().getUid();
+            UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
 
-       UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot) {
-               if (dataSnapshot.exists()) {
-                   if (dataSnapshot.hasChild("Username")) {
-                       String username = dataSnapshot.child("Username").getValue().toString();
-                       NavProfileUserName.setText(username);
-                   }
-                   else
-                   {
-                       Toast.makeText(MainActivity.this, "Profile name do not exists...", Toast.LENGTH_SHORT).show();
-                   }
-               }
-           }
+            UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        if (dataSnapshot.hasChild("Username")) {
+                            String username = dataSnapshot.child("Username").getValue().toString();
+                            NavProfileUserName.setText(username);
+                        }
+                        else
+                        {
+                            Toast.makeText(MainActivity.this, "Profile name do not exists...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
 
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-           }
-       });
+                }
+            });
 
-       navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-           @Override
-           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-               UserMenuSelector(item);
-               return false;
-           }
-       });
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    UserMenuSelector(item);
+                    return false;
+                }
+            });
 
-     }//not currentUser null
-     else {
-       Intent loginIntent = new Intent(MainActivity.this, login.class);
-       loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-       startActivity(loginIntent);
-       finish();
-     }
+            viewitem();
+
+        }//not currentUser null
+        else {
+            Intent loginIntent = new Intent(MainActivity.this, login.class);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginIntent);
+            finish();
+        }
 
 
     }//on Create
@@ -251,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!dataSnapshot.hasChild(current_user_id)) {
                         // Send User To Setup Activity
 
-                       // Intent setupIntent = new Intent(MainActivity.this, Setup.class);
+                        // Intent setupIntent = new Intent(MainActivity.this, Setup.class);
                         //setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         //startActivity(setupIntent);
                         //finish();
@@ -275,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
             db = mDatabaseSL.getWritableDatabase();
             //mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
-            viewitem();
+           // viewitem();
 
         }//else end
 
@@ -291,61 +296,85 @@ public class MainActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<items> options = new FirebaseRecyclerOptions.Builder<items>()
                 .setQuery(ItemRef, items.class)
                 .build();
-
-        firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
+      firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
             @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
-                toastMessage("THIS IS XXX "+getRef(position));
+                toastMessage("THIS IS XXX "+model.toString());
 
+                holder.deleteitem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
 
-                if(Integer.parseInt(model.getSuggestion_flag()) ==-1){
-                    getRef(position).child("Suggestion_flag").setValue("0");
-                    //toastMessage("On Original_weight_rnew in Suggestion_flag "+ Original_weight_rnew);
+                        toastMessage("in delete ");
 
+                        //if(delete_item(getRef(position))){
+                        toastMessage("in if ");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("هل أنت متاكد من حذف  المنتج؟")
+                                .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        //make sensor available
+                                        getRef(position).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    if (dataSnapshot.hasChild("Sensor")) {
+                                                        String Sensor= dataSnapshot.child("Sensor").getValue().toString();
 
-                }
-               // if(model.getExp_date().equals("-1")){
-                 //   getRef(position).child("Exp_date").setValue(Exp_Date);
+                                                        getRef(position).getParent().getParent().child("Sensors").child(Sensor).removeValue();
+                                                    }
+                                                }
+                                            }
 
-                //}
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
 
-                if(model.getCurrent_quantity() == 0){
-                    getRef(position).child("Current_quantity").setValue(model.getQuantity());
+                                            }
+                                        });
+                                        //delete item
+                                        getRef(position).removeValue();
+                                        //notifyItemRemoved(position);
+                                       //firebaseUsersAdapter.notifyItemChanged(position);
+                                        //firebaseUsersAdapter.notifyItemRemoved(position);
+                                        //irebaseUsersAdapterf.notifyItemRemoved(position-1);
+                                       //Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+                                        //startActivity(refresh);
+                                        //MainActivity.super.onBackPressed();
+                                        //MainActivity.this.finish();
+                                        //Intent newInt = new Intent("android.intent.action.MainActivity");
+                                        //firebaseUsersAdapter<items>.notifyDataSetChanged();
+                                     //  ((FirebaseRecyclerAdapter<items, itemsView>) firebaseUsersAdapter).notifyDataSetChanged();
+                                        //notifyDataSetChanged();
+                                      //  Setetnotifydatachanged();
+                                        //notifyItemRemoved(position);
+                                        //startActivity(new Intent(MainActivity.this, MainActivity.class));
 
+                                      //  notifyItemRemoved(position);
+                                       // position =null;
+                                        this.notify();
+                                        notifyDataSetChanged();
 
-               // if(model.getOriginal_weight() ==-100){
-                 //   String Sensornum =  model.getSensor();
-                   // takeWeight(Sensornum) ;
-                    /*
-                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference SensorRef = rootRef.child("Sensors");
-                    SensorRef.child(Sensornum).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                if (dataSnapshot.hasChild("Weight")) {
-                                    double Original_weight_rnew2 = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-                                    if(Original_weight_rnew2>= 2 && model.getOriginal_weight() == -100 ){
-
-                                        getRef(position).child("Original_weight").setValue(Original_weight_rnew2);
-                                        getRef(position).child("Current_wieght").setValue(Original_weight_rnew2-5);
+                                    }//if click yes end
+                                })
+                                .setNegativeButton("لا", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
                                     }
+                                });
+                        // Create the AlertDialog object and return it
+                        AlertDialog deletemass= builder.create();
+                        deletemass.show();
 
-                                }
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    }
 
-                        }
-                    });
+                    @NotNull
+                    private View.OnClickListener getOnClickListener() {
+                        return this;
+                    }
+                });//deleat
 
-                     */
-
-               // }// if weight
-                     }
 
 
 
@@ -353,14 +382,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view)
                     {
-                        //holder.thelayout.setVisibility(View.GONE);
                         Update_item(getRef(position) , model.getQuantity() , model.getProduct_ID() , model.getSensor());
-                       // Update_item1(getRef(position));
+
                     }
 
                     //=@NotNull
                     //private View.OnClickListener getOnClickListener() {
-                      //  return this;
+                    //  return this;
                     //}
                 });
 
@@ -377,25 +405,27 @@ public class MainActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             if (dataSnapshot.hasChild("Weight")) {
                                 double SensorWeight= Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-                                toastMessage(model.getSensor()+" بشكل صحيح");
-
-                                if (SensorWeight >= model.getOriginal_weight()) {
-                                    if( !(model.getOriginal_weight()- model.getCurrent_wieght()<6) ) {
-                                        if( model.getCurrent_quantity()>1 ){
-                                            try {
-                                            getRef(position).child("Current_wieght").setValue(model.getOriginal_weight()-5);
-                                            getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity()-1);
-                                            } catch (Exception e) {
+                                toastMessage(dataSnapshot.getKey()+" بشكل صحيح");
+                                if(dataSnapshot.getKey().equals(model.getSensor())) {
+                                    if (SensorWeight >= model.getOriginal_weight()) {
+                                        if (!(model.getOriginal_weight() - model.getCurrent_wieght() < 6)) {
+                                            if (model.getCurrent_quantity() > 1) {
+                                                try {
+                                                    getRef(position).child("Current_wieght").setValue(model.getOriginal_weight() - 5);
+                                                    getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity() - 1);
+                                                } catch (Exception e) {
+                                                }
                                             }
                                         }
-                                    }
-                                }else if (!(SensorWeight <= 2)){
-                                    try {
-                                        getRef(position).child("Current_wieght").setValue(SensorWeight);
-                                    } catch (Exception e) {
-                                    }
+                                    } else if (!(SensorWeight <= 2)) {
+                                        try {
+                                            getRef(position).child("Current_wieght").setValue(SensorWeight);
+                                        } catch (Exception e) {
+                                        }
 
-                                }
+                                    }
+                                }//dataSnapshot.getKey().equals(model.getSensor())
+
 
 
                             }
@@ -409,8 +439,29 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
+
                 //_________________
 
+               /*
+                toastMessage(SensorWeight+" بشكل صحيح");
+                if (SensorWeight >= model.getOriginal_weight()) {
+                    if (!(model.getOriginal_weight() - model.getCurrent_wieght() < 6)) {
+                        if (model.getCurrent_quantity() > 1) {
+                            try {
+                                getRef(position).child("Current_wieght").setValue(model.getOriginal_weight() - 5);
+                                getRef(position).child("Current_quantity").setValue(model.getCurrent_quantity() - 1);
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
+                } else if (!(SensorWeight <= 2)) {
+                    try {
+                        getRef(position).child("Current_wieght").setValue(SensorWeight);
+                    } catch (Exception e) {
+                    }
+
+                }
+*/
 
                 //display the Name of Product
                 String Product_ID = model.getProduct_ID();
@@ -447,21 +498,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String RemainingDay;
                 if(days>= 0) {
-                            RemainingDay = ("المتبقي: " + days + " أيام ");
+                    RemainingDay = ("المتبقي: " + days + " أيام ");
+
                 }
                 else {
                     RemainingDay = ("لقد أنتهى تاريخ المنتج");
-/*
-                    try {
-                        AddtoShoppingList(model , 1 , getRef(position), model.getAdd_day());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    */
-
                 }
                 holder.setRemainingDay(RemainingDay);
-                //holder.deleteitem();
 
                 //display the remaining wieght
                 String Current_wieght = "الوزن المتبقي : "+ model.getCurrent_wieght()+ " غرام";
@@ -483,19 +526,7 @@ public class MainActivity extends AppCompatActivity {
 
                 holder.setimageitem(model);
 
-                holder.deleteitem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view)
-                    {
 
-                        delete_item(getRef(position));
-                    }
-
-                    //@NotNull
-                    //private View.OnClickListener getOnClickListener() {
-                      //  return this;
-                    //}
-                });
 
 
 
@@ -541,22 +572,30 @@ public class MainActivity extends AppCompatActivity {
     public static class itemsView extends RecyclerView.ViewHolder{
         View mView;
         ImageButton deleteitem , Updateitem;
-         public itemsView(View itemView){
-           super(itemView);
-           mView =itemView;
-           deleteitem = (ImageButton) mView.findViewById(R.id.Buttons_DeleteItem);
-           Updateitem = (ImageButton) mView.findViewById(R.id.Buttons_Update);
+        public itemsView(View itemView){
+            super(itemView);
+            mView =itemView;
+            deleteitem = (ImageButton) mView.findViewById(R.id.Buttons_DeleteItem);
+            Updateitem = (ImageButton) mView.findViewById(R.id.Buttons_Update);
 
-         }
+        }
 
 
         public void setTite(String title){
-           TextView item_name = (TextView)mView.findViewById(R.id.Item_name);
-           item_name.setText(title);
-         }
+            TextView item_name = (TextView)mView.findViewById(R.id.Item_name);
+            item_name.setText(title);
+        }
+        @SuppressLint("ResourceAsColor")
         public void setRemainingDay(String RemainingDay){
             TextView item_RemainingDay = (TextView)mView.findViewById(R.id.Item_RemainingDay);
             item_RemainingDay.setText(RemainingDay);
+            if(RemainingDay.equals("لقد أنتهى تاريخ المنتج")){
+                item_RemainingDay.setTextColor(Color.parseColor("#CBED1808"));
+            }else{
+                item_RemainingDay.setTextColor(Color.parseColor("#FF020005"));
+
+            }
+
         }
         public void setcurrentweight(String currentweight){
             TextView item_currentweight = (TextView) mView.findViewById(R.id.Item_currentweight);
@@ -566,15 +605,20 @@ public class MainActivity extends AppCompatActivity {
             TextView item_getCurrent_quantity = (TextView) mView.findViewById(R.id.quantity);
             item_getCurrent_quantity.setText(String.valueOf(getCurrent_quantity));
         }
+
+
         public void setimageitem(items item){
-             //display icon
+            //display icon
             ImageView item_icon = (ImageView) mView.findViewById(R.id.imageitem);
 
             if(item.getCurrent_wieght()  > item.getOriginal_weight()/2)
                 item_icon.setImageResource(R.drawable.fullicon);
             else if (item.getCurrent_wieght() <= item.getOriginal_weight()/ 2 && item.getCurrent_wieght() > item.getOriginal_weight()/ 4)
                 item_icon.setImageResource(R.drawable.halficon);
-            else if(item.getCurrent_wieght() <= item.getOriginal_weight()/ 4) {
+            else if(item.getCurrent_wieght() <= item.getOriginal_weight()/ 4 && item.getCurrent_wieght()> (item.getOriginal_weight()/ 4)/2 ) {
+                item_icon.setImageResource(R.drawable.quartericon);
+            }
+            else if(item.getCurrent_wieght()<= (item.getOriginal_weight()/ 4)/2 ) {
                 item_icon.setImageResource(R.drawable.alerticon);
             }
 
@@ -674,7 +718,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-return null;
+        return null;
     }
 
     private void insertData(SQLiteDatabase db, String id, String product_brand, String product_name, String product_size, String product_price, String q) {
@@ -702,8 +746,7 @@ return null;
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
-    public void delete_item(final DatabaseReference RefItem) {
-
+    public boolean delete_item(final DatabaseReference RefItem) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("هل أنت متاكد من حذف  المنتج؟")
@@ -729,20 +772,23 @@ return null;
                         });
                         //delete item
                         RefItem.removeValue();
+                        delete_item = true;
+
                     }//if click yes end
                 })
                 .setNegativeButton("لا", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
-                        return;
+                        delete_item=false;
                     }
                 });
         // Create the AlertDialog object and return it
         AlertDialog deletemass= builder.create();
         deletemass.show();
+        return delete_item;
+
 
     }//delete_item end
-    
+
 
     private void Update_item(final DatabaseReference ref2, final long quantity, final String product_id, final String sensor) {
         ref = ref2;
@@ -750,7 +796,7 @@ return null;
 
         toastMessage("On "+ ref);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("هل وصل طلبك وتريد تجديد المنتج؟ ")
+        builder.setMessage("هذا الخيار فقط إن وصلك الطلب من المتجر وتريد التجديد.. هل تريد فعل هذا الآن؟")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {//___________________________________________________________
                         Calendar calendar = Calendar.getInstance();
@@ -762,7 +808,7 @@ return null;
 
                         DatePickerDialog datePickerDialog = new DatePickerDialog(
 
-                        MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
+                                MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
                                 ,setListener,year,day,month);
                         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                         datePickerDialog.show();
@@ -830,9 +876,9 @@ return null;
         final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.put_on_the_sensor, null);
         Button but_OK= (Button)mView.findViewById(R.id.pou_on_the_sensor);
-        toastMessage("On 2 "+ ref);
+        //toastMessage("On 2 "+ ref);
         takeWeight(sensor);
-        toastMessage("On 666 "+ Original_weight_rnew);
+        //toastMessage("On 666 "+ Original_weight_rnew);
 
         alert.setView(mView);
         final AlertDialog alertDialog =alert.create();
@@ -857,92 +903,39 @@ return null;
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
         takeWeight(sensor);
-        toastMessage("333"+sensor + Original_weight_rnew  );
-      //  Original_weight_rnew=0;
+        // toastMessage("333"+sensor + Original_weight_rnew  );
+        //  Original_weight_rnew=0;
 
         if(Original_weight_rnew >2){
-            toastMessage("لقد in if to change  ");
-
 
             Map userMap = new HashMap();
-    userMap.put("Add_day", now);
-    userMap.put("quantity", quantity);
-    userMap.put("Current_quantity", quantity);
-    userMap.put("Suggested_item", "-1");
-    userMap.put("Suggestion_flag", "0");
-    userMap.put("Product_ID", product_id);
-    userMap.put("Current_wieght", Original_weight_rnew - 5);
-    userMap.put("Original_weight", Original_weight_rnew);
-    userMap.put("Sensor", sensor);
-    userMap.put("Exp_date", Exp_Date);
-    ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
+            userMap.put("Add_day", now);
+            userMap.put("quantity", quantity);
+            userMap.put("Current_quantity", quantity);
+            userMap.put("Suggested_item", "-1");
+            userMap.put("Suggestion_flag", "0");
+            userMap.put("Product_ID", product_id);
+            userMap.put("Current_wieght", Original_weight_rnew - 5);
+            userMap.put("Original_weight", Original_weight_rnew);
+            userMap.put("Sensor", sensor);
+            userMap.put("Exp_date", Exp_Date);
+            toastMessage("222"+ userMap );
+            ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
+            userMap.clear();
+            toastMessage("333"+ userMap );
 
 
-    refItem.removeValue();
+            refItem.removeValue();
             Original_weight_rnew=0;
-            }
-else
-    toastMessage("ضع المنتج الجديد على المستشعر واعد خطوات التجديد ");
-
-
-        /*
-
-        refItem.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                        toastMessage("On 8");
-
-                        if (dataSnapshot.hasChild("Sensor")) {
-                            String Sensornum = dataSnapshot.child("Sensor").getValue().toString();
-                            for (int i = 0; i < 1; i++) {
-
-                               // takeWeight(Sensornum);
-                            }
-                        }
-                    }
-                }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-*/
-
-       // if(Original_weight_rnew>= 2){
-        /*toastMessage("On Original_weight_rnew "+ Original_weight_rnew);
-
-
-
-
-        SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        String now = mDateFormatter.format(new Date());
-
-        refItem.child("Exp_date").setValue(Exp_Date);
-        refItem.child("Add_day").setValue(now);
-        refItem.child("Suggestion_flag").setValue("-1");
-        refItem.child("Suggested_item").setValue("-1");
-        refItem.child("Current_quantity").setValue(0);
-        refItem.child("Original_weight").setValue(400);
-        refItem.child("Current_wieght").setValue(200);
-
-*/
-
-
-      //  }//end  if(Original_weight_rnew>= 2)
-       // else {
-          //  toastMessage("لقد حدث خطاء قم بوضع المنتج على الميزان وأعد التجديد");
-
-        //}
+            this.notify();
+        }
+        else
+            toastMessage("لم يتم وضع المنتج على الميزان الرجاء المحاولة مره أخرى");
 
     }
 
     private void takeWeight(String Sensornum) {
-          toastMessage("لقد حدث ");
+        // toastMessage("لقد حدث ");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference SensorRef = rootRef.child("Sensors");
 
@@ -952,7 +945,7 @@ else
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.hasChild("Weight")) {
                         Original_weight_rnew = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-                       // toastMessage("this is"+ Original_weight_rnew);
+                        // toastMessage("this is"+ Original_weight_rnew);
                         //ref.child("Original_weight").setValue(Original_weight_rnew);
                         //ref.child("Current_wieght").setValue(Original_weight_rnew-5);
                     }
@@ -968,3 +961,4 @@ else
     }
 
 }//big class
+

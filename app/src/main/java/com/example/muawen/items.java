@@ -1,7 +1,11 @@
 package com.example.muawen;
 
 
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class items  {
     private String Add_day;
@@ -55,6 +59,8 @@ public class items  {
         return Current_wieght;
     }
 
+
+
     public void setCurrent_wieght(double current_wieght) {
         Current_wieght = current_wieght;
     }
@@ -74,6 +80,7 @@ public class items  {
     public void setQuantity(long quantity) {
         this.quantity = quantity;
     }
+
 
     public long getCurrent_quantity() { return Current_quantity; }
 

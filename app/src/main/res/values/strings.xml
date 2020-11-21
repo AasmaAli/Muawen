@@ -20,7 +20,7 @@
     <string name="Auto_order">هل تريد أن يتم الطلب بشكل تلقائي؟</string>
     <string name="order_day">يوم الطلب التلقائي</string>
     <string name="quantity">الكمية</string>
-    <string name="barcode">مسح الشريط</string>
+    <string name="barcode">أكتب شريط المنتج أو قم بمسحه</string>
     <string name="itemname">أسم المنتج</string>
     <string name="item_size">الحجم</string>
     <string name="item_brand">الشركة</string>
@@ -28,5 +28,6 @@
     <string name="numsensor">رقم المستشعر</string>
     <string name="potonthesensor">ضع المنتج على المستشعر</string>
     <string name="ok">حسناً</string>
+    <string name="QR">"أمسح الشريط الذي أسفل الميزان "</string>
 
 </resources>
