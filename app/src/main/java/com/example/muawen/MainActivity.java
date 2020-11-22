@@ -656,7 +656,7 @@ boolean delete_item;
         //flag in databaes
         if(flag ==1){
             //expired replac
-
+            refItem.child("Decide_flag").setValue("0");
             refItem.child("Suggestion_flag").setValue("1");
         }
         else if(flag ==2){
@@ -668,6 +668,7 @@ boolean delete_item;
             }
             if(days>=-3){
                 //upgrade
+                refItem.child("Decide_flag").setValue("0");
                 refItem.child("Suggestion_flag").setValue("2");
             }else{
                 //replenishment
@@ -914,6 +915,7 @@ boolean delete_item;
             userMap.put("Current_quantity", quantity);
             userMap.put("Suggested_item", "-1");
             userMap.put("Suggestion_flag", "0");
+            userMap.put("Decide_flag", "-1");
             userMap.put("Product_ID", product_id);
             userMap.put("Current_wieght", Original_weight_rnew - 5);
             userMap.put("Original_weight", Original_weight_rnew);

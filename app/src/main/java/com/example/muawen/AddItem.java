@@ -405,6 +405,9 @@ if(ScanQRCode==null){
             userMap.put("Original_weight", Original_weight);
             userMap.put("Sensor", ScanQRCode);
             userMap.put("Exp_date", Exp_Date);
+            userMap.put("Decide_flag", "-1");
+
+
 
 
             ItemRef.getParent().child("Sensors").child(ScanQRCode).setValue(true);
