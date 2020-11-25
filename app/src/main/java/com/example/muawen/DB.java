@@ -64,10 +64,10 @@ public class DB extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getItmeInfo(String userId)
+    public Cursor getItmeInfo(String barcode)
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from mytable where UesID = '"+userId+"';", null );
+        Cursor res = db.rawQuery("select * from mytable where Barcode = '"+barcode+"'LIMIT 1;", null );
         return res;
     }
 

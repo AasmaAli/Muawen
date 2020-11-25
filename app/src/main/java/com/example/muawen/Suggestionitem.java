@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -95,7 +96,7 @@ public class Suggestionitem extends AppCompatActivity {
                 @Override
                 protected void onBindViewHolder(final SuggView holder, final int position, final items model) {
 
-                    product.InfoProduct(model.getProduct_ID());
+                   // product.InfoProduct(model.getProduct_ID());
                   //  toastMessage(" this is progct");
                     //product.setPrice(1000000);
 
@@ -391,8 +392,7 @@ public class Suggestionitem extends AppCompatActivity {
 
 
     private String replacing(long quantity, String itemBarcode) {
-        String Product_Name =getProduct_Name(itemBarcode);
-        toastMessage("this is 2 "+Product_Name);
+
 
         if(quantity!= 1){
             return "Negativeone";
@@ -403,19 +403,20 @@ public class Suggestionitem extends AppCompatActivity {
     }
 
     private void upgrade(String itemBarcode, final DatabaseReference refItem, final items item) {
-        String Product_Name =getProduct_Name(itemBarcode);
-        String brand_name = "المراعي";
-        long Size = 1000;
-        String Product_itme;
-        Product product =new Product();
-        //product.InfoProduct(itemBarcode);
-        //toastMessage(itemBarcode+" this is progct");
+
+        Cursor res = mDatabaseSL.getItmeInfo(itemBarcode);
+        res.moveToFirst();
+        final String Brand = res.getString((res.getColumnIndex("Brand")));
+        final String Name = res.getString(res.getColumnIndex("Name"));
+        final long size =  Long.parseLong(res.getString(res.getColumnIndex("size")));
+        double Price = Double.parseDouble(res.getString(res.getColumnIndex("Price")));
+        toastMessage(Brand +Name + size+ Price+" this is progct");
         //product.setPrice(1000000);
         //toastMessage(product.getName() +product.getSize()+product.getPrice()+" this is progct");
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("Product").orderByChild("Name").equalTo(Product_Name);
+                .child("Product").orderByChild("Name").equalTo(Name);
         ///query.equalTo(brand_name, "Brand");
        // query.equalTo(Size, "Size");
         //query.startAt(Size,"Size");
@@ -429,7 +430,7 @@ public class Suggestionitem extends AppCompatActivity {
                     Product product =new Product();;
                     m=dataSnapshot.getKey();
                    // toastMessage(m+" tis is m");
-                    if(dataSnapshot.child("Brand").getValue().toString().equals("المراعي")&& Long.parseLong(dataSnapshot.child("Size").getValue().toString())>1000) {
+                    if(dataSnapshot.child("Brand").getValue().toString().equals(Brand)&& Long.parseLong(dataSnapshot.child("Size").getValue().toString())>size) {
                         toastMessage(m+" thhhhh ");
                         //item.setSuggested_item(m);
                         /*
@@ -490,18 +491,7 @@ public class Suggestionitem extends AppCompatActivity {
         return suggestion ;
     }
 
-    private String getProduct_Name(String itemBarcode) {
-        int Barcode= Integer.parseInt(itemBarcode.substring(itemBarcode.length() - 2));
 
-        if(Barcode<= 31){
-            return "حليب";
-        }else if(Barcode<=61){
-            return "عصير برتقال";
-
-        }else{
-            return "كورن فليكس";
-        }
-    }
 
     private void AddtoShoppingList(final String product_barcode, final String Quantity) {
 

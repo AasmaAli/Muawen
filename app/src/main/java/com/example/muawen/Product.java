@@ -76,46 +76,6 @@ public class Product {
             Price = price;
         }
 
-        public void InfoProduct(String Product_ID){
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference Product = rootRef.child("Product");
-
-            Product.child(Product_ID).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-
-                        if (dataSnapshot.hasChild("Brand")) {
-                            Brand = dataSnapshot.child("Brand").getValue().toString();
-
-                        }
-                        if (dataSnapshot.hasChild("Name")) {
-                            Name = dataSnapshot.child("Name").getValue().toString();
-
-                        }
-                        if (dataSnapshot.hasChild("Price")) {
-                            setPrice( Double.parseDouble(dataSnapshot.child("Price").getValue().toString()));
-
-
-                        }
-                        if (dataSnapshot.hasChild("Size")) {
-                            size = Long.parseLong(dataSnapshot.child("Size").getValue().toString());
-
-                        }
-
-                    }
-
-
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-
-                }
-            });
-        }
     
 
 }
