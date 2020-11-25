@@ -212,12 +212,14 @@
         android:id="@+id/update_button"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#2E7D32"
         android:onClick="update"
-
-        android:text="حفظ التعديل "
+        android:background="@drawable/buttons"
+        android:padding="15dp"
         android:textColor="#FFFFFF"
-        android:textSize="24dp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="حفظ التعديل "
+         />
 
 
 </LinearLayout>

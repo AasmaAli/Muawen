@@ -1048,7 +1048,7 @@ boolean delete_item;
                             String time = mُTimeFormatter1.format(new Date());
 
                             //DatabaseReference ordersRef = OrderRef.child("Orders");
-                            CustomerOrder order = new CustomerOrder(currentUserID, "تجهيز", total_price, Data, time, result);
+                            CustomerOrder order = new CustomerOrder(currentUserID, "ارسال", total_price, Data, time, result);
 
                             OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
 

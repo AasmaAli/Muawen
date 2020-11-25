@@ -40,17 +40,20 @@
         android:layout_height="60dp"
         android:layout_marginTop="76dp"
         android:layout_marginBottom="92dp"
-        android:backgroundTint="#2E7D32"
         android:text="اطلب الآن"
-        android:textColor="#FFFFFF"
-        android:textColorHighlight="#FFFFFF"
-        android:textSize="18sp"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
+
         app:layout_constraintVertical_bias="0.569"
-        tools:ignore="UnknownId" />
+        android:background="@drawable/buttons"
+        android:padding="15dp"
+
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/price"
