@@ -1,51 +1,100 @@
 package com.example.muawen;
 
-import java.util.ArrayList;
-
 public class Order {
+    private String Name;
+    private String ID;
+    private String P;
+    private String B;
+    private String Q;
+    private String S;
+    private String D;
+    private String T;
 
-    private String Customer_id ;
-    private String status ;
-    private double totalPrice  ;
-    private ArrayList <Product> products ;
+    public Order(String name,String status, String barcode, String quan, String id, String prod,String date,String Time) {
+        Name=name;
+        S = status;
+        B = barcode;
+        Q = quan;
+        ID = id;
+        P = prod;
+        D=date;
+        T=Time;
 
-
-    public Order(String customer_id, String status, double totalPrice, ArrayList<Product> products) {
-        Customer_id = customer_id;
-        this.status = status;
-        this.totalPrice = totalPrice;
-        this.products = products;
     }
 
-    public String getCustomer_id() {
-        return Customer_id;
+    public Order() {
     }
 
-    public void setCustomer_id(String customer_id) {
-        Customer_id = customer_id;
+    public String getD() {
+        return D;
     }
 
-    public String getStatus() {
-        return status;
+    public void setD(String date) {
+        D = date;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getName() {
+        return Name;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public String getT() {
+        return T;
     }
 
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setT(String t) {
+        T = t;
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public String getID() {
+        return ID;
     }
 
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
+    public String getP() {
+        return P;
+    }
+
+    public String getQ() {
+        return Q;
+    }
+
+    public String getB() {
+        return B;
+    }
+
+    public String getS() {
+        return S;
+    }
+
+    public void setQ(String q) {
+        Q = q;
+    }
+
+    public void setB(String code) {
+        B = code;
+    }
+
+    public void setS(String status) {
+        S =status;
+    }
+
+    public void setID(String id) {
+        this.ID = id;
+    }
+
+    public void setP(String p) {
+        P = p;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null)
+            return false;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Order o = (Order) obj;
+        return this.getName().equals(o.getName());
     }
 }

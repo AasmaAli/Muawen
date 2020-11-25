@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ViewShoppingList"/>
         <activity android:name=".ScanQR"></activity>
         <activity android:name=".ScanCodeActivity" />
         <activity android:name=".ViewShoppingList" />
@@ -22,6 +23,9 @@
         <activity android:name=".AddItem" />
         <activity android:name=".EditProfile" />
         <activity android:name=".login" />
+        <activity android:name=".Customer_ststus"/>
+        <activity android:name=".MainActivity">
+
         <activity android:name=".MainActivity"
             >
             <intent-filter>
