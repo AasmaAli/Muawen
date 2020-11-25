@@ -1,18 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditProfile">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EditProfile"
-        tools:layout_editor_absoluteX="146dp"
-        tools:layout_editor_absoluteY="237dp"
-        tools:ignore="MissingConstraints" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/register_icon"
+        android:layout_width="400dp"
+        android:layout_height="134dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
+        android:contentDescription="@string/logo_of_application"
+        app:srcCompat="@drawable/logo24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="471dp"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/Email_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="البريد الالكتروني "
+
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+        <EditText
+            android:id="@+id/Email_data2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/phone_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="رقم الجوال "
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="14dp" />
+
+
+        <EditText
+            android:id="@+id/phone_data2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            android:text="اسم المستخدم"
+            android:textAlignment="center"
+            android:textColor="#000000"
+
+            android:textSize="14dp"
+
+            />
+
+        <EditText
+            android:id="@+id/name_data2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/address_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="العنوان"
+
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="14dp"
+
+            />
+
+
+        <EditText
+            android:id="@+id/address_data2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingTop="12dp">
+
+
+            <TextView
+                android:id="@+id/order_time_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+
+                />
+
+            <TextView
+
+                android:id="@+id/order_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" يوم الطلب التلقائي: "
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingTop="12dp">
+
+            <Spinner
+                android:id="@+id/Spinner_order_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+
+
+                />
+
+            <TextView
+                android:id="@+id/Change_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="هل تريد تغيير يوم الطلب التلقائي؟ "
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingTop="12dp">
+
+            <RadioGroup
+                android:id="@+id/Auto_order_RadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="21dp"
+                android:layout_toStartOf="@+id/Auto_order_text"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/Auto_order_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toStartOf="@+id/Auto_order_text"
+                    android:text="لا" />
+
+                <RadioButton
+                    android:id="@+id/Auto_order_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toStartOf="@+id/Auto_order_text"
+                    android:text="نعم"
+                    android:textAlignment="gravity" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/Auto_order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:text="هل تريد تفعيل الطلب التلقائي ؟ "
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/update_button"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#2E7D32"
+        android:onClick="update"
+
+        android:text="حفظ التعديل "
+        android:textColor="#FFFFFF"
+        android:textSize="24dp" />
+
+
+</LinearLayout>

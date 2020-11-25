@@ -3,13 +3,16 @@ package com.example.muawen;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -47,6 +50,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -502,8 +506,17 @@ boolean delete_item;
                 }
                 else {
                     RemainingDay = ("لقد أنتهى تاريخ المنتج");
+/*
+                    try {
+                        AddtoShoppingList(model , 1 , getRef(position), model.getAdd_day());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    */
+
                 }
                 holder.setRemainingDay(RemainingDay);
+                //holder.deleteitem();
 
                 //display the remaining wieght
                 String Current_wieght = "الوزن المتبقي : "+ model.getCurrent_wieght()+ " غرام";
@@ -644,6 +657,15 @@ boolean delete_item;
     private  String AddtoShoppingList(items item, int flag, DatabaseReference refItem, String add_day) throws ParseException {
 
 
+
+        ///get item information
+       /* boolean HastisBrand= mDatabaseSL.HasthisBrand(db,item.getProduct_ID());
+        if(HastisBrand) {
+            toastMessage("داخله 1");
+
+            return null;
+
+        }*/
 
         //flag in databaes
         if(flag ==1){
@@ -952,7 +974,110 @@ boolean delete_item;
             }
         });
 
+
+
+
+
     }
 
-}//big class
+    private void autoOrder ()
+    {
 
+        final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID).child("Order_time");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                 String currentDay = snapshot.getValue().toString();
+                    switch (currentDay) {
+                        case "السبت":
+                            currentDay = "Sat" ;
+                            break;
+                        case "الأحد":
+                            currentDay = "Sun" ;
+                            break;
+                        case "الأثنين":
+                            currentDay = "Mon" ;
+                            break;
+                        case "الثلاثاء":
+                            currentDay = "Tue" ;
+                            break;
+                        case "الإربعاء":
+                            currentDay = "Wed" ;
+                            break;
+                        case "الخميس":
+                            currentDay = "Thu" ;
+                            break;
+                        case "الجمعة":
+                            currentDay = "Fri" ;
+                            break;
+
+                    }
+                    SimpleDateFormat mُTimeFormatter2 = new SimpleDateFormat("EEE", Locale.ENGLISH);
+                    String Day = mُTimeFormatter2.format(new Date());
+
+                    if (Day.equals(currentDay))
+                    {
+
+
+                        DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+
+
+                        Cursor res = mDatabaseSL.getShoppingList(currentUserID);
+                        res.moveToFirst();
+                        if (res.getCount() > 0) {
+                            final ArrayList<OrderProduct> result = new ArrayList<>();
+                            double total_price = 0.0;
+                            while (res.isAfterLast() == false) {
+                                String Barcode = res.getString(2);
+                                String Name = res.getString(4);
+                                long Size = Long.parseLong(res.getString(5));
+                                double Price = Double.parseDouble(res.getString(6));
+                                int quantity = Integer.parseInt(res.getString(7));
+                                result.add(new OrderProduct(Barcode, Name, quantity,Size));
+                                total_price = total_price + Price;
+                                res.moveToNext();
+
+                            }
+                            SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+                            String Data = mDateFormatter.format(new Date());
+
+                            SimpleDateFormat mُTimeFormatter1 = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+                            String time = mُTimeFormatter1.format(new Date());
+
+                            //DatabaseReference ordersRef = OrderRef.child("Orders");
+                            CustomerOrder order = new CustomerOrder(currentUserID, "تجهيز", total_price, Data, time, result);
+
+                            OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
+
+                            SQLiteDatabase mydb = mDatabaseSL.getWritableDatabase();
+                            mDatabaseSL.DeleteShoppingList(mydb, currentUserID);
+
+                            Toast.makeText(MainActivity.this ,"تم إنشاء طلبك وسوف يتم التوصيل خلال ٢٤ ساعة ",Toast.LENGTH_SHORT).show();
+
+
+
+                        }// end res cheak
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
+    }//end autoOrder
+
+}//big class
