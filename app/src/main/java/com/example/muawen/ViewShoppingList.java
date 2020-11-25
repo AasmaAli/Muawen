@@ -147,7 +147,7 @@ public class ViewShoppingList extends AppCompatActivity {
 
             SimpleDateFormat mُTimeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
             String time = mُTimeFormatter.format(new Date());
-
+ 
             //DatabaseReference ordersRef = OrderRef.child("Orders");
             CustomerOrder order = new CustomerOrder(UserId, "تجهيز", total_price, Data, time, result);
 
