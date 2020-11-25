@@ -7,6 +7,7 @@
     tools:context=".AddItem">
 
 
+    
     <ImageView
         android:id="@+id/Buttons_add_barcode"
         android:layout_width="wrap_content"

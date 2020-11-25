@@ -1,21 +1,32 @@
 package com.example.muawen;
 
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Product {
 
 
 
         String Brand ;
         String Name ;
-        String size ;
+        String Describe;
+        long size ;
         double Price ;
 
 
-        public Product( String Brand, String Name, String size, double Price) {
+
+    public Product(String Brand, String Name, String Describe, long size, double Price) {
 
             this.Brand = Brand;
             this.Name = Name;
             this.size = size;
             this.Price = Price;
+            this.Describe = Describe;
         }
 
     public Product() {
@@ -25,7 +36,7 @@ public class Product {
 
 
 
-    public String getBrand() {
+        public String getBrand() {
             return Brand;
         }
 
@@ -41,11 +52,19 @@ public class Product {
             Name = name;
         }
 
-        public String getSize() {
+    public String getDescribe() {
+        return Describe;
+    }
+
+    public void setDescribe(String describe) {
+        Describe = describe;
+    }
+
+        public long getSize() {
             return size;
         }
 
-        public void setSize(String size) {
+        public void setSize(long size) {
             this.size = size;
         }
 
@@ -56,6 +75,7 @@ public class Product {
         public void setPrice(double price) {
             Price = price;
         }
+
     
 
 }
