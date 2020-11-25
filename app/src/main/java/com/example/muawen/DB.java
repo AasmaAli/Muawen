@@ -54,6 +54,23 @@ public class DB extends SQLiteOpenHelper {
            return true;
     }
 
+    public void DeleteItem(SQLiteDatabase db,String userId, String barcode)
+    {
+        db.delete("mytable"," UesID ='" +userId+ "' AND Barcode ='"+barcode+"';", null );
+    }
+    public void DeleteShoppingList(SQLiteDatabase db,String userId)
+    {
+        db.delete("mytable"," UesID ='" +userId+ "';", null );
+    }
+
+
+    public Cursor getItmeInfo(String userId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from mytable where UesID = '"+userId+"';", null );
+        return res;
+    }
+
 
 
     public boolean addData(SQLiteDatabase db,String uesid ,String barcode , String brand , String Name, String size, String Price, String quantity) {

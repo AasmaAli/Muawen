@@ -5,23 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="7dp"
+    android:background="#FFFFFF"
     android:elevation="90dp"
     android:orientation="horizontal">
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
         android:background="#14121111"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/suggested"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:background="#00121111"
             android:text="الاقتراح"
             android:textAlignment="center"
@@ -36,12 +36,14 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="#00121111"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/Item_Price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -52,16 +54,7 @@
                 android:id="@+id/Item_Size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textAlignment="center"
-                android:textColor="#121111">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/Item_brand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -72,6 +65,18 @@
                 android:id="@+id/Item_name_Sugg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#121111">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/Item_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -83,15 +88,17 @@
         <LinearLayout
             android:id="@+id/info_suggest"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_centerHorizontal="true"
             android:background="#00121111"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/suggest_Price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -102,6 +109,7 @@
                 android:id="@+id/suggest_Size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -112,6 +120,7 @@
                 android:id="@+id/suggest_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -122,6 +131,7 @@
                 android:id="@+id/suggest_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text=""
                 android:textAlignment="center"
                 android:textColor="#121111">
@@ -130,9 +140,76 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/group_login"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#00669900"
+                android:text="Login"
+                android:textColor="#00101010" />
+
+            <Button
+                android:id="@+id/Suggest_confirm"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttons"
+                android:text="موافق"
+                android:textColor="#101010"
+                android:textStyle="bold" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="135dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#00669900"
+                android:text=""
+                android:textColor="#00101010" />
+
+
+            <Button
+                android:id="@+id/Suggest_reject"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="رفض"
+                android:textColor="#070707"
+                android:background="@drawable/buttons2"
+                android:textStyle="bold" >
+
+            </Button>
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="50dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#00669900"
+                android:text="Login"
+                android:textColor="#00101010" />
+        </LinearLayout>
     </LinearLayout>
-
 
 
 </RelativeLayout>

@@ -240,7 +240,7 @@ boolean delete_item;
             startActivity(loginIntent);
             finish();
 
-        }//if end
+        }//if end}
 
         else {
 
@@ -353,8 +353,8 @@ boolean delete_item;
 
                                       //  notifyItemRemoved(position);
                                        // position =null;
-                                        this.notify();
-                                        notifyDataSetChanged();
+                                       // this.notify();
+                                        //notifyDataSetChanged();
 
                                     }//if click yes end
                                 })
@@ -515,13 +515,6 @@ boolean delete_item;
                 String Current_quantity = "الكمية المتبقية: "+ model.getCurrent_quantity();
                 holder.setquantity(Current_quantity);
 
-                //display icon
-               /* if(model.getCurrent_wieght() <= model.getOriginal_weight()/ 4) {
-                    try {
-                        AddtoShoppingList(model, 2, getRef(position), model.getAdd_day());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }*/
 
 
                 holder.setimageitem(model);
@@ -708,7 +701,7 @@ boolean delete_item;
 
                 if(Product_brand != null) {
 
-                    insertData(db,dataSnapshot.toString(), Product_brand, Product_Name, Product_size, Product_price, quantity);
+                    insertData(db,Product_ID, Product_brand, Product_Name, Product_size, Product_price, quantity);
 
                 }
 

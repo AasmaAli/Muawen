@@ -112,9 +112,9 @@ public class ViewShoppingList extends AppCompatActivity {
             //int Id = Integer.parseInt(res.getString(Integer.parseInt("id")));
             String Barcode = res.getString((res.getColumnIndex("Barcode")));
             String Name = res.getString(res.getColumnIndex("Name"));
-            String size = res.getString(res.getColumnIndex("size"));
+            long size =  Long.parseLong(res.getString(res.getColumnIndex("size")));
             double Price = Double.parseDouble(res.getString(res.getColumnIndex("Price")));
-            result.add(new Product( Barcode, Name, size, Price));
+            result.add(new Product( Barcode, Name,"" ,size, Price));
             total_price = total_price + Price;
             res.moveToNext();
 
