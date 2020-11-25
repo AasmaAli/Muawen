@@ -26,7 +26,6 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL("create table mytable(id INTEGER PRIMARY KEY AUTOINCREMENT,UesID Text,Barcode Text ,Brand Text,Name Text,size Text,Price Text,Quantity Text) ");
 
     }
-    
 
 
     @Override
@@ -50,12 +49,16 @@ public class DB extends SQLiteOpenHelper {
     public boolean HasthisBrand(SQLiteDatabase db, String barcode){
         Cursor Barcodes = db.rawQuery("select * from mytable where Barcode = '"+barcode+"';", null );
         if(Barcodes.getCount()==0)
-          return false;
+            return false;
         else
-           return true;
+            return true;
+
     }
 
-
+    public void DeleteShoppingList(SQLiteDatabase db,String userId)
+    {
+        db.delete("mytable"," UesID ='" +userId+ "';", null );
+    }
 
     public boolean addData(SQLiteDatabase db,String uesid ,String barcode , String brand , String Name, String size, String Price, String quantity) {
 
@@ -80,5 +83,6 @@ public class DB extends SQLiteOpenHelper {
             return true;
         }
     }
+
 
 }

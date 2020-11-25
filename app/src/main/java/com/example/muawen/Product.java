@@ -1,56 +1,76 @@
 package com.example.muawen;
 
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Product {
 
 
 
-        String Brand ;
-        String Name ;
-        String size ;
-        int Price ;
-
-
-        public Product( String Brand, String Name, String size, int Price) {
-
-            this.Brand = Brand;
-            this.Name = Name;
-            this.size = size;
-            this.Price = Price;
-        }
+    String Brand ;
+    String Name ;
+    String Describe;
+    long size ;
+    double Price ;
 
 
 
-        public String getBrand() {
-            return Brand;
-        }
+    public Product(String Brand, String Name, String Describe, long size, double Price) {
 
-        public void setBrand(String brand) {
-            Brand = brand;
-        }
+        this.Brand = Brand;
+        this.Name = Name;
+        this.size = size;
+        this.Price = Price;
+        this.Describe = Describe;
+    }
 
-        public String getName() {
-            return Name;
-        }
+    public Product() {
+    }
+    public String getBrand() {
+        return Brand;
+    }
 
-        public void setName(String name) {
-            Name = name;
-        }
+    public void setBrand(String brand) {
+        Brand = brand;
+    }
 
-        public String getSize() {
-            return size;
-        }
+    public String getName() {
+        return Name;
+    }
 
-        public void setSize(String size) {
-            this.size = size;
-        }
+    public void setName(String name) {
+        Name = name;
+    }
 
-        public int getPrice() {
-            return Price;
-        }
+    public String getDescribe() {
+        return Describe;
+    }
 
-        public void setPrice(int price) {
-            Price = price;
-        }
-    
+    public void setDescribe(String describe) {
+        Describe = describe;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double price) {
+        Price = price;
+    }
+
+
 
 }

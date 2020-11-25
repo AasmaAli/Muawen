@@ -6,17 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".ViewShoppingList">
 
+
     <ListView
         android:id="@+id/list"
         android:layout_width="392dp"
         android:layout_height="287dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="92dp"
         android:headerDividersEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
 
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/empty_shopping_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.692" />
 
     <Button
         android:id="@+id/button"
