@@ -15,7 +15,6 @@
         <activity android:name=".ViewShoppingList"/>
         <activity android:name=".ScanQR"></activity>
         <activity android:name=".ScanCodeActivity" />
-
         <activity android:name=".ViewOrders" />
         <activity android:name=".Suggestionitem" />
         <activity android:name=".Setup" />
@@ -25,7 +24,6 @@
         <activity android:name=".login" />
         <activity android:name=".Customer_ststus"/>
         <activity android:name=".MainActivity">
-
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

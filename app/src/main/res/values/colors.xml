@@ -9,7 +9,6 @@
     <color name="colorPrimary1">#4CAF50</color>
     <color name="colorLableBackground">#99F2F2F2</color>
     <color name="colorTextSecondary">#757575</color>
-    <color name="holo_green_light">@color/holo_green_dark</color>
     <color name="Red_light">#C4ED1808</color>
     <color name="Grey_light">#14121111</color>
 
