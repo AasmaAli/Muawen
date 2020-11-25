@@ -5,6 +5,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="holo_green_dark">@android:color/holo_green_dark</color>
     <color name="holo_green_light">@android:color/holo_green_light</color>
-
-
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorPrimary1">#4CAF50</color>
+    <color name="colorLableBackground">#99F2F2F2</color>
+    <color name="colorTextSecondary">#757575</color>
 </resources>

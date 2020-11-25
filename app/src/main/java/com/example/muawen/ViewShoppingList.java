@@ -66,7 +66,7 @@ public class ViewShoppingList extends AppCompatActivity {
 
                 ArrayAdapter arrayAdapter = new ArrayAdapter(this, simple_list_item_1, arrayList);
                 list.setAdapter(arrayAdapter);
-
+                long size =  Long.parseLong(res.getString(res.getColumnIndex("size")));
                 ArrayAdapter arrayAdapter2 = new ArrayAdapter(this, simple_list_item_1, totalprice);
                 price.setAdapter(arrayAdapter2);
 

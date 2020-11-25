@@ -19,5 +19,18 @@
     <string name="mobile">رقم الجوال</string>
     <string name="Auto_order">هل تريد أن يتم الطلب بشكل تلقائي؟</string>
     <string name="order_day">يوم الطلب التلقائي</string>
+    <string name="توصيل_الطلب">توصيل-الطلب</string>
+    <string name="قبول_الطلب">قبول-الطلب</string>
+    <string name="الطلب_مرسل">الطلب-مرسل</string>
+    <string name="الطلب">الطلب</string>
+    <string name="رقم_الطلب">رقم-الطلب</string>
+    <string name="ordersend">الطلب مرسل</string>
+    <string name="orderaccepted">قبول الطلب</string>
+    <string name="orderdeliverd">توصيل الطلب</string>
+    <string name="order">رقم الطلب</string>
+    <string name="prepareNow">تحضير الطلب</string>
+    <string name="total">اجمالي السعر</string>
+    <string name="hasdeliverd">تم التوصيل</string>
+    <string name="sent">تم ارسال الطلب</string>
 
 </resources>

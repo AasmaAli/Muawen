@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewShoppingList"></activity>
+        <activity android:name=".ViewShoppingList"/>
         <activity android:name=".ViewOrders" />
         <activity android:name=".Suggestionitem" />
         <activity android:name=".Setup" />
@@ -17,7 +17,9 @@
         <activity android:name=".AddItem" />
         <activity android:name=".EditProfile" />
         <activity android:name=".login" />
+        <activity android:name=".Customer_ststus"/>
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
