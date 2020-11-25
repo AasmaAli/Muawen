@@ -240,7 +240,7 @@ boolean delete_item;
             startActivity(loginIntent);
             finish();
 
-        }//if end
+        }//if end}
 
         else {
 
@@ -300,17 +300,17 @@ boolean delete_item;
                 options) {
             @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
-                toastMessage("THIS IS XXX "+model.toString());
+               // toastMessage("THIS IS XXX "+model.toString());
 
                 holder.deleteitem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view)
                     {
 
-                        toastMessage("in delete ");
+                      //  toastMessage("in delete ");
 
                         //if(delete_item(getRef(position))){
-                        toastMessage("in if ");
+                      //  toastMessage("in if ");
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setMessage("هل أنت متاكد من حذف  المنتج؟")
                                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
@@ -353,8 +353,8 @@ boolean delete_item;
 
                                       //  notifyItemRemoved(position);
                                        // position =null;
-                                        this.notify();
-                                        notifyDataSetChanged();
+                                       // this.notify();
+                                        //notifyDataSetChanged();
 
                                     }//if click yes end
                                 })
@@ -405,7 +405,7 @@ boolean delete_item;
                         if (dataSnapshot.exists()) {
                             if (dataSnapshot.hasChild("Weight")) {
                                 double SensorWeight= Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-                                toastMessage(dataSnapshot.getKey()+" بشكل صحيح");
+                               // toastMessage(dataSnapshot.getKey()+" بشكل صحيح");
                                 if(dataSnapshot.getKey().equals(model.getSensor())) {
                                     if (SensorWeight >= model.getOriginal_weight()) {
                                         if (!(model.getOriginal_weight() - model.getCurrent_wieght() < 6)) {
@@ -515,13 +515,6 @@ boolean delete_item;
                 String Current_quantity = "الكمية المتبقية: "+ model.getCurrent_quantity();
                 holder.setquantity(Current_quantity);
 
-                //display icon
-               /* if(model.getCurrent_wieght() <= model.getOriginal_weight()/ 4) {
-                    try {
-                        AddtoShoppingList(model, 2, getRef(position), model.getAdd_day());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }*/
 
 
                 holder.setimageitem(model);
@@ -709,7 +702,7 @@ boolean delete_item;
 
                 if(Product_brand != null) {
 
-                    insertData(db,dataSnapshot.toString(), Product_brand, Product_Name, Product_size, Product_price, quantity);
+                    insertData(db,Product_ID, Product_brand, Product_Name, Product_size, Product_price, quantity);
 
                 }
 
@@ -735,7 +728,7 @@ boolean delete_item;
         }
 
         if (insertData) {
-            toastMessage("Data Successfully Inserted!");
+            toastMessage("لقد أضفنا منتج إلى قائمة التسوق");
         } else {
             toastMessage("Something went wrong");
         }
