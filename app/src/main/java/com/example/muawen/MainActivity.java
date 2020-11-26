@@ -287,6 +287,21 @@ boolean delete_item;
 
         }//else end
 
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //check if the customer apply the auto Order
+                boolean auto_Order = (boolean) snapshot.child("Auto_order").getValue();//get value from firebase
+                if (auto_Order) {//if true call  autoOrder();
+                    autoOrder();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                
+            }
+        });
 
     }//On Start
 
