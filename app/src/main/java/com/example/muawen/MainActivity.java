@@ -281,7 +281,7 @@ boolean delete_item;
             });
 
             db = mDatabaseSL.getWritableDatabase();
-            //mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
+           // mDatabaseSL.onUpgrade(db,db.getVersion() , db.getVersion() +1);
 
            // viewitem();
 
