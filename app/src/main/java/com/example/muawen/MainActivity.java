@@ -299,7 +299,7 @@ boolean delete_item;
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                
+
             }
         });
 
@@ -996,47 +996,33 @@ boolean delete_item;
     }
 
     private void autoOrder ()
-    {
-
-        final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+    { final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID).child("Order_time");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
-                {
-                 String currentDay = snapshot.getValue().toString();
-                    switch (currentDay) {
+                { String currentDay = snapshot.getValue().toString();
+                    switch (currentDay) {// change the current day to SimpleDateFormat function format so we can compare it
                         case "السبت":
-                            currentDay = "Sat" ;
-                            break;
+                            currentDay = "Sat" ;break;
                         case "الأحد":
-                            currentDay = "Sun" ;
-                            break;
+                            currentDay = "Sun" ;break;
                         case "الأثنين":
-                            currentDay = "Mon" ;
-                            break;
+                            currentDay = "Mon" ;break;
                         case "الثلاثاء":
-                            currentDay = "Tue" ;
-                            break;
+                            currentDay = "Tue" ;break;
                         case "الإربعاء":
-                            currentDay = "Wed" ;
-                            break;
+                            currentDay = "Wed" ;break;
                         case "الخميس":
-                            currentDay = "Thu" ;
-                            break;
+                            currentDay = "Thu" ;break;
                         case "الجمعة":
-                            currentDay = "Fri" ;
-                            break;
-
-                    }
+                            currentDay = "Fri" ;break; }
+                    //get the the current day
                     SimpleDateFormat mُTimeFormatter2 = new SimpleDateFormat("EEE", Locale.ENGLISH);
                     String Day = mُTimeFormatter2.format(new Date());
-
-                    if (Day.equals(currentDay))
+                    if (Day.equals(currentDay))//if true then  place order process will be continue
                     {
-
-
                         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
 
 

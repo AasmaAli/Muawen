@@ -1,5 +1,6 @@
  package com.example.muawen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,8 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.text.SimpleDateFormat;
@@ -77,7 +81,7 @@ public class ViewShoppingList extends AppCompatActivity {
                     String Price = res.getString(6);
                     String quantity = res.getString(7);
 
-                    arrayList.add(Name + " " + Brand + "            " + size + " غرام         " + quantity + "           " + Price + "  ريال          ");
+                    arrayList.add(" اسم المنتج: "+Name+" الحجم: "+size+" نوع المنتج: "+Brand+" السعر: "+Price+" العدد: "+quantity);
                     if (Price != null)
                         total = total + (Double.parseDouble(Price));
 
@@ -114,10 +118,11 @@ public class ViewShoppingList extends AppCompatActivity {
     public  void plaseOrder(String UserId) {
 
 
-
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
+         String userId = UsersRef.child(currentUserID).getKey();
 
         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-
+       
 
         Cursor res = db.getShoppingList(UserId);
         res.moveToFirst();
