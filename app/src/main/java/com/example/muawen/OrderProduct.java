@@ -6,14 +6,14 @@ public class OrderProduct {
     private int quantity ;
 
     private long size ;
+private double price ;
 
 
-
-    public OrderProduct(String brand, String name, int quantity,  long size) {
+    public OrderProduct(String brand, String name, int quantity,  long size,double price) {
         Brand = brand;
         Name = name;
         this.quantity = quantity;
-
+this.price = price ;
         this.size = size;
     }
 
@@ -46,4 +46,12 @@ public class OrderProduct {
     public long getSize() { return size; }
 
     public void setSize(long size) { this.size = size; }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

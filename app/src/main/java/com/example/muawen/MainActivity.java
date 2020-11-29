@@ -1037,7 +1037,7 @@ boolean delete_item;
                                 long Size = Long.parseLong(res.getString(5));
                                 double Price = Double.parseDouble(res.getString(6));
                                 int quantity = Integer.parseInt(res.getString(7));
-                                result.add(new OrderProduct(Barcode, Name, quantity,Size));
+                                result.add(new OrderProduct(Barcode, Name, quantity,Size,Price));
                                 total_price = total_price + Price;
                                 res.moveToNext();
 

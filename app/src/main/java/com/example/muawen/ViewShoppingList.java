@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,11 +21,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -122,8 +126,7 @@ public class ViewShoppingList extends AppCompatActivity {
          String userId = UsersRef.child(currentUserID).getKey();
 
         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-       
-
+        final DatabaseReference itemRef =UsersRef.child(userId).child("items");
         Cursor res = db.getShoppingList(UserId);
         res.moveToFirst();
         if (res.getCount() > 0) {
@@ -137,7 +140,7 @@ public class ViewShoppingList extends AppCompatActivity {
                 long Size = Long.parseLong(res.getString(5));
                 double Price = Double.parseDouble(res.getString(6));
                 int quantity = Integer.parseInt(res.getString(7));
-                result.add(new OrderProduct(Barcode, Name, quantity,Size));
+                result.add(new OrderProduct(Barcode, Name, quantity,Size,Price));
                 total_price = total_price + Price;
                 res.moveToNext();
 
