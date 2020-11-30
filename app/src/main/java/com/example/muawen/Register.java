@@ -72,12 +72,13 @@ public class Register extends AppCompatActivity {
         }
         else if(TextUtils.isEmpty(password)){
             Toast.makeText(this, "فضلًا ادخل كلمة المرور ...",Toast.LENGTH_SHORT).show();
+        }else if (password.length() < 6){
+            Toast.makeText(this, "يجب أن تحتوي كلمة المرور على ست حروف و أرقام على الأقل...",Toast.LENGTH_SHORT).show();
         }
 
         else if(TextUtils.isEmpty(Confirm_password)){
             Toast.makeText(this, "فضلًا اعد ادخال كلمة المرور ...",Toast.LENGTH_SHORT).show();
         }
-
         else if(!password.equals(Confirm_password)){
             Toast.makeText(this, "كلمة المرور غير متطابقة !",Toast.LENGTH_SHORT).show();
         }

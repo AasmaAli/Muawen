@@ -78,22 +78,17 @@ public class AddItem extends AppCompatActivity  {
         Date = findViewById(R.id.Date);
 
         //barcode
-      //scan_barcode_item
+
+      //Barcode reading
         scan_barcode_item= findViewById(R.id.Buttons_add_barcode);
         scan_barcode_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(new Intent(getApplicationContext(),ScanCodeActivity.class));
-
-                String ScanCode=barcode.getText().toString();
-
                   Productinfo(barcode.getText().toString());
-                //PutItem();
-
             }
         });
-//
+
 
 
 
@@ -127,8 +122,6 @@ public class AddItem extends AppCompatActivity  {
                         ,setListener,year,day,month);
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
-
-
             }
         });
         setListener= new DatePickerDialog.OnDateSetListener() {
@@ -137,7 +130,6 @@ public class AddItem extends AppCompatActivity  {
                 month = month+1;
                 if(month<10 && dayOfMonth<10){
                     Exp_Date= year+"/0"+month+"/0"+dayOfMonth;
-
                 }
                 else if (month<10 ){
                     Exp_Date= year+"/0"+month+"/"+dayOfMonth;
@@ -146,12 +138,9 @@ public class AddItem extends AppCompatActivity  {
 
                 }else {
                     Exp_Date= year+"/"+month+"/"+dayOfMonth;
-
                 }
                 ExpDateCheck=1;
                 Date.setText("تاريخ الأنتهاء:  "+ Exp_Date);
-
-
             }
         };
 
@@ -179,7 +168,6 @@ public class AddItem extends AppCompatActivity  {
          final AlertDialog.Builder alert = new AlertDialog.Builder(AddItem.this);
          View mView = getLayoutInflater().inflate(R.layout.put_on_the_sensor, null);
          Button but_OK= (Button)mView.findViewById(R.id.pou_on_the_sensor);
-
         alert.setView(mView);
         final AlertDialog alertDialog =alert.create();
         alertDialog.setCanceledOnTouchOutside(false);
@@ -215,7 +203,6 @@ if(ScanQRCode==null){
                 }
                 else {
                     CheckSensor = true;
-
                 }
             }
 
@@ -226,11 +213,11 @@ if(ScanQRCode==null){
         });
 
         return CheckSensor;
-    }//CheckSensor
+    }//CheckSenso
 
+   // Read the original weight of the sensor
     private void takeWeight() {
         Original_weight =0;
-       // while (Original_weight==0 && ScanQRCode != null) {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
             DatabaseReference SensorRef = rootRef.child("Sensors");
             try {
@@ -240,11 +227,9 @@ if(ScanQRCode==null){
                         if (dataSnapshot.exists()) {
                             if (dataSnapshot.hasChild("Weight")) {
                                 Original_weight = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -252,7 +237,6 @@ if(ScanQRCode==null){
                 });
             } catch (Exception e) {
         }
-       // }
     }
 
 
@@ -367,7 +351,7 @@ if(ScanQRCode==null){
         }
 
 
-
+        //Verify the information entered
         if (BarCode.isEmpty() || Product_Name.isEmpty()){
             Toast.makeText(this, "رجاءً أكتب الشريط بشكل صحيح", Toast.LENGTH_SHORT).show();
         }
@@ -378,10 +362,9 @@ if(ScanQRCode==null){
             Toast.makeText(this,  "رجاءً أدخل تاريخ الأنتهاء", Toast.LENGTH_SHORT).show();
         }else if(days<=0){
             Toast.makeText(this,  "التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح", Toast.LENGTH_SHORT).show();
-
-        }else if(ScanQRCode ==null ){
+        }
+        else if(ScanQRCode ==null ){
             Toast.makeText(this,  "رجاءً قم بمسح الشريط الذي على المستشعر ", Toast.LENGTH_SHORT).show();
-
         }else if(!CheckSensor()){
             Toast.makeText(this,  "هذا الميزان مستخدم لمنتج أخر", Toast.LENGTH_SHORT).show();
         }else if (Original_weight <= 2){
@@ -389,11 +372,8 @@ if(ScanQRCode==null){
 
         }
         else{
-            //add item
-
-
+            //Add item
             ItemRef = UsersRef.child("items");
-
             Map userMap = new HashMap();
             userMap.put("Add_day", now);
             userMap.put("quantity",Quantity );
@@ -406,10 +386,6 @@ if(ScanQRCode==null){
             userMap.put("Sensor", ScanQRCode);
             userMap.put("Exp_date", Exp_Date);
             userMap.put("Decide_flag", "-1");
-
-
-
-
             ItemRef.getParent().child("Sensors").child(ScanQRCode).setValue(true);
 
 

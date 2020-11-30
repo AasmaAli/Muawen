@@ -62,6 +62,7 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
         Address =findViewById(R.id.user_address);
         Auto_orderGroup = (RadioGroup)findViewById(R.id.Auto_order_RadioGroup);
         SpinnerDay=findViewById(R.id.Spinner_order_day);
+        SpinnerDay.setEnabled(false);
         SpinnerDay.setOnItemSelectedListener(this);
         SaveInformationbuttion = findViewById(R.id.buttonSave);
 
@@ -72,12 +73,15 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
                 switch (checkedId) {
                     case R.id.Auto_order_yes:
                         Auto_order= true;
+                        SpinnerDay.setEnabled(true);
                         break;
                     case R.id.Auto_order_no:
+                        SpinnerDay.setEnabled(false);
                         Auto_order = false;
                         break;
 
                     default:
+                        SpinnerDay.setEnabled(false);
                         Auto_order = false;
                         break;
 
@@ -114,15 +118,18 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
         {
             Toast.makeText(this, "رجاءً أدخل أسم المستخدم", Toast.LENGTH_SHORT).show();
         }
-        if(usermobile.isEmpty())
+        else if(usermobile.isEmpty())
         {
             Toast.makeText(this, "رجاءً أدخل رقم الجوال", Toast.LENGTH_SHORT).show();
+        }else if (usermobile.length() != 10){
+            Toast.makeText(this, "يجب أن يتكون رقم الجوال من عشرة أرقام", Toast.LENGTH_SHORT).show();
+
         }
-        if(userAddress.isEmpty())
+        else if(userAddress.isEmpty())
         {
             Toast.makeText(this, "رجاءً أدخل العنوان", Toast.LENGTH_SHORT).show();
         }
-        if(!username.isEmpty() && !usermobile.isEmpty() && !userAddress.isEmpty()) {
+        else if(!username.isEmpty() && !usermobile.isEmpty() && !userAddress.isEmpty()) {
 
 
             loadingBar.setTitle("حفظ المعلومات");

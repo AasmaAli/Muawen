@@ -22,10 +22,7 @@ public class ScanQR  extends AppCompatActivity implements ZXingScannerView.Resul
 
     @Override
     public void handleResult(Result result) {
-        //Log.e(TAG, result.getText());
-        //Log.e(TAG, result.getBarcodeFormat().toString());
         AddItem.ScanQRCode= result.getText();
-        //AddItem.barcode.setText(result.getText());
         onBackPressed();
         ScannerViwe.resumeCameraPreview(this);
 
@@ -34,8 +31,7 @@ public class ScanQR  extends AppCompatActivity implements ZXingScannerView.Resul
     @Override
     protected void onPause() {
         super.onPause();
-        // ScannerViwe.stopCamera();
-    }
+   }
 
     @Override
     protected void onResume() {
