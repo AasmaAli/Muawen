@@ -91,7 +91,7 @@ boolean delete_item;
 
 
     String currentUserID;
-    FirebaseRecyclerAdapter<items, itemsView> firebaseUsersAdapter = null;
+    FirebaseRecyclerAdapter<items, itemsView> firebaseUsersAdapter = null ;
 
 
 
@@ -232,6 +232,7 @@ boolean delete_item;
     @Override
     protected void onStart() {
         super.onStart();
+        firebaseUsersAdapter.startListening();
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -257,7 +258,6 @@ boolean delete_item;
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (!dataSnapshot.hasChild(current_user_id)) {
                         // Send User To Setup Activity
-
                         Intent setupIntent = new Intent(MainActivity.this, Setup.class);
                         setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(setupIntent);
@@ -307,17 +307,12 @@ boolean delete_item;
         ItemRef =UsersRef.child(currentUserID).child("items");
 
          final FirebaseRecyclerOptions<items> options = new FirebaseRecyclerOptions.Builder<items>()
-                .setQuery(ItemRef, items.class)
+                 .setLifecycleOwner(this)
+                 .setQuery(ItemRef, items.class)
                 .build();
-      firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
+        firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
-          /*
-          @Override
-          public  int getItemCount(){
-              int sizeItemm = options.getSnapshots().size();
-              return (null != options ? sizeItemm : 0);
-          }
-*/
+
 
           @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
@@ -352,13 +347,11 @@ boolean delete_item;
                                         //delete item
                                         getRef(position).removeValue();
                                         //notifyItemRemoved(position);
-                                       //firebaseUsersAdapter.notifyItemChanged(position);
                                         //firebaseUsersAdapter.notifyItemRemoved(position);
                                         //irebaseUsersAdapterf.notifyItemRemoved(position-1);
-                                       //Intent refresh = new Intent(MainActivity.this, MainActivity.class);
-                                        //startActivity(refresh);
-                                        //MainActivity.super.onBackPressed();
-                                        //MainActivity.this.finish();
+                                       Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+                                        startActivity(refresh);
+                                        MainActivity.this.finish();
                                         //Intent newInt = new Intent("android.intent.action.MainActivity");
                                         //firebaseUsersAdapter<items>.notifyDataSetChanged();
                                      //  ((FirebaseRecyclerAdapter<items, itemsView>) firebaseUsersAdapter).notifyDataSetChanged();
@@ -879,6 +872,9 @@ boolean delete_item;
 
             refItem.removeValue();
             Original_weight_rnew=0;
+            Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(refresh);
+            MainActivity.this.finish();
            // this.notify();
         }
         else
@@ -994,12 +990,10 @@ boolean delete_item;
 
             }
         });
-
-
-
-
-
-
     }//end autoOrder
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseUsersAdapter.stopListening();
+    }
 }//big class
