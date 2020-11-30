@@ -103,7 +103,7 @@ public class ViewShoppingList extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        plaseOrder(userId);
+                        placeOrder(userId);
 
 
                     }
@@ -119,22 +119,17 @@ public class ViewShoppingList extends AppCompatActivity {
 
 
 
-    public  void plaseOrder(String UserId) {
-
-
+    public  void placeOrder(String UserId) {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
          String userId = UsersRef.child(currentUserID).getKey();
-
         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
         final DatabaseReference itemRef =UsersRef.child(userId).child("items");
-        Cursor res = db.getShoppingList(UserId);
+        Cursor res = db.getShoppingList(UserId);//retrieve local shopping list
         res.moveToFirst();
         if (res.getCount() > 0) {
-
-
             final ArrayList<OrderProduct> result = new ArrayList<>();
             double total_price = 0.0;
-            while (res.isAfterLast() == false) {
+            while (res.isAfterLast() == false) {//get the product info
                 String Barcode = res.getString(2);
                 String Name = res.getString(4);
                 long Size = Long.parseLong(res.getString(5));
@@ -142,32 +137,22 @@ public class ViewShoppingList extends AppCompatActivity {
                 int quantity = Integer.parseInt(res.getString(7));
                 result.add(new OrderProduct(Barcode, Name, quantity,Size,Price));
                 total_price = total_price + Price;
-                res.moveToNext();
-
-            }
+                res.moveToNext(); }
+            // get current date and time
             SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
             String Data = mDateFormatter.format(new Date());
-
             SimpleDateFormat mُTimeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
             String time = mُTimeFormatter.format(new Date());
-
-            //DatabaseReference ordersRef = OrderRef.child("Orders");
+            //creat new object
             CustomerOrder order = new CustomerOrder(UserId, "ارسال", total_price, Data, time, result);
-
             OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
-
             SQLiteDatabase mydb = db.getWritableDatabase();
-            db.DeleteShoppingList(mydb, UserId);
-
+            db.DeleteShoppingList(mydb, UserId);//delete local shopping list
             Toast.makeText(ViewShoppingList.this ,"تم إنشاء طلبك ",Toast.LENGTH_SHORT).show();
             Intent i = new Intent(ViewShoppingList.this, ViewOrders.class);
-            startActivity(i);
-
-        }
-        else
-        {
-            Toast.makeText(ViewShoppingList.this ," لم يتم إنشاء الطلب لأن قائمة التسوق فارغة ",Toast.LENGTH_SHORT).show();
-        }
+            startActivity(i); }
+        else // if shopping list is empty
+        { Toast.makeText(ViewShoppingList.this ," لم يتم إنشاء الطلب لأن قائمة التسوق فارغة ",Toast.LENGTH_SHORT).show(); }
 
     }
 
