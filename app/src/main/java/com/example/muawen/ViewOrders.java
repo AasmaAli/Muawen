@@ -76,7 +76,6 @@ public class ViewOrders extends AppCompatActivity {
                                 Log.d("TAG", "You don't have Orders ");
                             }
                         }}
-
                 Collections.sort(list, new Comparator<Order>(){
                     public int compare(Order date1, Order date2){
                         if (date1.getD() == null || date2.getD() == null)
@@ -91,6 +90,8 @@ public class ViewOrders extends AppCompatActivity {
                         return o1.getT().compareTo(o2.getT());
                     }
                 });
+
+
 
                 adapter=new MyAdapter(ViewOrders.this,list);
                 recyclerView.setAdapter(adapter);

@@ -30,7 +30,7 @@ public class Customer_ststus extends AppCompatActivity {
     ListView list;
     Button btn;
     DatabaseReference reference;
-    DatabaseReference Ref;
+    DatabaseReference Ref ,PRef;
     DatabaseReference mRef;
     FirebaseAuth mAuth;
     Query query;
@@ -103,21 +103,48 @@ public class Customer_ststus extends AppCompatActivity {
                                 for (DataSnapshot Value : key.getChildren()) {
                                     String ss = Value.getKey();
                                     System.out.println("the product keeeey here: " + ss);
-                                    Product p=new Product();
-                                    for (DataSnapshot childeren : Value.getChildren()) {
+                                    final Product p=new Product();
+                                    for (final DataSnapshot childeren : Value.getChildren()) {
 
                                         if (childeren.getKey().equals("brand")) {
+                                            String b=childeren.getValue().toString();
                                             p.setBrand(childeren.getValue().toString());
                                         }
                                         if (childeren.getKey().equals("name")) {
                                             p.setName(childeren.getValue().toString());
                                         }
-                                        if (childeren.getKey().equals("price")) {
+                                       /* if (childeren.getKey().equals("price")) {
                                             p.setPrice((Double) childeren.getValue());
-                                        }
+                                        }*/
                                         if (childeren.getKey().equals("size")) {
                                             p.setSize((Long) childeren.getValue());
-                                        }}
+                                        }
+                                    PRef=FirebaseDatabase.getInstance().getReference("Product");
+                                        PRef.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                                    String key=snapshot1.getKey();
+                                                    for (DataSnapshot child:snapshot.getChildren())
+                                                    {
+                                                        String key1=child.getKey();
+                                                        if(childeren.getKey().equals(key))
+                                                        if(key1.equals("Price")){
+                                                            System.out.print("THe price of the item "+child.getValue());
+                                                            p.setPrice((Double) child.getValue());
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+                                    }
+
                                         arrayList.add( " اسم المنتج: "+p.getName()+" الحجم: "+p.getSize()+" نوع المنتج: "+p.getBrand()+" السعر: "+p.getPrice());
                                         System.out.println("the arrrrray: " + arrayList);
                                         ArrayAdapter arrayAdapter = new ArrayAdapter(Customer_ststus.this, android.R.layout.simple_list_item_1, arrayList);
