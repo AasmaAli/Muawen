@@ -73,9 +73,13 @@ private ArrayAdapter<String> adapterday ;
 
                 if (Auto_order) {
                     Auto_orderGroup.check(R.id.Auto_order_yes);
+                    SpinnerDay.setEnabled(true);
+
                 }
                 else
                 {
+                    order_day.setText("---");
+                    SpinnerDay.setEnabled(false);
                     Auto_orderGroup.check(R.id.Auto_order_no);
                 }
 
@@ -99,9 +103,14 @@ private ArrayAdapter<String> adapterday ;
                 switch (checkedId) {
                     case R.id.Auto_order_yes:
                         Auto_order= true;
+                        order_day.setText(day_firebase);
+                        SpinnerDay.setEnabled(true);
+
                         break;
                     case R.id.Auto_order_no:
                         Auto_order = false;
+                        SpinnerDay.setEnabled(false);
+
                         break;
 
 
