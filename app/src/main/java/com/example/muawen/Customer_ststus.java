@@ -113,9 +113,9 @@ public class Customer_ststus extends AppCompatActivity {
                                         if (childeren.getKey().equals("name")) {
                                             p.setName(childeren.getValue().toString());
                                         }
-                                       /* if (childeren.getKey().equals("price")) {
+                                        if (childeren.getKey().equals("price")) {
                                             p.setPrice((Double) childeren.getValue());
-                                        }*/
+                                        }
                                         if (childeren.getKey().equals("size")) {
                                             p.setSize((Long) childeren.getValue());
                                         }
