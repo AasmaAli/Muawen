@@ -3,22 +3,20 @@ package com.example.muawen;
 public class Order {
     private String Name;
     private String ID;
-    private String P;
-    private String B;
-    private String Q;
+    private String Brand;
+    private String Quantity;
     private String S;
-    private String D;
-    private String T;
+    private String Date;
+    private String Time;
 
     public Order(String name,String status, String barcode, String quan, String id, String prod,String date,String Time) {
         Name=name;
         S = status;
-        B = barcode;
-        Q = quan;
+        Brand = barcode;
+        Quantity = quan;
         ID = id;
-        P = prod;
-        D=date;
-        T=Time;
+        Date=date;
+        this.Time=Time;
 
     }
 
@@ -26,11 +24,11 @@ public class Order {
     }
 
     public String getD() {
-        return D;
+        return Date;
     }
 
     public void setD(String date) {
-        D = date;
+        Date = date;
     }
 
     public String getName() {
@@ -38,27 +36,23 @@ public class Order {
     }
 
     public String getT() {
-        return T;
+        return Time;
     }
 
     public void setT(String t) {
-        T = t;
+        Time = t;
     }
 
     public String getID() {
         return ID;
     }
 
-    public String getP() {
-        return P;
-    }
-
     public String getQ() {
-        return Q;
+        return Quantity;
     }
 
     public String getB() {
-        return B;
+        return Brand;
     }
 
     public String getS() {
@@ -66,11 +60,11 @@ public class Order {
     }
 
     public void setQ(String q) {
-        Q = q;
+        Quantity = q;
     }
 
     public void setB(String code) {
-        B = code;
+        Brand = code;
     }
 
     public void setS(String status) {
@@ -81,9 +75,6 @@ public class Order {
         this.ID = id;
     }
 
-    public void setP(String p) {
-        P = p;
-    }
 
     public void setName(String name) {
         Name = name;
