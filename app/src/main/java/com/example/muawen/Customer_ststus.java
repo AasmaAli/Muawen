@@ -106,10 +106,6 @@ public class Customer_ststus extends AppCompatActivity {
                                     final Product p=new Product();
                                     for (final DataSnapshot childeren : Value.getChildren()) {
 
-                                        if (childeren.getKey().equals("brand")) {
-                                            String b=childeren.getValue().toString();
-                                            p.setBrand(childeren.getValue().toString());
-                                        }
                                         if (childeren.getKey().equals("name")) {
                                             p.setName(childeren.getValue().toString());
                                         }
@@ -145,7 +141,7 @@ public class Customer_ststus extends AppCompatActivity {
 
                                     }
 
-                                        arrayList.add( " اسم المنتج: "+p.getName()+" الحجم: "+p.getSize()+" نوع المنتج: "+p.getBrand()+" السعر: "+p.getPrice());
+                                        arrayList.add( " اسم المنتج: "+p.getName()+" الحجم: "+p.getSize()+" السعر: "+p.getPrice());
                                         System.out.println("the arrrrray: " + arrayList);
                                         ArrayAdapter arrayAdapter = new ArrayAdapter(Customer_ststus.this, android.R.layout.simple_list_item_1, arrayList);
                                         list.setAdapter(arrayAdapter);
