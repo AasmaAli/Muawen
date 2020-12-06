@@ -263,6 +263,24 @@ boolean delete_item;
                         startActivity(setupIntent);
                         finish();
                     }//end if
+                    else {
+                        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                //check if the customer apply the auto Order
+                                boolean auto_Order = (boolean) snapshot.child("Auto_order").getValue();//get value from firebase
+                                if (auto_Order) {//if true call  autoOrder();
+                                    autoOrder();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
 
                 }
 
@@ -280,23 +298,9 @@ boolean delete_item;
 
            // viewitem();
 
+
         }//else end
 
-        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //check if the customer apply the auto Order
-                boolean auto_Order = (boolean) snapshot.child("Auto_order").getValue();//get value from firebase
-                if (auto_Order) {//if true call  autoOrder();
-                    autoOrder();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }//On Start
 
@@ -316,16 +320,16 @@ boolean delete_item;
 
           @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
-
                 holder.deleteitem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view)
                     {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        //Display a confirmation message to add the item
                         builder.setMessage("هل أنت متاكد من حذف  المنتج؟")
                                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                                    public void onClick(DialogInterface dialog, int id) {// If accept
                                         //make sensor available
                                         getRef(position).addValueEventListener(new ValueEventListener() {
                                             @Override
@@ -333,12 +337,10 @@ boolean delete_item;
                                                 if (dataSnapshot.exists()) {
                                                     if (dataSnapshot.hasChild("Sensor")) {
                                                         String Sensor= dataSnapshot.child("Sensor").getValue().toString();
-
                                                         getRef(position).getParent().getParent().child("Sensors").child(Sensor).removeValue();
                                                     }
                                                 }
                                             }
-
                                             @Override
                                             public void onCancelled(DatabaseError databaseError) {
 
@@ -346,37 +348,20 @@ boolean delete_item;
                                         });
                                         //delete item
                                         getRef(position).removeValue();
-                                        //notifyItemRemoved(position);
-                                        //firebaseUsersAdapter.notifyItemRemoved(position);
-                                        //irebaseUsersAdapterf.notifyItemRemoved(position-1);
-                                       Intent refresh = new Intent(MainActivity.this, MainActivity.class);
+                                        //refresh page
+                                        Intent refresh = new Intent(MainActivity.this, MainActivity.class);
                                         startActivity(refresh);
                                         MainActivity.this.finish();
-                                        //Intent newInt = new Intent("android.intent.action.MainActivity");
-                                        //firebaseUsersAdapter<items>.notifyDataSetChanged();
-                                     //  ((FirebaseRecyclerAdapter<items, itemsView>) firebaseUsersAdapter).notifyDataSetChanged();
-                                        //notifyDataSetChanged();
-                                      //  Setetnotifydatachanged();
-                                        //notifyItemRemoved(position);
-                                        //startActivity(new Intent(MainActivity.this, MainActivity.class));
-
-                                      //  notifyItemRemoved(position);
-                                       // position =null;
-                                       // this.notify();
-                                        //notifyDataSetChanged();
-
 
                                     }//if click yes end
                                 })
-                                .setNegativeButton("لا", new DialogInterface.OnClickListener() {
+                                .setNegativeButton("لا", new DialogInterface.OnClickListener() {//If rejected
                                     public void onClick(DialogInterface dialog, int id) {
                                     }
                                 });
                         // Create the AlertDialog object and return it
                         AlertDialog deletemass= builder.create();
                         deletemass.show();
-
-
                     }
 
                     @NotNull
@@ -417,6 +402,9 @@ boolean delete_item;
                                 if(dataSnapshot.getKey().equals(model.getSensor())) {
                                     if (SensorWeight >= model.getOriginal_weight()) {//If the sensor value is greater than the original weight
                                         if (!(model.getOriginal_weight() - model.getCurrent_wieght() < 6)) {
+                                            /*If the current quantity is not only 1,
+                                            it will be calculated for the new pill and one will be reduced from the current quantity,
+                                             and the current weight will be taken.*/
                                             if (model.getCurrent_quantity() > 1) {
                                                 try {
                                                     getRef(position).child("Current_wieght").setValue(model.getOriginal_weight() - 5);
@@ -425,8 +413,9 @@ boolean delete_item;
                                                 }
                                             }
                                         }
-                                    } else if (!(SensorWeight <= 2)) {//Ensure that the sensor has a value
+                                    } else if (!(SensorWeight <= 2)) {// Ensure that the sensor has a value
                                         try {
+                                            //Make the current value equal to the sensor value
                                             getRef(position).child("Current_wieght").setValue(SensorWeight);
                                         } catch (Exception e) {
                                         }
@@ -567,13 +556,18 @@ boolean delete_item;
         public void setimageitem(items item){
             //Comparison between the current weight and the original weight of the appropriate icon display.
             ImageView item_icon = (ImageView) mView.findViewById(R.id.imageitem);
+            //If the current weight is greater than half of the original weight,  full Icon is displayed
             if(item.getCurrent_wieght()  > item.getOriginal_weight()/2)
                 item_icon.setImageResource(R.drawable.fullicon);
+            //If the current weight is greater than quarter of the original weight, the half icon will be displayed
             else if (item.getCurrent_wieght() <= item.getOriginal_weight()/ 2 && item.getCurrent_wieght() > item.getOriginal_weight()/ 4)
                 item_icon.setImageResource(R.drawable.halficon);
+            //If the current weight is less than a quarter of the original weight
+                // to suggest that the item is empty, a quarter icon will be displayed.
             else if(item.getCurrent_wieght() <= item.getOriginal_weight()/ 4 && item.getCurrent_wieght()> (item.getOriginal_weight()/ 4)/2 ) {
                 item_icon.setImageResource(R.drawable.quartericon);
             }
+            //if the item is empty an alert icon  will be displayed.
             else if(item.getCurrent_wieght()<= (item.getOriginal_weight()/ 4)/2 ) {
                 item_icon.setImageResource(R.drawable.alerticon);
             }
@@ -911,7 +905,6 @@ boolean delete_item;
 
 
     }
-
     private void autoOrder ()
     { final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID).child("Order_time");
@@ -946,6 +939,27 @@ boolean delete_item;
                         Cursor res = mDatabaseSL.getShoppingList(currentUserID);
                         res.moveToFirst();
                         if (res.getCount() > 0) {
+
+                            final DatabaseReference itemRef =UsersRef.child(currentUserID).child("items");
+                            itemRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                        String itemID = dataSnapshot.getKey();
+                                        if( snapshot.child(itemID).child("Decide_flag").getValue().toString().equals("0"));
+                                        { itemRef.child(itemID).child("Decide_flag").setValue("2");
+                                            String suggestion =  snapshot.child(itemID).child("Suggested_item").getValue().toString();
+                                            if ( !suggestion.equals("positiveone")&& !suggestion.equals("Negativeone")&&! suggestion.equals("-1") )
+                                            { UsersRef.child(currentUserID).child("Unlike").child(suggestion).setValue("True"); } }
+                                    }//end for
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
                             final ArrayList<OrderProduct> result = new ArrayList<>();
                             double total_price = 0.0;
                             while (res.isAfterLast() == false) {
@@ -991,6 +1005,8 @@ boolean delete_item;
             }
         });
     }//end autoOrder
+
+
     @Override
     protected void onStop() {
         super.onStop();

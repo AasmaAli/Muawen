@@ -57,6 +57,8 @@ public class Suggestionitem extends AppCompatActivity {
     String Item_size = null;
     String Item_price =null ;
     Product product =new Product();
+    boolean Unlike;
+    long itemSuggSize;
 
 
 
@@ -96,17 +98,18 @@ public class Suggestionitem extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(final SuggView holder, final int position, final items model) {
 
-                // product.InfoProduct(model.getProduct_ID());
-                //  toastMessage(" this is progct");
-                //product.setPrice(1000000);
+
 
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
                 if(model.getSuggested_item().equals("-1")){
                     //notifyDataSetChanged();
                     if(model.getSuggestion_flag().equals("1")){
+                        replacing(model.getProduct_ID(), getRef(position),model.getQuantity());
 
-                        replacing(model.getQuantity() ,model.getProduct_ID(), getRef(position), model);
+                        if (model.getSuggested_item().equals("-1")){
+                            getRef(position).child("Suggested_item").setValue("Negativeone");
+                        }
 
 
                     }else{
@@ -176,7 +179,6 @@ public class Suggestionitem extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        toastMessage("in XXXXXXXXX"+ Item_Name);
 
                     }
                 });
@@ -222,8 +224,13 @@ public class Suggestionitem extends AppCompatActivity {
 
                                 }
                                 if (dataSnapshot.hasChild("Size")) {
-                                    Sugg_size = dataSnapshot.child("Size").getValue().toString();
-                                    String Size = " بحجم آخر" + Sugg_size + "مل ";
+                                    Sugg_size = dataSnapshot.child("Size").getValue().toString();;
+                                    String Size;
+                                    if(model.getSuggestion_flag().equals("1")) {
+                                        Size = " بحجم أصغر (" + Sugg_size + "مل) ";
+                                    }else{
+                                        Size = " بحجم أكبر (" + Sugg_size + "مل) ";
+                                    }
                                     holder.setSugSize(Size);
 
                                 }
@@ -247,25 +254,32 @@ public class Suggestionitem extends AppCompatActivity {
                 //confirm
                 holder.Button_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View view)
+                    {
                         getRef(position).child("Decide_flag").setValue("1");
-                        if (model.getSuggested_item().equals("positiveone")) {//If the suggestion is to increase the quantity
-                            mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());//Delete the essential item from the shopping list
-                            long Quantity = model.getQuantity() + 1;
-                            AddtoShoppingList(model.getProduct_ID(), Quantity + "");//Added the new item to the shopping list
-                            getRef(position).child("quantity").setValue(Quantity);
-                        } else if (model.getSuggested_item().equals("Negativeone")) {//If the suggestion is to reduce the quantity
-                            mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());//Delete the essential item from the shopping list
-                            long Quantity = model.getQuantity() - 1;
-                            AddtoShoppingList(model.getProduct_ID(), Quantity + "");//Added the new item to the shopping list
-                            getRef(position).child("quantity").setValue(Quantity);
-                        } else {//If the suggestion was another item
-                            String Quantity = model.getQuantity() + "";
-                            AddtoShoppingList(model.getSuggested_item(), Quantity);//Added the new item to the shopping list
-                            mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());//Delete the essential item from the shopping list
-                            getRef(position).child("Product_ID").setValue(model.getSuggested_item());
-                        }
+                        if(Item_brand!= null && Item_Name!= null) {
+                            if (model.getSuggested_item().equals("positiveone")) {
+                                mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());
+                                long Quantity = model.getQuantity() + 1;
+                                AddtoShoppingList(model.getProduct_ID(), Quantity+"");
+                                // insertData(db, model.getProduct_ID(), Item_brand, Item_Name, Item_size, Item_price, Quantity + "");
+                                getRef(position).child("quantity").setValue(Quantity);
+
+                            } else {
+                                String Quantity = model.getQuantity() + "";
+                                AddtoShoppingList(model.getSuggested_item(), Quantity);
+
+                                // insertData(db, model.getSuggested_item(), Sugg_brand, Sugg_Name, Sugg_size, Sugg_price, Quantity);
+                                mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());
+
+                                getRef(position).child("Product_ID").setValue(model.getSuggested_item());
+                            }
+                        }else
+                            toastMessage("لقد حدث خطاء أعد المحاولة");
+
+
                     }
+
                     @NotNull
                     private View.OnClickListener getOnClickListener() {
                         return this;
@@ -280,9 +294,10 @@ public class Suggestionitem extends AppCompatActivity {
                     {
                         getRef(position).child("Decide_flag").setValue("2");
                         if(!model.getSuggested_item().equals("Negativeone") && !model.getSuggested_item().equals("positiveone") ){
-                            getRef(position).getParent().getParent().child("Unlike")
-                                    .child(model.getSuggested_item()).setValue("True");//Put the suggested item in the unlikeliest
+                            getRef(position).getParent().getParent().child("Unlike").child(model.getSuggested_item()).setValue("True");
+
                         }
+
                     }
 
                     @NotNull
@@ -291,6 +306,8 @@ public class Suggestionitem extends AppCompatActivity {
                     }
                 });
                 //Reject______________________________________________________________________________
+
+                //  }//if flag
 
             }//onBindViewHolder
 
@@ -385,26 +402,23 @@ public class Suggestionitem extends AppCompatActivity {
     }
 
 
-    private void replacing(long quantity , String itemBarcode, final DatabaseReference refItem, final items item) {
-
-
-        if(quantity!= 1){
+    private void replacing(String itemBarcode, final DatabaseReference refItem, long quantity) {
+        if(quantity >1){
             refItem.child("Suggested_item").setValue("Negativeone");
+            return;
 
-            return ;
         }
+
+
         Cursor res = mDatabaseSL.getItmeInfo(itemBarcode);
         res.moveToFirst();
         final String Brand = res.getString((res.getColumnIndex("Brand")));
         final String Name = res.getString(res.getColumnIndex("Name"));
         final long size = Long.parseLong(res.getString(res.getColumnIndex("size")));
-        double Price = Double.parseDouble(res.getString(res.getColumnIndex("Price")));
-        //product.setPrice(1000000);
-        //toastMessage(product.getName() +product.getSize()+product.getPrice()+" this is progct");
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("Product").orderByChild("Size").endAt(size);
+                .child("Product").orderByChild("Name").equalTo(Name);
 
 
         query.addValueEventListener(new ValueEventListener() {
@@ -415,45 +429,45 @@ public class Suggestionitem extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         itemSugg = dataSnapshot.getKey();
                         // toastMessage(m+" tis is m");
-                        if (((dataSnapshot.child("Brand").getValue().toString().equals(Brand) && Long.parseLong(dataSnapshot.child("Size").getValue().toString()) < size)||
-                                (!dataSnapshot.child("Brand").getValue().toString().equals(Brand) && Long.parseLong(dataSnapshot.child("Size").getValue().toString()) == size))
-                                && (dataSnapshot.child("Name").getValue().toString().equals(Name))) {
-                            toastMessage(itemSugg + " thhhhh ");
-                            toastMessage(" add");
-                            refItem.child("Suggested_item").setValue(itemSugg);
+                        if ((!dataSnapshot.child("Brand").getValue().toString().equals(Brand) && Long.parseLong(dataSnapshot.child("Size").getValue().toString()) == size)|| (dataSnapshot.child("Brand").getValue().toString().equals(Brand)&&Long.parseLong(dataSnapshot.child("Size").getValue().toString()) < size)) {
+                            Unlike =false;
+                            // refItem.child("Suggested_item").setValue(itemSugg);
 
                             Query query_unlike = User.child("Unlike");
                             final String finalM = itemSugg;
                             query_unlike.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                    toastMessage(finalM + " 2222 ");
                                     String itme_unlike;
+
                                     searchInUnlke:
                                     {
                                         for (DataSnapshot dataSnapshot1 : snapshot2.getChildren()) {
                                             itme_unlike = dataSnapshot1.getKey();
-                                            toastMessage(" unlkie" + itme_unlike);
                                             if (finalM.equals(itme_unlike)) {
-                                                item.setSuggested_item("-1");
+
                                                 break searchInUnlke;
 
                                             }
 
                                         }//for 1
-                                        refItem.child("Suggested_item").setValue(finalM);
+                                        Unlike =true;
 
+                                        refItem.child("Suggested_item").setValue(finalM);
                                     }
 
                                 }
+
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     Toast.makeText(Suggestionitem.this, "oops", Toast.LENGTH_SHORT).show();
                                 }
+
                             });
                         }
-                        if(!item.getSuggested_item().equals("-1")) {
+                        if(Unlike) {
+
                             break searchInProdct;
                         }
                     }//for 2
@@ -465,7 +479,6 @@ public class Suggestionitem extends AppCompatActivity {
                 Toast.makeText(Suggestionitem.this, "oops", Toast.LENGTH_SHORT).show();
             }
         });
-        // toastMessage(query+"");
 
 
     }
@@ -483,56 +496,66 @@ public class Suggestionitem extends AppCompatActivity {
 
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
-                .child("Product").orderByChild("Size").startAt(size);
+                .child("Product").orderByChild("Name").equalTo(Name);
 
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String item;
+                long itemSize ;
+                itemSuggSize = 0;
                 String itemSugg;
+
                 searchInProdct: {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        itemSugg = dataSnapshot.getKey();
-                        // toastMessage(m+" tis is m");
-                        if (dataSnapshot.child("Brand").getValue().toString().equals(Brand) && Long.parseLong(dataSnapshot.child("Size").getValue().toString()) > size
-                        && (dataSnapshot.child("Name").getValue().toString().equals(Name))) {
-                            toastMessage(itemSugg + " thhhhh ");
-                            toastMessage(" add");
-                            refItem.child("Suggested_item").setValue(itemSugg);
+                        item = dataSnapshot.getKey();
+                        itemSize = Long.parseLong(dataSnapshot.child("Size").getValue().toString());
 
-                            Query query_unlike = User.child("Unlike");
-                            final String finalM = itemSugg;
-                            query_unlike.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                    toastMessage(finalM + " 2222 ");
-                                    String itme_unlike;
-                                    searchInUnlke:
-                                    {
-                                        for (DataSnapshot dataSnapshot1 : snapshot2.getChildren()) {
-                                            itme_unlike = dataSnapshot1.getKey();
-                                            toastMessage(" unlkie" + itme_unlike);
-                                            if (finalM.equals(itme_unlike)) {
-                                                item.setSuggested_item("-1");
-                                                break searchInUnlke;
 
-                                            }
+                        if (dataSnapshot.child("Brand").getValue().toString().equals(Brand) &&  itemSize> size) {
+                            Unlike = false;
 
-                                        }//for 1
-                                        refItem.child("Suggested_item").setValue(finalM);
+                            if (itemSize < itemSuggSize|| itemSuggSize ==0) {
+
+                                Query query_unlike = User.child("Unlike");
+                                final String finalM = item;
+                                final long Size = itemSize;
+
+                                query_unlike.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                        String itme_unlike;
+                                        searchInUnlke:
+                                        {
+                                            for (DataSnapshot dataSnapshot1 : snapshot2.getChildren()) {
+                                                itme_unlike = dataSnapshot1.getKey();
+                                                if (finalM.equals(itme_unlike)) {
+
+                                                    break searchInUnlke;
+
+                                                }
+
+                                            }//for 1
+                                            Unlike = true;
+                                            itemSuggSize=Size;
+                                            refItem.child("Suggested_item").setValue(finalM);
+                                        }
 
                                     }
 
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    Toast.makeText(Suggestionitem.this, "oops", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(Suggestionitem.this, "oops", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                });
+                            }
                         }
-                        if(!item.getSuggested_item().equals("-1")) {
-                            break searchInProdct;
+                        if(Unlike) {
+                            itemSuggSize=itemSize;
+                            itemSugg=item;
                         }
                     }//for 2
                 }//seach

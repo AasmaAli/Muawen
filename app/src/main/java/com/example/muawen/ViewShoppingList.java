@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.database.Cursor;
@@ -73,9 +74,11 @@ public class ViewShoppingList extends AppCompatActivity {
             button = findViewById(R.id.button);
 
 
+
             Cursor res = db.getShoppingList(userId);
             res.moveToFirst();
             if (res.getCount() > 0) {
+                button.setEnabled(true);
 
                 while (res.isAfterLast() == false) {
 
@@ -106,12 +109,15 @@ public class ViewShoppingList extends AppCompatActivity {
                         placeOrder(userId);
 
 
+
                     }
                 });
             } // end count
             else {
                 empty_text=findViewById(R.id.empty_shopping_list);
                 empty_text.setText(" قائمة التسوق فارغة ");
+
+
             }
         }//not null
 
@@ -119,14 +125,32 @@ public class ViewShoppingList extends AppCompatActivity {
 
 
 
-    public  void placeOrder(String UserId) {
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("User");
-         String userId = UsersRef.child(currentUserID).getKey();
+    public  void placeOrder(final String UserId) {
+
+
         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-        final DatabaseReference itemRef =UsersRef.child(userId).child("items");
+
         Cursor res = db.getShoppingList(UserId);//retrieve local shopping list
         res.moveToFirst();
         if (res.getCount() > 0) {
+            final DatabaseReference itemRef =UsersRef.child(UserId).child("items");
+            itemRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String itemID = dataSnapshot.getKey();
+                        if( snapshot.child(itemID).child("Decide_flag").getValue().toString().equals("0"));
+                        { itemRef.child(itemID).child("Decide_flag").setValue("2");
+                            String suggestion =  snapshot.child(itemID).child("Suggested_item").getValue().toString();
+                            if ( !suggestion.equals("positiveone")&& !suggestion.equals("Negativeone")&&! suggestion.equals("-1") )
+                            { UsersRef.child(UserId).child("Unlike").child(suggestion).setValue("True"); } }
+                    }//end for
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             final ArrayList<OrderProduct> result = new ArrayList<>();
             double total_price = 0.0;
             while (res.isAfterLast() == false) {//get the product info
@@ -141,8 +165,8 @@ public class ViewShoppingList extends AppCompatActivity {
             // get current date and time
             SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
             String Data = mDateFormatter.format(new Date());
-            SimpleDateFormat mُTimeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
-            String time = mُTimeFormatter.format(new Date());
+            SimpleDateFormat mTimeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+            String time = mTimeFormatter.format(new Date());
             //creat new object
             CustomerOrder order = new CustomerOrder(UserId, "ارسال", total_price, Data, time, result);
             OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
@@ -155,6 +179,8 @@ public class ViewShoppingList extends AppCompatActivity {
         { Toast.makeText(ViewShoppingList.this ," لم يتم إنشاء الطلب لأن قائمة التسوق فارغة ",Toast.LENGTH_SHORT).show(); }
 
     }
+
+
 
 
 }//class

@@ -80,29 +80,26 @@ public class AddItem extends AppCompatActivity  {
         //barcode
 
       //Barcode reading
-        scan_barcode_item= findViewById(R.id.Buttons_add_barcode);
+        scan_barcode_item= findViewById(R.id.Buttons_add_barcode);//Define barcode the button
         scan_barcode_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //This will move it to open the camera and capture the code
                 startActivity(new Intent(getApplicationContext(),ScanCodeActivity.class));
-                  Productinfo(barcode.getText().toString());
+                //This method call to display the rest of the product information
+                Productinfo(barcode.getText().toString());
             }
         });
 
-
-
-
-        //______________________-
-        //sensor
-        scan_QR_item= findViewById(R.id.QR);
+        //QR reading
+        scan_QR_item= findViewById(R.id.QR);//Define QR code the button
         scan_QR_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //This will move it to open the camera and capture the code
                 startActivity(new Intent(getApplicationContext(),ScanQR.class));
-
+                //This method calls to display a message telling the user to put the product on the scale
                 PutItem();
-
             }
         });
 
@@ -375,17 +372,23 @@ if(ScanQRCode==null){
             //Add item
             ItemRef = UsersRef.child("items");
             Map userMap = new HashMap();
+            //Entered the system, it is the day added the item
             userMap.put("Add_day", now);
-            userMap.put("quantity",Quantity );
-            userMap.put("Current_quantity", Quantity);
+            //Default values are added automatically for each item
             userMap.put("Suggested_item", "-1");
             userMap.put("Suggestion_flag", "0");
-            userMap.put("Product_ID", BarCode);
+            userMap.put("Decide_flag", "-1");
+            //The original weight is taken from the scale when placing the item
             userMap.put("Current_wieght", Original_weight-5);
             userMap.put("Original_weight", Original_weight);
+            //Entered from the user
+            userMap.put("Product_ID", BarCode);
             userMap.put("Sensor", ScanQRCode);
             userMap.put("Exp_date", Exp_Date);
-            userMap.put("Decide_flag", "-1");
+            userMap.put("quantity",Quantity );
+            userMap.put("Current_quantity", Quantity);
+
+            //Add all data to the database
             ItemRef.getParent().child("Sensors").child(ScanQRCode).setValue(true);
 
 
