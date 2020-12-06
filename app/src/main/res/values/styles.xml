@@ -3,9 +3,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
 
-        <item name="colorPrimary">@android:color/darker_gray</item>
-        <item name="colorPrimaryDark">@android:color/holo_green_dark</item>
-        <item name="colorAccent">@android:color/holo_green_light</item>
+        <item name="colorPrimary">@android:color/secondary_text_light_nodisable</item>
+        <item name="colorPrimaryDark">#1F3708</item>
+        <item name="colorAccent">@android:color/holo_green_dark</item>
     </style>
 
 </resources>

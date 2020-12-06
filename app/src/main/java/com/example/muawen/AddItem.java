@@ -1,6 +1,7 @@
 package com.example.muawen;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -52,6 +53,8 @@ public class AddItem extends AppCompatActivity  {
     int count_quantity =0;
     int ExpDateCheck=0;
     public String sensorNum = null;
+    private Toolbar mToolbar;
+
 
 
     DatePickerDialog.OnDateSetListener setListener;
@@ -66,6 +69,9 @@ public class AddItem extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
+        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("إضافة منتج");
 
         //database
         mAuth = FirebaseAuth.getInstance();

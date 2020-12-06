@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/backgrund2">
 
+    <include
+        android:id="@+id/main_page_toolbar"
+        layout="@layout/app_bar_layout"
+        >
 
-    <ImageView
-        android:id="@+id/register_icon"
-        android:layout_width="400dp"
-        android:layout_height="134dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+    </include>
 
-        android:contentDescription="@string/logo_of_application"
-        app:srcCompat="@drawable/logo24" />
 
     <LinearLayout
         android:layout_width="match_parent"
 
-        android:layout_height="471dp"
+        android:layout_height="415dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="99dp"
+        android:layout_marginBottom="217dp"
         android:orientation="vertical"
         android:paddingTop="16dp">
 
@@ -38,7 +40,8 @@
         <EditText
             android:id="@+id/Email_data2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/phone_text"
@@ -54,7 +57,8 @@
         <EditText
             android:id="@+id/phone_data2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/name_text"
@@ -73,7 +77,8 @@
         <EditText
             android:id="@+id/name_data2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
 
 
         <TextView
@@ -92,7 +97,8 @@
         <EditText
             android:id="@+id/address_data2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,17 +107,6 @@
             android:orientation="horizontal"
             android:paddingTop="12dp">
 
-
-            <TextView
-                android:id="@+id/order_time_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:textColor="#000000"
-                android:textSize="14dp"
-
-
-                />
 
             <TextView
 
@@ -124,6 +119,18 @@
 
 
                 />
+
+            <TextView
+                android:id="@+id/order_time_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -132,15 +139,6 @@
             android:gravity="right"
             android:orientation="horizontal"
             android:paddingTop="12dp">
-
-            <Spinner
-                android:id="@+id/Spinner_order_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-
-
-                />
 
             <TextView
                 android:id="@+id/Change_day"
@@ -153,6 +151,15 @@
 
                 />
 
+            <Spinner
+                android:id="@+id/Spinner_order_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+
+
+                />
+
         </LinearLayout>
 
         <LinearLayout
@@ -161,6 +168,18 @@
             android:gravity="right"
             android:orientation="horizontal"
             android:paddingTop="12dp">
+
+            <TextView
+                android:id="@+id/Auto_order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+                android:text="هل تريد تفعيل الطلب التلقائي ؟ "
+                android:textColor="#000000"
+                android:textSize="14dp"
+
+                />
 
             <RadioGroup
                 android:id="@+id/Auto_order_RadioGroup"
@@ -190,18 +209,6 @@
                     android:textAlignment="gravity" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/Auto_order_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-
-                android:text="هل تريد تفعيل الطلب التلقائي ؟ "
-                android:textColor="#000000"
-                android:textSize="14dp"
-
-                />
-
 
         </LinearLayout>
 
@@ -210,16 +217,23 @@
 
     <Button
         android:id="@+id/update_button"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:onClick="update"
+        android:layout_width="232dp"
+        android:layout_height="67dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="91dp"
+        android:layout_marginTop="569dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="95dp"
         android:background="@drawable/buttons"
+        android:onClick="update"
         android:padding="15dp"
+        android:text="حفظ التعديل "
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="حفظ التعديل "
-         />
+        android:textStyle="bold" />
 
 
-</LinearLayout>
+</RelativeLayout>

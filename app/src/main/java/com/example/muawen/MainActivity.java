@@ -111,7 +111,7 @@ boolean delete_item;
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("الصفحة الرئيسة");
+        getSupportActionBar().setTitle("الصفحة الرئيسية");
         drawerLayout = (DrawerLayout) findViewById(R.id.drawable_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -730,9 +730,6 @@ boolean delete_item;
 
     private void Update_item(final DatabaseReference ref2, final long quantity, final String product_id, final String sensor) {
         ref = ref2;
-
-
-        toastMessage("On "+ ref);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("هذا الخيار فقط إن وصلك الطلب من المتجر وتريد التجديد.. هل تريد فعل هذا الآن؟")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
@@ -741,11 +738,7 @@ boolean delete_item;
                         final int year = calendar.get(Calendar.YEAR);
                         final int month = calendar.get(Calendar.MONTH);
                         final int day = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-
-
-
                         DatePickerDialog datePickerDialog = new DatePickerDialog(
-
                                 MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth
                                 ,setListener,year,day,month);
                         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -757,22 +750,16 @@ boolean delete_item;
 
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-
                                 month = month+1;
                                 if(month<10 && dayOfMonth<10){
-
                                     Exp_Date= year+"/0"+month+"/0"+dayOfMonth;
-
                                 }
                                 else if (month<10 ){
                                     Exp_Date= year+"/0"+month+"/"+dayOfMonth;
                                 }else if (dayOfMonth<10){
                                     Exp_Date= year+"/"+month+"/0"+dayOfMonth;
-
                                 }else {
                                     Exp_Date= year+"/"+month+"/"+dayOfMonth;
-
                                 }
                                 long days=-1;
                                 try {
@@ -780,21 +767,15 @@ boolean delete_item;
 
                                 } catch (ParseException e) {
                                     e.printStackTrace();
-
                                 }
                                 if(days>0){
                                     //call Update_in_Database
-
                                     PutItem(ref, Exp_Date , quantity  , product_id,sensor);
-
                                 }else{
                                     toastMessage("التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح");
                                 }
-
                             }
                         };
-
-
                     }//if click yes end_______________________________________________________________________________________________-
                 })
                 .setNegativeButton("لا", new DialogInterface.OnClickListener() {
@@ -806,18 +787,13 @@ boolean delete_item;
         // Create the AlertDialog object and return it
         AlertDialog deletemass= builder.create();
         deletemass.show();
-
-
     }//Update_item
 
     private void PutItem(final DatabaseReference ref2, final String exp_Date, final long quantity,final String product_id, final String sensor) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.put_on_the_sensor, null);
         Button but_OK= (Button)mView.findViewById(R.id.pou_on_the_sensor);
-        //toastMessage("On 2 "+ ref);
         takeWeight(sensor);
-        //toastMessage("On 666 "+ Original_weight_rnew);
-
         alert.setView(mView);
         final AlertDialog alertDialog =alert.create();
         alertDialog.setCanceledOnTouchOutside(false);
@@ -834,15 +810,13 @@ boolean delete_item;
     }
 
     private void Update_in_Database(DatabaseReference refItem, String exp_Date, long quantity, String product_id, String sensor) {
-        //delete_item(ref);
         refItem = ref;
         DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID);
         ItemRef = UsersRef.child("items");
         SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String now = mDateFormatter.format(new Date());
         takeWeight(sensor);
-        // toastMessage("333"+sensor + Original_weight_rnew  );
-        //  Original_weight_rnew=0;
+
 
         if(Original_weight_rnew >2){
 
@@ -861,7 +835,6 @@ boolean delete_item;
             toastMessage("222"+ userMap );
             ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
             userMap.clear();
-            toastMessage("333"+ userMap );
 
 
             refItem.removeValue();
@@ -869,7 +842,6 @@ boolean delete_item;
             Intent refresh = new Intent(MainActivity.this, MainActivity.class);
             startActivity(refresh);
             MainActivity.this.finish();
-           // this.notify();
         }
         else
             toastMessage("لم يتم وضع المنتج على الميزان الرجاء المحاولة مره أخرى");
@@ -887,23 +859,14 @@ boolean delete_item;
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.hasChild("Weight")) {
                         Original_weight_rnew = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
-                        // toastMessage("this is"+ Original_weight_rnew);
-                        //ref.child("Original_weight").setValue(Original_weight_rnew);
-                        //ref.child("Current_wieght").setValue(Original_weight_rnew-5);
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-
-
-
-
     }
     private void autoOrder ()
     { final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
@@ -934,8 +897,6 @@ boolean delete_item;
                     if (Day.equals(currentDay))//if true then  place order process will be continue
                     {
                         DatabaseReference  OrderRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-
-
                         Cursor res = mDatabaseSL.getShoppingList(currentUserID);
                         res.moveToFirst();
                         if (res.getCount() > 0) {
@@ -975,22 +936,15 @@ boolean delete_item;
                             }
                             SimpleDateFormat mDateFormatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
                             String Data = mDateFormatter.format(new Date());
-
                             SimpleDateFormat mُTimeFormatter1 = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
                             String time = mُTimeFormatter1.format(new Date());
 
                             //DatabaseReference ordersRef = OrderRef.child("Orders");
                             CustomerOrder order = new CustomerOrder(currentUserID, "ارسال", total_price, Data, time, result);
-
                             OrderRef.child(String.valueOf(System.currentTimeMillis())).setValue(order);
-
                             SQLiteDatabase mydb = mDatabaseSL.getWritableDatabase();
                             mDatabaseSL.DeleteShoppingList(mydb, currentUserID);
-
                             Toast.makeText(MainActivity.this ,"تم إنشاء طلبك وسوف يتم التوصيل خلال ٢٤ ساعة ",Toast.LENGTH_SHORT).show();
-
-
-
                         }// end res cheak
                     }
 

@@ -2,6 +2,7 @@ package com.example.muawen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,7 @@ public class Suggestionitem extends AppCompatActivity {
     Product product =new Product();
     boolean Unlike;
     long itemSuggSize;
+    Toolbar mToolbar;
 
 
 
@@ -67,6 +69,10 @@ public class Suggestionitem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggestionitem);
+
+         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("منتجات مقترحة");
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();

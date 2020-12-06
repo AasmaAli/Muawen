@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#16121111">
+    android:background="@drawable/backgrund">
 
     <ImageView
         android:id="@+id/login_icon"
@@ -24,19 +24,19 @@
         android:layout_marginTop="64dp"
         android:autofillHints=""
         android:background="@drawable/inputs"
+        android:drawableEnd="@drawable/email"
         android:ems="10"
         android:hint="@string/الإيميل"
         android:inputType="textEmailAddress"
         android:padding="10dp"
-        android:drawableEnd="@drawable/email"
         tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/Password"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/Email"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="305dp"
@@ -52,7 +52,7 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="match_parent"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="451dp"
@@ -68,12 +68,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="106dp"
+        android:layout_marginBottom="153dp"
         android:gravity="center"
         android:text="@string/new_account"
-        android:textColor="#8F0C0C0C"
+        android:textColor="@color/holo_green_dark"
         android:textSize="18sp"
         android:textStyle="bold" />
 

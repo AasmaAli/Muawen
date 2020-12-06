@@ -2,6 +2,7 @@ package com.example.muawen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -33,12 +34,18 @@ public class EditProfile extends AppCompatActivity  implements AdapterView.OnIte
     boolean Auto_order , changeOrderDay , isChangeOrderDay,oldAutoOrder;
     private RadioGroup Auto_orderGroup;
 private ArrayAdapter<String> adapterday ;
+    Toolbar mToolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+
+         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("الإعدادات");
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("User").child(userId);
@@ -188,9 +195,14 @@ private ArrayAdapter<String> adapterday ;
     {
         if (!phone_firebase.equals(phone.getText().toString()))
         {
-            reference.child("Phone_number").setValue(phone.getText().toString());
-            phone_firebase = phone.getText().toString();
-            return true ;
+            if(phone.getText().toString().length()==10) {
+                reference.child("Phone_number").setValue(phone.getText().toString());
+                phone_firebase = phone.getText().toString();
+                return true;
+            }else{
+                Toast.makeText(this, "يجب أن يتكون رقم الجوال من عشرة أرقام", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         else {
             return false;
@@ -213,13 +225,7 @@ private ArrayAdapter<String> adapterday ;
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent.getId() == R.id.Spinner_order_day){
             Theday =parent.getItemAtPosition(position).toString();
-
-
-
         }
-
-
-
     }
 
     @Override

@@ -2,6 +2,7 @@
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,6 +52,7 @@ public class ViewShoppingList extends AppCompatActivity {
     private DatabaseReference UsersRef;
     String currentUserID;
     private TextView empty_text;
+    Toolbar mToolbar;
 
 
 
@@ -60,6 +62,10 @@ public class ViewShoppingList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_shopping_list);
+         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("قائمة التسوق");
+
 
 
         mAuth = FirebaseAuth.getInstance();

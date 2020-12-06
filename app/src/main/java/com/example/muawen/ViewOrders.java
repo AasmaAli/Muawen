@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,12 +32,17 @@ public class ViewOrders extends AppCompatActivity {
     MyAdapter adapter;
     FirebaseUser user;
     Order o;
+    Toolbar mToolbar;
     @SuppressLint("StaticFieldLeak")
     public static Activity activity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_order);
+
+         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("طلباتي");
 
         reference= FirebaseDatabase.getInstance().getReference("Orders");
         mAuth = FirebaseAuth.getInstance();

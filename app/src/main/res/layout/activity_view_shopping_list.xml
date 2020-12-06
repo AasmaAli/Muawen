@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewShoppingList">
+    tools:context=".ViewShoppingList"
+    android:background="@drawable/backgrund2">
+
+    <include
+        android:id="@+id/main_page_toolbar"
+        layout="@layout/app_bar_layout"
+        >
+
+    </include>
+
+
 
 
     <ListView
