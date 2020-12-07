@@ -832,7 +832,6 @@ boolean delete_item;
             userMap.put("Original_weight", Original_weight_rnew);
             userMap.put("Sensor", sensor);
             userMap.put("Exp_date", Exp_Date);
-            toastMessage("222"+ userMap );
             ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
             userMap.clear();
 

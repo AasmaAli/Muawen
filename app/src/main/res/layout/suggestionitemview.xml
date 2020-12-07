@@ -51,7 +51,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/Item_Size"
+                android:id="@+id/Item_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -73,7 +73,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/Item_brand"
+                android:id="@+id/Item_Size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -88,25 +88,14 @@
         <LinearLayout
             android:id="@+id/info_suggest"
             android:layout_width="match_parent"
-            android:layout_height="22dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="#00121111"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/suggest_Price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text=""
-                android:textAlignment="center"
-                android:textColor="#121111">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/suggest_Size"
+                android:id="@+id/suggest_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -128,7 +117,18 @@
             </TextView>
 
             <TextView
-                android:id="@+id/suggest_name"
+                android:id="@+id/suggest_Size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#121111">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/suggest_Price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -150,8 +150,8 @@
 
             <Button
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="50dp"
-                android:layout_height="10dp"
+                android:layout_width="36dp"
+                android:layout_height="11dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -167,15 +167,15 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/buttons"
+                android:background="@drawable/buttons3"
                 android:text="موافق"
                 android:textColor="#101010"
                 android:textStyle="bold" />
 
             <Button
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="135dp"
-                android:layout_height="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -200,8 +200,8 @@
 
             <Button
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="50dp"
-                android:layout_height="10dp"
+                android:layout_width="40dp"
+                android:layout_height="14dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"

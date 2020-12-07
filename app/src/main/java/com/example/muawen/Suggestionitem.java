@@ -219,7 +219,7 @@ public class Suggestionitem extends AppCompatActivity {
                             if (dataSnapshot.exists()) {
                                 if (dataSnapshot.hasChild("Name")) {
                                     Sugg_Name= dataSnapshot.child("Name").getValue().toString();
-                                    String Name = "فإننا نقترح بإستبداله " + Sugg_Name + " ";
+                                    String Name = "فإننا نقترح بإستبداله " + Sugg_Name + "";
                                     holder.setSugName(Name);
 
                                 }
@@ -233,7 +233,7 @@ public class Suggestionitem extends AppCompatActivity {
                                     Sugg_size = dataSnapshot.child("Size").getValue().toString();;
                                     String Size;
                                     if(model.getSuggestion_flag().equals("1")) {
-                                        Size = " بحجم أصغر (" + Sugg_size + "مل) ";
+                                        Size = "بحجم  (" + Sugg_size + "مل) ";
                                     }else{
                                         Size = " بحجم أكبر (" + Sugg_size + "مل) ";
                                     }
