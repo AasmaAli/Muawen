@@ -11,8 +11,7 @@
     android:background="@drawable/backgrund2">
 
 
-
-<androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,6 +33,16 @@
         </include>
 
 
+        <TextView
+            android:id="@+id/additem_massge"
+            android:layout_width="211dp"
+            android:layout_height="67dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="467dp"
+            android:text="TextView"
+            android:textAlignment="textStart" />
 
         <FrameLayout
             android:id="@+id/Main_container"
@@ -67,3 +76,15 @@
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+
+
+
+
+
+
+
+
+

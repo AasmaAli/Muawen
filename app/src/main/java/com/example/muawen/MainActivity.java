@@ -88,6 +88,8 @@ boolean delete_item;
     private DatabaseReference ItemRef;
     DatabaseReference ref;
 
+    int items = 0;
+
 
 
     String currentUserID;
@@ -308,6 +310,7 @@ boolean delete_item;
     private void viewitem() {
 
 
+
         ItemRef =UsersRef.child(currentUserID).child("items");
 
          final FirebaseRecyclerOptions<items> options = new FirebaseRecyclerOptions.Builder<items>()
@@ -317,9 +320,9 @@ boolean delete_item;
         firebaseUsersAdapter = new FirebaseRecyclerAdapter<items, itemsView>(
                 options) {
 
-
           @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
+              items++;
                 holder.deleteitem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view)
@@ -511,6 +514,10 @@ boolean delete_item;
         firebaseUsersAdapter.startListening();
 
 
+        if(items==0){
+            TextView m = findViewById(R.id.additem_massge);
+            m.setText("لا يوجد لديك منتجات قم بإضافة منتجاتك");
+        }
     }// viwe item
 
 

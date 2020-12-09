@@ -15,12 +15,12 @@
         android:text="@string/potonthesensor"
         android:textAlignment="center"
         android:textColor="#4CAF50"
-        android:textSize="22dp" />
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="272dp"
-        android:layout_height="313dp"
+        android:layout_width="240dp"
+        android:layout_height="270dp"
         app:srcCompat="@drawable/item_on_sensor" />
 
     <Button

@@ -39,8 +39,8 @@
     <string name="item_brand">الشركة</string>
     <string name="Date">تاريخ الأنتهاء</string>
     <string name="numsensor">رقم المستشعر</string>
-    <string name="potonthesensor">ضع المنتج على المستشعر</string>
-    <string name="ok">حسناً</string>
+    <string name="potonthesensor"> ضع المنتج على المستشعر ثم أضغط موافق</string>
+    <string name="ok">موافق</string>
     <string name="QR">"أمسح الشريط الذي أسفل الميزان "</string>
 
 </resources>
