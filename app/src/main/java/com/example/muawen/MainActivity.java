@@ -739,11 +739,12 @@ boolean delete_item;
 
     private void Update_item(final DatabaseReference ref2, final long quantity, final String product_id, final String sensor) {
         ref = ref2;
-        toastMessage("قم بإدخال تاريخ الإنتهاء");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("هذا الخيار فقط إن وصلك الطلب من المتجر وتريد التجديد.. هل تريد فعل هذا الآن؟")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {//___________________________________________________________
+                        toastMessage("قم بإدخال تاريخ الإنتهاء");
+
                         Calendar calendar = Calendar.getInstance();
                         final int year = calendar.get(Calendar.YEAR);
                         final int month = calendar.get(Calendar.MONTH);

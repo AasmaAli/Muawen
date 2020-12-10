@@ -576,7 +576,6 @@ public class Suggestionitem extends AppCompatActivity {
                 Toast.makeText(Suggestionitem.this, "oops", Toast.LENGTH_SHORT).show();
             }
         });
-        // toastMessage(query+"");
 
 
     }
