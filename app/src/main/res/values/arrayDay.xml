@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="Days">
+        <item>---</item>
         <item>الأحد</item>
         <item>الأثنين</item>
         <item>الثلاثاء</item>

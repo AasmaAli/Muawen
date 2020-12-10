@@ -79,6 +79,7 @@ boolean delete_item;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private Toolbar mToolbar;
+    TextView no_items;
 
 
 
@@ -88,7 +89,6 @@ boolean delete_item;
     private DatabaseReference ItemRef;
     DatabaseReference ref;
 
-    int items = 0;
 
 
 
@@ -125,7 +125,8 @@ boolean delete_item;
 
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
+        no_items = findViewById(R.id.additem_massge);
+        no_items.setText("لا يوجد لديك منتجات قم بإضافة منتجاتك");
 
 
         if(currentUser != null) {
@@ -322,7 +323,7 @@ boolean delete_item;
 
           @Override
             protected void onBindViewHolder(final itemsView holder, final int position, final items model) {
-              items++;
+              no_items.setText("");
                 holder.deleteitem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view)
@@ -339,8 +340,14 @@ boolean delete_item;
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 if (dataSnapshot.exists()) {
                                                     if (dataSnapshot.hasChild("Sensor")) {
-                                                        String Sensor= dataSnapshot.child("Sensor").getValue().toString();
-                                                        getRef(position).getParent().getParent().child("Sensors").child(Sensor).removeValue();
+                                                        try {
+
+
+                                                            String Sensor = dataSnapshot.child("Sensor").getValue().toString();
+                                                            getRef(position).getParent().getParent().child("Sensors").child(Sensor).removeValue();
+                                                        }catch (Exception e){
+
+                                                        }
                                                     }
                                                 }
                                             }
@@ -514,10 +521,6 @@ boolean delete_item;
         firebaseUsersAdapter.startListening();
 
 
-        if(items==0){
-            TextView m = findViewById(R.id.additem_massge);
-            m.setText("لا يوجد لديك منتجات قم بإضافة منتجاتك");
-        }
     }// viwe item
 
 
@@ -681,7 +684,7 @@ boolean delete_item;
         if (insertData) {
             toastMessage("لقد أضفنا منتج إلى قائمة التسوق");
         } else {
-            toastMessage("Something went wrong");
+            toastMessage("حدث خطاء أثناء إضافة المنتج لقائمة التسوق");
         }
 
     }
@@ -690,7 +693,6 @@ boolean delete_item;
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
-
     public boolean delete_item(final DatabaseReference RefItem) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -737,6 +739,7 @@ boolean delete_item;
 
     private void Update_item(final DatabaseReference ref2, final long quantity, final String product_id, final String sensor) {
         ref = ref2;
+        toastMessage("قم بإدخال تاريخ الإنتهاء");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("هذا الخيار فقط إن وصلك الطلب من المتجر وتريد التجديد.. هل تريد فعل هذا الآن؟")
                 .setPositiveButton("نعم", new DialogInterface.OnClickListener() {
@@ -855,7 +858,6 @@ boolean delete_item;
     }
 
     private void takeWeight(String Sensornum) {
-        // toastMessage("لقد حدث ");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference SensorRef = rootRef.child("Sensors");
 

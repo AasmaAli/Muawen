@@ -61,6 +61,7 @@ public class Suggestionitem extends AppCompatActivity {
     boolean Unlike;
     long itemSuggSize;
     Toolbar mToolbar;
+    TextView no_sugg ;
 
 
 
@@ -87,6 +88,10 @@ public class Suggestionitem extends AppCompatActivity {
 
         db = mDatabaseSL.getWritableDatabase();
 
+        no_sugg = findViewById(R.id.noSuggest);
+        no_sugg.setText("لا يوجد لديك مقترحات الآن");
+
+
         viewitemsuggest();
 
     }
@@ -104,7 +109,7 @@ public class Suggestionitem extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(final SuggView holder, final int position, final items model) {
 
-
+                no_sugg.setText("");
 
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -189,7 +194,6 @@ public class Suggestionitem extends AppCompatActivity {
                     }
                 });
                 ////item info________________________________________
-                //toastMessage(product.getName() +product.getSize()+product.getPrice()+" this is progct");
 
 
                 if(model.getSuggested_item().equals("Negativeone") ){
@@ -636,7 +640,7 @@ public class Suggestionitem extends AppCompatActivity {
         if (insertData) {
             toastMessage("لقد أضفنا منتج إلى قائمة التسوق");
         } else {
-            toastMessage("Something went wrong");
+            toastMessage("حدث خطاء أثناء إضافة المنتج لقائمة التسوق");
         }
 
     }

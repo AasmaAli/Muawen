@@ -129,6 +129,10 @@ public class Setup extends AppCompatActivity  implements AdapterView.OnItemSelec
         {
             Toast.makeText(this, "رجاءً أدخل العنوان", Toast.LENGTH_SHORT).show();
         }
+        else if (Auto_order && Theday.equals("---") ){
+            Toast.makeText(this, "رجاءً أختر يوم الطلب", Toast.LENGTH_SHORT).show();
+
+        }
         else if(!username.isEmpty() && !usermobile.isEmpty() && !userAddress.isEmpty()) {
 
 

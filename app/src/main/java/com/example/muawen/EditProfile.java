@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,11 +72,11 @@ private ArrayAdapter<String> adapterday ;
                  day_firebase = snapshot.child("Order_time").getValue().toString();
                  Auto_order = Boolean.parseBoolean(snapshot.child("Auto_order").getValue().toString());
                  oldAutoOrder = Auto_order ;
-                email.setText(email_firebase);
-                phone.setText(phone_firebase);
-                name.setText(name_firebase);
-                address.setText(address_firebase);
-                order_day.setText(day_firebase);
+                 email.setText(email_firebase);
+                 phone.setText(phone_firebase);
+                 name.setText(name_firebase);
+                 address.setText(address_firebase);
+                 order_day.setText(day_firebase);
 
 
                 if (Auto_order) {
@@ -134,91 +135,80 @@ private ArrayAdapter<String> adapterday ;
         adapterday.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerDay.setAdapter(adapterday);
 
-        int spinnerPosition = adapterday.getPosition(day_firebase);
-        SpinnerDay.setSelection(spinnerPosition);
+
+
+
 
     }
     public void  update(View view) {
         isChangeOrderDay = (oldAutoOrder != Auto_order) ;
         changeOrderDay = (Theday!=day_firebase);
-        if (isNameChange() || isPhoneChange() || isAddressChange() || isEmailChange() || changeOrderDay ||isChangeOrderDay   ) {
 
-
-            if ( changeOrderDay ) {
+        if(!name_firebase.equals(name.getText().toString())||!phone_firebase.equals(phone.getText().toString())
+        || !address_firebase.equals(address.getText().toString()) ||changeOrderDay ||isChangeOrderDay  ) {
+            isNameChange();
+            isPhoneChange();
+            isAddressChange();
+            if ( changeOrderDay && Auto_order && !Theday.equals("---")) {
                 day_firebase = Theday;
                 reference.child("Order_time").setValue(Theday);
 
             }
-
-                if ( isChangeOrderDay)
-                {
-                    oldAutoOrder = Auto_order ;
-                    reference.child("Auto_order").setValue(Auto_order);
-                }
-
-            Toast.makeText(EditProfile.this, "تم تحديث البيانات ", Toast.LENGTH_SHORT).show();
+            if ( isChangeOrderDay)
+            {
+                oldAutoOrder = Auto_order ;
+                reference.child("Auto_order").setValue(Auto_order);
+            }
         }
-        else {
+        else{
             Toast.makeText(EditProfile.this ,"لا يوجد تحديث ",Toast.LENGTH_SHORT).show();
 
         }
 
+
     }
 
-    public boolean isNameChange()
+    public void isNameChange()
     {
-        if (!name_firebase.equals(name.getText().toString()))
+        if (!name_firebase.equals(name.getText().toString())&& !TextUtils.isEmpty(name.getText().toString()))
         {
          reference.child("Username").setValue(name.getText().toString());
          name_firebase = name.getText().toString();
-         return true ;
+            Toast.makeText(this, "تم تحديث الأسم", Toast.LENGTH_SHORT).show();
         }
-        else {
-            return false;
+        else if (TextUtils.isEmpty(address.getText().toString())){
+            Toast.makeText(this, "لم يتم تحديث الاسم", Toast.LENGTH_SHORT).show();
+
         }
     }
 
-    public boolean isEmailChange()
-    {
-        if (!email_firebase.equals(email.getText().toString()))
-        {
-            reference.child("Email").setValue(email.getText().toString());
-            email_firebase = email.getText().toString();
-            return true ;
-        }
-        else {
-            return false;
-        }
-    }
 
-    public boolean isPhoneChange()
+    public void isPhoneChange()
     {
         if (!phone_firebase.equals(phone.getText().toString()))
         {
             if(phone.getText().toString().length()==10) {
                 reference.child("Phone_number").setValue(phone.getText().toString());
                 phone_firebase = phone.getText().toString();
-                return true;
+                Toast.makeText(this, "تم تحديث رقم الجوال", Toast.LENGTH_SHORT).show();
+
             }else{
                 Toast.makeText(this, "يجب أن يتكون رقم الجوال من عشرة أرقام", Toast.LENGTH_SHORT).show();
-                return false;
             }
         }
-        else {
-            return false;
-        }
+
     }
 
-    public boolean isAddressChange()
+    public void isAddressChange()
     {
-        if (!address_firebase.equals(address.getText().toString()))
+        if (!address_firebase.equals(address.getText().toString()) && !TextUtils.isEmpty(address.getText().toString()))
         {
             reference.child("Address").setValue(address.getText().toString());
             address_firebase = address.getText().toString();
-            return true ;
+            Toast.makeText(this, "تم تحديث النعوان", Toast.LENGTH_SHORT).show();
         }
-        else {
-            return false;
+        else if(TextUtils.isEmpty(address.getText().toString()))  {
+            Toast.makeText(this, "تلم يتم تحديث النعوان", Toast.LENGTH_SHORT).show();
         }
     }
 
