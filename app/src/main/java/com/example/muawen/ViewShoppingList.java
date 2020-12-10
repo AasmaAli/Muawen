@@ -42,10 +42,10 @@ public class ViewShoppingList extends AppCompatActivity {
 
 
     ArrayList<String> arrayList = new ArrayList<>();
-    ArrayList<String> totalprice = new ArrayList<>();
+
     Double total = 0.0;
 
-    private ListView price;
+    private TextView price;
     private Button button;
     private ListView list;
     private FirebaseAuth mAuth ;
@@ -101,13 +101,12 @@ public class ViewShoppingList extends AppCompatActivity {
                     res.moveToNext();
                 }
 
-                totalprice.add("   السعر الكلي : " + total + "    ");
+                price.setText("   السعر الكلي : " + total + "    ");
 
                 ArrayAdapter arrayAdapter = new ArrayAdapter(this, simple_list_item_1, arrayList);
                 list.setAdapter(arrayAdapter);
                 //long size =  Long.parseLong(res.getString(res.getColumnIndex("size")));
-                ArrayAdapter arrayAdapter2 = new ArrayAdapter(this, simple_list_item_1, totalprice);
-                price.setAdapter(arrayAdapter2);
+
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override

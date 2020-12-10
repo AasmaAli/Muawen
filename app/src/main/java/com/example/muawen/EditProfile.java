@@ -142,7 +142,8 @@ private ArrayAdapter<String> adapterday ;
     }
     public void  update(View view) {
         isChangeOrderDay = (oldAutoOrder != Auto_order) ;
-        changeOrderDay = (Theday!=day_firebase);
+        changeOrderDay = (Theday!=day_firebase && !Theday.equals("---"));
+
 
         if(!name_firebase.equals(name.getText().toString())||!phone_firebase.equals(phone.getText().toString())
         || !address_firebase.equals(address.getText().toString()) ||changeOrderDay ||isChangeOrderDay  ) {
@@ -208,7 +209,7 @@ private ArrayAdapter<String> adapterday ;
             Toast.makeText(this, "تم تحديث النعوان", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(address.getText().toString()))  {
-            Toast.makeText(this, "تلم يتم تحديث النعوان", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "تلم يتم تحديث العنوان", Toast.LENGTH_SHORT).show();
         }
     }
 
