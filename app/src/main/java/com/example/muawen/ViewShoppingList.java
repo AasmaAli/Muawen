@@ -94,7 +94,7 @@ public class ViewShoppingList extends AppCompatActivity {
                     String Price = res.getString(6);
                     String quantity = res.getString(7);
 
-                    arrayList.add(" اسم المنتج: "+Name+" الحجم: "+size+" نوع المنتج: "+Brand+" السعر: "+Price+" العدد: "+quantity);
+                    arrayList.add(" اسم المنتج: "+Name+" الحجم: "+size+" شركة المنتج: "+Brand+" السعر: "+Price+" العدد: "+quantity);
                     if (Price != null)
                         total = total + (Double.parseDouble(Price));
 
