@@ -367,7 +367,7 @@ if(ScanQRCode==null){
             Toast.makeText(this,  "التاريخ الذي أدخلته قديم يرجى إدخال التاريخ بشكل صحيح", Toast.LENGTH_SHORT).show();
         }
         else if(ScanQRCode ==null ){
-            Toast.makeText(this,  "رجاءً قم بمسح الشريط الذي على المستشعر ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,  "رجاءً قم بمسح الشريط الذي على الميزان ", Toast.LENGTH_SHORT).show();
         }else if(!CheckSensor()){
             Toast.makeText(this,  "هذا الميزان مستخدم لمنتج أخر", Toast.LENGTH_SHORT).show();
         }else if (Original_weight <= 2){
@@ -375,6 +375,7 @@ if(ScanQRCode==null){
 
         }
         else{
+
             //Add item
             ItemRef = UsersRef.child("items");
             Map userMap = new HashMap();
