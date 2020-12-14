@@ -407,8 +407,8 @@ boolean delete_item;
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            if (dataSnapshot.hasChild("Weight")) {
-                                double SensorWeight= Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                            if (dataSnapshot.hasChild(" Weight")) {
+                                double SensorWeight= Double.parseDouble(dataSnapshot.child(" Weight").getValue().toString());
                                 if(dataSnapshot.getKey().equals(model.getSensor())) {
                                     if (SensorWeight >= model.getOriginal_weight()) {//If the sensor value is greater than the original weight
                                         if (!(model.getOriginal_weight() - model.getCurrent_wieght() < 6)) {
@@ -866,8 +866,8 @@ boolean delete_item;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.hasChild("Weight")) {
-                        Original_weight_rnew = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                    if (dataSnapshot.hasChild(" Weight")) {
+                        Original_weight_rnew = Double.parseDouble(dataSnapshot.child(" Weight").getValue().toString());
                     }
                 }
             }

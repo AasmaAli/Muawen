@@ -43,7 +43,7 @@ import java.util.TimeZone;
 public class AddItem extends AppCompatActivity  {
     public static  EditText barcode ;
     public static String ScanQRCode;
-    public double Original_weight =0;
+    public double Original_weight ;
     public boolean CheckSensor;
     private ImageView scan_barcode_item;
     private ImageView scan_QR_item;
@@ -228,8 +228,8 @@ if(ScanQRCode==null){
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            if (dataSnapshot.hasChild("Weight")) {
-                                Original_weight = Double.parseDouble(dataSnapshot.child("Weight").getValue().toString());
+                            if (dataSnapshot.hasChild(" Weight")) {
+                                Original_weight = Double.parseDouble(dataSnapshot.child(" Weight").getValue().toString());
                             }
                         }
                     }
@@ -332,7 +332,7 @@ if(ScanQRCode==null){
         String BarCode = barcode.getText().toString();
         long Quantity = count_quantity;
         long days=0;
-        //takeWeight();
+        takeWeight();
 
 
 
@@ -397,8 +397,6 @@ if(ScanQRCode==null){
 
             //Add all data to the database
             ItemRef.getParent().child("Sensors").child(ScanQRCode).setValue(true);
-
-
             ItemRef.child(String.valueOf(System.currentTimeMillis())).setValue(userMap);
             Intent mainIntent = new Intent(AddItem.this, MainActivity.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
