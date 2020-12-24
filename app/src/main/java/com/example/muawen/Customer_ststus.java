@@ -110,7 +110,7 @@ public class Customer_ststus extends AppCompatActivity {
                                             p.setName(childeren.getValue().toString());
                                         }
                                         if (childeren.getKey().equals("price")) {
-                                            p.setPrice((Double) childeren.getValue());
+                                            p.setPrice(Double.parseDouble(childeren.getValue(). toString()) );
                                         }
                                         if (childeren.getKey().equals("size")) {
                                             p.setSize((Long) childeren.getValue());
@@ -127,7 +127,7 @@ public class Customer_ststus extends AppCompatActivity {
                                                         if(childeren.getKey().equals(key))
                                                         if(key1.equals("Price")){
                                                             System.out.print("THe price of the item "+child.getValue());
-                                                            p.setPrice((Double) child.getValue());
+                                                            p.setPrice((Double)( child.getValue())+0.0);
                                                         }
                                                     }
                                                 }

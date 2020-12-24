@@ -272,10 +272,16 @@ public class Suggestionitem extends AppCompatActivity {
                                 mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());
                                 long Quantity = model.getQuantity() + 1;
                                 AddtoShoppingList(model.getProduct_ID(), Quantity+"");
-                                // insertData(db, model.getProduct_ID(), Item_brand, Item_Name, Item_size, Item_price, Quantity + "");
                                 getRef(position).child("quantity").setValue(Quantity);
 
-                            } else {
+                            } else if(model.getSuggested_item().equals("Negativeone")){
+                                mDatabaseSL.DeleteItem(db, currentUserID, model.getProduct_ID());
+                                long Quantity = model.getQuantity() - 1;
+                                AddtoShoppingList(model.getProduct_ID(), Quantity+"");
+                                getRef(position).child("quantity").setValue(Quantity);
+
+                            }else{
+
                                 String Quantity = model.getQuantity() + "";
                                 AddtoShoppingList(model.getSuggested_item(), Quantity);
 

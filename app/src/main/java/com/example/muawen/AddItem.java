@@ -332,7 +332,7 @@ if(ScanQRCode==null){
         String BarCode = barcode.getText().toString();
         long Quantity = count_quantity;
         long days=0;
-        takeWeight();
+        //takeWeight();
 
 
 
