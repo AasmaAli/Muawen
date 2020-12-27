@@ -77,28 +77,27 @@ public class ViewOrders extends AppCompatActivity {
                                 o.setT(time);
                                 if (!list.contains(o)) {
                                     list.add(o);
+
                                 }
                             } else {
                                 Log.d("TAG", "You don't have Orders ");
                             }
                         }}
-                Collections.sort(list, new Comparator<Order>(){
-                    public int compare(Order date1, Order date2){
-                        if (date1.getD() == null || date2.getD() == null)
-                            return 0;
-                        return date1.getD().compareTo(date2.getD());
-                    }
-                });
+
                 Collections.sort(list, new Comparator<Order>() {
                     public int compare(Order o1, Order o2) {
                         if (o1.getT() == null || o2.getT() == null)
                             return 0;
-                        return o1.getT().compareTo(o2.getT());
+                        return o2.getT().compareTo(o1.getT());
                     }
                 });
-
-
-
+                Collections.sort(list, new Comparator<Order>(){
+                    public int compare(Order date1, Order date2) {
+                        if (date1.getD() == null || date2.getD() == null)
+                            return 0;
+                        return date2.getD().compareTo(date1.getD());
+                    }
+                });
                 adapter=new MyAdapter(ViewOrders.this,list);
                 recyclerView.setAdapter(adapter);
 
