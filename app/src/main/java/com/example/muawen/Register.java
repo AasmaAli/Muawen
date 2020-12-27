@@ -74,8 +74,9 @@ public class Register extends AppCompatActivity {
             Toast.makeText(this, "فضلًا ادخل كلمة المرور ...",Toast.LENGTH_SHORT).show();
         }else if (password.length() < 6){
             Toast.makeText(this, "يجب أن تحتوي كلمة المرور على ست حروف و أرقام على الأقل...",Toast.LENGTH_SHORT).show();
+        }else if (password.matches("[0-9]+") && !password.matches("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$")){
+            Toast.makeText(this, "يجب أن تحتوي كلمة المرور على حروف و أرقام ...",Toast.LENGTH_SHORT).show();
         }
-
         else if(TextUtils.isEmpty(Confirm_password)){
             Toast.makeText(this, "فضلًا اعد ادخال كلمة المرور ...",Toast.LENGTH_SHORT).show();
         }
